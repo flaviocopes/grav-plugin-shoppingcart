@@ -1,0 +1,78 @@
+{% set shoppingcart_image = page.media.images|first %}
+
+<div class="js__shoppingcart-cart">
+  <h3 class="js__shoppingcart-cart__title" style="display: none"></h3>
+  <table class="table js__shoppingcart-cart__table">
+    <thead></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div id="shoppingcart-detail" class="block-group">
+
+    {{ page.order|trim('.') }}
+
+    <div class="shoppingcart-info block">
+        <div class="shoppingcart-thumb">
+            {% if shoppingcart_image %}
+                {{ shoppingcart_image.cropResize(400,400).html(page.header.title,'shoppingcart-thumb-image') }}
+            {% endif %}
+            <span class="shoppingcart-price">
+            ${{ page.header.price }}
+            </span>
+        </div>
+        <p>
+            <a href="#"
+                class="button js__button-add-to-cart"
+                data-item-id="{{ page.header.product_id }}"
+                data-item-name="{{ page.header.title }}"
+                data-item-price="{{ page.header.price }}"
+                data-item-url="{{ page.url }}"
+            >
+                <i class="fa fa-shopping-cart"></i> {{ 'PLUGIN_SHOPPINGCART.ADD_TO_CART'|t }}
+            </a>
+        </p>
+    </div>
+    <div class="shoppingcart-details block">
+        <h1>{{ page.header.title }}</h1>
+
+        <p>{{ page.content }}</p>
+
+    </div>
+</div>
+
+<script>
+(function() {
+
+  var currentProduct = {
+    title: "{{ page.header.title }}",
+    id: "{{ md5(page.header.title) }}",
+    price: "{{ page.header.price }}",
+    normal_price: "{{ page.header.price }}",
+    defaultPhoto: "{{ shoppingcart_image|url_encode }}",
+    quantity_available: "{{ page.header.quantity_available }}",
+    type: "{{ page.header.type }}",
+    hasFiles: "{{ page.header.hasFiles }}",
+    size_weight: "{{ page.header.size_weight }}",
+    url: "{{ page.url|url_encode }}",
+    // hasFiles: '<?php echo $product->hasFiles ?>',
+    // size_weight: '<?php echo $product->size_weight ?>',
+        // variations: <?php if ($product->variations) : ?>JSON.parse('<?php echo $product->variations ?>'.replace(/\t/g, ''))<?php else : ?>null<?php endif ?>,
+    // openOption: <?php if ($product->openOption) : ?>JSON.parse('<?php echo $product->openOption ?>')<?php else : ?>null<?php endif ?>
+  };
+
+  // ShoppingCart.checkoutURL = '<?php echo $this->checkoutURL ?>';
+  // ShoppingCart.cartURL = '<?php echo $this->cartURL ?>';
+  // ShoppingCart.baseURL = '<?php echo $this->baseURL ?>';
+
+  var interval = setInterval(function() {
+    if (typeof ShoppingCart !== 'undefined') {
+      ShoppingCart.currentProduct = currentProduct;
+      ShoppingCart.currentPageIsProduct = true;
+      clearInterval(interval);
+    }
+  }, 200);
+
+
+}());
+</script>

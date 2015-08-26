@@ -1,0 +1,33 @@
+{% set shoppingcart_image = page.media.images|first %}
+
+<div class="shoppingcart-item block" >
+
+    {{ page.order|trim('.') }}
+
+    <h3><a href="{{ page.url }}">{{ page.header.title }}</a></h3>
+    <div class="shoppingcart-thumb">
+        {% if shoppingcart_image %}
+            <a href="{{ page.url }}">{{ shoppingcart_image.cropResize(200,200).html('page.header.title','shoppingcart-thumb-image') }}</a>
+        {% endif %}
+        <span class="shoppingcart-price">
+        ${{ page.header.price }}
+        </span>
+    </div>
+    <div class="shoppingcart-details">
+    <p>
+        <a href="{{ page.url }}"
+            class="button button-small">
+            <i class="fa fa-info-circle"></i> {{ 'PLUGIN_SHOPPINGCART.DETAILS'|t }}
+        </a>
+        {# <a href="#"
+            class="button button-small"
+            data-item-id="{{ page.header.product_id }}"
+            data-item-name="{{ page.header.title }}"
+            data-item-price="{{ page.header.price }}"
+            data-item-url="{{ page.url }}"
+        >
+            <i class="fa fa-shopping-cart"></i> {{ 'PLUGIN_SHOPPINGCART.ADD'|t }}
+        </a> #}
+    </p>
+    </div>
+</div>

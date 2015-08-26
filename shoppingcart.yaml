@@ -1,0 +1,14 @@
+enabled: true
+built_in_css: true
+checkout_url: /checkout
+shipment:
+    methods:
+        1:
+            name: Favorite countries
+            allowedCountries: ['it', 'en', 'us']
+            price: 10
+        2:
+            name: All other countries
+            allowedCountries: ['*']
+            price: 20
+

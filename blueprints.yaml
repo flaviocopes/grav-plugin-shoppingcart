@@ -1,0 +1,38 @@
+name: Shopping Cart
+version: 0.1.0
+description: "This plugin turns your Grav site into a shopping cart"
+icon: shopping-cart
+author:
+  name: Flavio Copes
+  email: copesc@gmail.com
+  url: http://flaviocopes.com
+homepage: https://github.com/flaviocopes/grav-plugin-shoppingcart
+# demo: http://demo.getgrav.org/shop-skeleton
+keywords: shoppingcart, ecommerce, e-commerce, plugin, shop, cart
+bugs: https://github.com/flaviocopes/grav-plugin-shoppingcart/issues
+license: MIT
+
+form:
+  validation: strict
+  fields:
+    enabled:
+      type: toggle
+      label: Plugin status
+      highlight: 1
+      default: 0
+      options:
+        1: Enabled
+        0: Disabled
+      validate:
+        type: bool
+
+    built_in_css:
+      type: toggle
+      label: Use built in CSS
+      highlight: 1
+      default: 1
+      options:
+        1: Enabled
+        0: Disabled
+      validate:
+        type: bool

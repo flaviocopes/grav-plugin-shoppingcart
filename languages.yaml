@@ -1,0 +1,18 @@
+en:
+  PLUGIN_SHOPPINGCART:
+    DETAILS: Details
+    ADD: Add
+    ADD_TO_CART: Add to Cart
+    CHECKOUT: Checkout
+    SHOPPING_CART: Shopping Cart
+    YOU_ARE_PURCHASING_THESE_ITEMS: You are purchasing these items
+    ITEMS_PURCHASED: Items Purchased
+    ITEM: Item
+    PRICE: Price
+    QUANTITY: Quantity
+    TOTAL: Total
+    REMOVE: Remove
+    CONTINUE_SHOPPING: Continue Shopping
+    PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Please fill all the required fields
+    SORRY_THE_EMAIL_IS_NOT_VALID_DID_YOU_MEAN: Sorry the email is not valid, did you mean
+    SORRY_THE_EMAIL_IS_NOT_VALID: Sorry the email is not valid

@@ -1,0 +1,22 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block javascripts %}
+    {% do assets.addJs('plugin://shoppingcart/js/lib/store.min.js') %}
+    {% do assets.addJs('plugin://shoppingcart/js/shoppingcart.js') %}
+    {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_cart.js') %}
+    {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_cart_events.js') %}
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header_extra %}
+    {% include 'partials/shoppingcart_cart.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    {% if config.plugins.breadcrumbs.enabled %}
+        {% include 'partials/breadcrumbs.html.twig' ignore missing %}
+    {% endif %}
+{% endblock %}
