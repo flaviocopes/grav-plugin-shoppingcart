@@ -22,6 +22,12 @@
         if (!ShoppingCart.settings.shipment.methods) {
             ShoppingCart.settings.shipment.methods = [];
         }
+        if (!ShoppingCart.settings.payment) {
+            ShoppingCart.settings.payment = {};
+        }
+        if (!ShoppingCart.settings.payment.methods) {
+            ShoppingCart.settings.payment.methods = [];
+        }
 
         i = 0;
 
@@ -71,11 +77,10 @@
                 return;
             }
 
-            //TODO
-            // if (parseInt(ShoppingCart.items[i].quantity) > ShoppingCart.settings.cart.maximumQuantityValue) {
-            //     alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximumQuantityValue);
-            //     return;
-            // }
+            if (parseInt(ShoppingCart.items[i].quantity) > ShoppingCart.settings.cart.maximumTotalQuantityValue) {
+                alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximumTotalQuantityValue);
+                return;
+            }
         }
 
         window.location.href = PLUGIN_SHOPPINGCART.checkout_url;

@@ -12,3 +12,5 @@ shipment:
             allowedCountries: ['*']
             price: 20
 
+cart:
+    maximumTotalQuantityValue: 1
