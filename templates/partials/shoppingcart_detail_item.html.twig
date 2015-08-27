@@ -61,10 +61,6 @@
     // openOption: <?php if ($product->openOption) : ?>JSON.parse('<?php echo $product->openOption ?>')<?php else : ?>null<?php endif ?>
   };
 
-  // ShoppingCart.checkoutURL = '<?php echo $this->checkoutURL ?>';
-  // ShoppingCart.cartURL = '<?php echo $this->cartURL ?>';
-  // ShoppingCart.baseURL = '<?php echo $this->baseURL ?>';
-
   var interval = setInterval(function() {
     if (typeof ShoppingCart !== 'undefined') {
       ShoppingCart.currentProduct = currentProduct;

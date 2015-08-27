@@ -1,16 +1,90 @@
 enabled: true
 built_in_css: true
-checkout_url: /checkout
+
 shipment:
     methods:
-        1:
+        -
             name: Favorite countries
             allowedCountries: ['it', 'en', 'us']
             price: 10
-        2:
+        -
             name: All other countries
             allowedCountries: ['*']
             price: 20
+        -
+            name: 'Ordinary shipment'
+            price: 10
+            starting_order_price: 0
+            ending_order_price: 100000
+            allowedCountries: ['*']
+
+urls:
+    baseURL: /grav
+    checkoutURL: /checkout
 
 cart:
     maximumTotalQuantityValue: 1
+
+general:
+    defaultTypeOfProduct: 'phisical'
+    measurementSystem: 'kilograms'
+    defaultCurrency: 'USD'
+    numberOfTimesDownloadable: 'No limit'
+    howLongCanItBeDownloaded: 'No limit'
+    productTaxes: 'included'
+    enableLogs: 0
+
+ui:
+    currencySymbolPosition: 'after'
+    productsListLayout: '2-columns'
+    categoriesListLayout: '2-columns'
+    orderingInProductList: 'title'
+    orderingInProductListDirection: 'ASC'
+    loadBootstrap: 1
+    hidePricesInProductsList: 0
+    useLightbox: 1
+
+cart:
+    addToCartInList: 0
+    maximumQuantityValue: 100
+    addToCartInList: 0
+    allowEditingQuantityFromCart: 0
+    showQuantityChooserInProductPage: 1
+    limitDigitalProductsToSingleQuantity: 0
+
+countries:
+    -
+      readableName: 'United States'
+      name: 'US'
+      percentage: '10'
+      allow: true
+    -
+      readableName: 'All countries without rule'
+      name: '*'
+      percentage: '0'
+      allow: true
+
+payment:
+    methods:
+      -
+        name: 'PayPal'
+        enabled: true
+        isPayPal: true
+        params: {}
+      -
+        name: 'Offline'
+        enabled: false
+        isOffline: true
+        params: {}
+      -
+        name: 'Stripe'
+        enabled: false
+        isStripe: true
+        params: {}
+
+notifications:
+    emailTemplateNewOrderSubject: "New Order"
+    emailTemplateOrderConfirmationSubject: "Order Confirmation"
+    emailTemplateNewOrderMessage: "<p>Hi, {CLIENT_NAME} ({CLIENT_EMAIL}) just placed an order.</p><div>&nbsp;</div><div>Here&#39;s the order summary:<div>&nbsp;</div><div>{PRODUCTS_BOUGHT_TABLE}</div></div>"
+    emailTemplateOrderConfirmationMessage: "<p>Hi {CLIENT_NAME}, thanks for completing your order.</p><div>&nbsp;</div><div><span>Here is the order summary:</span></div><div><span>{PRODUCTS_BOUGHT_TABLE}</span></div>"
+    emailAddressOwner: "your.email@your.server.com"

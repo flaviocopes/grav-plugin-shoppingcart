@@ -36,8 +36,8 @@ class ShoppingcartPlugin extends Plugin
         ]);
 
         // Register route to checkout page if it has been set.
-        $this->checkout_url = $this->config->get('plugins.shoppingcart.checkout_url');
-        if ($this->checkout_url) {
+        $this->checkoutURL = $this->config->get('plugins.shoppingcart.urls.checkoutURL');
+        if ($this->checkoutURL) {
             $this->enable([
                 'onPagesInitialized' => ['addCheckoutPage', 0]
             ]);
@@ -47,15 +47,15 @@ class ShoppingcartPlugin extends Plugin
     public function addCheckoutPage()
     {
         $pages = $this->grav['pages'];
-        $page = $pages->dispatch($this->checkout_url);
+        $page = $pages->dispatch($this->checkoutURL);
 
         if (!$page) {
             // Only add checkout page if it hasn't already been defined.
             $page = new Page;
             $page->init(new \SplFileInfo(__DIR__ . "/pages/shoppingcart_checkout.md"));
-            $page->slug(basename($this->checkout_url));
+            $page->slug(basename($this->checkoutURL));
 
-            $pages->addPage($page, $this->checkout_url);
+            $pages->addPage($page, $this->checkoutURL);
         }
     }
 
@@ -96,6 +96,7 @@ class ShoppingcartPlugin extends Plugin
 
 
         $strings = [
+            'DETAILS',
             'PRICE',
             'INCLUDING_TAXES',
             'EXCLUDING_TAXES',
@@ -192,17 +193,6 @@ class ShoppingcartPlugin extends Plugin
         }
 
         $assets->addInlineJs($translations);
-
-        /**
-         * Add settings needed in JavaScript code
-         */
-        $checkout_url = $this->config->get('plugins.shoppingcart.checkout_url');
-        if (!$checkout_url) {
-            echo 'Checkout URL not configured. Exiting';
-            return;
-        }
-
-        $assets->addInlineJs('PLUGIN_SHOPPINGCART.checkout_url = "' . $this->grav['base_url_relative'] . $checkout_url . '"');
 
         /**
          * Add plugin settings as JavaScript code

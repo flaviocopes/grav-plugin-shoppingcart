@@ -104,11 +104,12 @@
 
     /***********************************************************/
     /* Add a product to the cart
-    /* #refactor
+    /* #refactor #todo #later
     /***********************************************************/
     ShoppingCart.addProduct = function addProduct(product, variations, quantity) {
         var existingProducts = jQuery(ShoppingCart.items).filter(function(index, item) { if (product.id == item.product.id) return true; }).toArray();
 
+        //LATER
         // for (var variation in variations) {
         //     if (variations.hasOwnProperty(variation)) {
         //         existingProducts = jQuery(existingProducts).filter(function(index, item) { if (variations[variation] == item['variations'][variation]) return true; }).toArray();
@@ -125,6 +126,7 @@
         }
 
         ShoppingCart._saveCartToLocalstorage();
+        //LATER
         // ShoppingCart.calculateItemsLeft();
         ShoppingCart.renderCart();
     };

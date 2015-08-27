@@ -1,5 +1,6 @@
 en:
   PLUGIN_SHOPPINGCART:
+    DETAILS: Details
     PRICE: Price
     INCLUDING_TAXES: Including taxes
     EXCLUDING_TAXES: Excluding taxes
