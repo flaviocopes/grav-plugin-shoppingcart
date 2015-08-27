@@ -131,9 +131,26 @@ class ShoppingcartPlugin extends Plugin
         /**
          * Add plugin settings as JavaScript code
          */
-
         $settings = $this->config->get('plugins.shoppingcart');
-        var_dump($settings); exit();
+        $settings_js = 'window.PLUGIN_SHOPPINGCART.settings = {};' . PHP_EOL;
+
+        function recurse_settings($base, $settings) {
+            $output = '';
+            foreach($settings as $key => $value) {
+                $key = '["' . $key .'"]';
+                if (!is_array($value)) {
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = "' . $value . '"; ' . PHP_EOL;;
+                } else {
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;;
+                    $output .= recurse_settings($base . $key, $value);
+                }
+            }
+
+            return $output;
+        }
+
+        $settings_js .= recurse_settings('', $settings);
+        $assets->addInlineJs($settings_js);
     }
 
     /**
