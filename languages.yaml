@@ -1,18 +1,91 @@
 en:
   PLUGIN_SHOPPINGCART:
-    DETAILS: Details
-    ADD: Add
-    ADD_TO_CART: Add to Cart
-    CHECKOUT: Checkout
-    SHOPPING_CART: Shopping Cart
-    YOU_ARE_PURCHASING_THESE_ITEMS: You are purchasing these items
-    ITEMS_PURCHASED: Items Purchased
-    ITEM: Item
     PRICE: Price
+    INCLUDING_TAXES: Including taxes
+    EXCLUDING_TAXES: Excluding taxes
+    ADD_TO_CART: Add to cart
+    DESCRIPTION: Description
+    NO_PRODUCTS_FOUND: No products found
+    CHECKOUT_PAGE_TITLE: Checkout
+    CHECKOUT_STEP1_BILLING_DETAILS_TITLE: Step 1: Billing Details
+    CHECKOUT_HEADLINE_YOUR_PERSONAL_DETAILS: Your Personal Details
+    CHECKOUT_FIRST_NAME: First Name
+    CHECKOUT_LAST_NAME: Last Name
+    CHECKOUT_EMAIL: Email Address
+    CHECKOUT_PHONE: Telephone
+    CHECKOUT_HEADLINE_YOUR_ADDRESS: Your Address
+    CHECKOUT_ADDRESS_1: Address 1
+    CHECKOUT_ADDRESS_2: Address 2
+    CHECKOUT_CITY: City
+    CHECKOUT_ZIP: ZIP
+    CHECKOUT_COUNTRY: Country
+    CHECKOUT_STATE: State
+    CHECKOUT_PROVINCE: Province
+    CHECKOUT_BUTTON_GO_TO_STEP_2: Continue to next step
+    CHECKOUT_STEP2_SHIPPING_PAYMENT_DETAILS_TITLE: Step 2: Shipping and Payment
+    CHECKOUT_CHOOSE_SHIPMENT_METHOD: Choose Shipping Method
+    CHECKOUT_CHOOSE_SHIPMENT_METHOD_DESC: Please select how you would like your products to be delivered.
+    CHECKOUT_CHOOSE_PAYMENT_METHOD: Choose Payment Method
+    CHECKOUT_CHOOSE_PAYMENT_METHOD_QUESTION: How would you like to pay for your order
+    CHECKOUT_PAYMENT_SECURE_NOTE: All transactions are secure and encrypted, and we never store your credit card information. To learn more, please view our privacy policy.
+    CHECKOUT_BUTTON_BACK: Back
+    CHECKOUT_BUTTON_PAY: Go on and pay
+    PRICE_DO_NOT_INCLUDE_TAXES: Prices do not include taxes. Taxes are calculated upon checkout once you selected the shipping country.
+    ORDER_SUCCESSFUL_PAGE_TITLE: Order successful
+    ITEMS_PURCHASED: Items purchased:
+    ORDER_SUCCESSFUL_CONFIRMATION_TEXT: Thanks for your order! The order will be processed and you'll get a notification when it's shipped to you.
+    ORDER_PAGE_WRONG_TOKEN_MESSAGE: You're not allowed to see this page. Are you sure the address is correct?
+    LOADING_WORD_BEFORE_ORDER_CONFIRMATION_PAGE: Loading..
+    DOWNLOAD: Download
+    SHOPPING_CART: Shopping cart
+    YOU_ARE_PURCHASING_THESE_ITEMS: You're purchasing these items:
+    ITEM: Item
     QUANTITY: Quantity
     TOTAL: Total
     REMOVE: Remove
-    CONTINUE_SHOPPING: Continue Shopping
+    UPDATE_QUANTITIES: Update quantities
+    CHECKOUT: Checkout
+    INCLUDING_SHIPMENT: Including shipment
+    ORDER_NOT_PAID_YET: We're processing the payment. If you're coming from PayPal, refresh this page in a few seconds, or contact us if this page shows up again.
+    ORDER_CANCELLED: Order cancelled
+    YOU_CANCELLED_THE_ORDER: You cancelled the order
+    VALUE_NOT_ACCEPTABLE: Value of the quantity field not acceptable
+    QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE: Quantity exceeds the maximum allowed value
+    CHECKOUT_PAYMENT_METHOD: Payment Method
+    CHECKOUT_SHIPMENT_METHOD: Shipping Method
+    THANK_YOU: Thank you for your order
+    OFFLINE_ORDER_TEXT: We'll get in touch soon to confirm the order and payment.
+    CHOOSE_AN_OPTION: Choose an option
+    EDIT_CART: Edit cart
+    QUANTITY_SHORT: Qty
+    NO_ITEMS_IN_CART: No items added to the shopping cart
+    PRODUCT_ADDED_TO_CART: Product added to cart
+    PRODUCTS_BOUGHT: Products bought
+    SEE_THE_ORDER_DETAILS: See the order details
+    MESSAGE_FROM_THE_CLIENT: Message from the client
+    AGREE: I agree to the
+    TERMS_AND_CONDITIONS: terms and conditions
+    PLEASE_ACCEPT_TERMS_AND_CONDITIONS: Please accept the terms and conditions
+    SORRY_THE_EMAIL_IS_NOT_VALID: Sorry, the email is not valid
+    SORRY_THE_EMAIL_IS_NOT_VALID_DID_YOU_MEAN: Sorry, email not valid! Did you mean
+    SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY: Sorry, we cannot ship to your country
+    PLEASE_FILL_PAYMENT_INFORMATION_TEXT_AREA: Please fill the payment information text area
     PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Please fill all the required fields
-    SORRY_THE_EMAIL_IS_NOT_VALID_DID_YOU_MEAN: Sorry the email is not valid, did you mean
-    SORRY_THE_EMAIL_IS_NOT_VALID: Sorry the email is not valid
+    READ_MORE: Read more
+    MINIMUM_TO_PLACE_AN_ORDER: Minimum to place an order:
+    OUT_OF_STOCK: Out of stock
+    PAYPAL: PayPal
+    CREDITCARD: Credit card
+    ITEMS_LEFT: %s items left
+    SUBCATEGORIES_HEADING:
+    HAVE_A_DISCOUNT_CODE: Have a discount code?
+    TOTAL_AFTER_DISCOUNT: Total after discount
+    SHIPPING: Shipping
+    TAXES: Taxes
+    SUBTOTAL: Subtotal
+    CONTINUE_SHOPPING: Continue shopping
+    DOWNLOAD_EXPIRED: Download expired
+    TOTAL_PAID: Total Paid
+    ORDER_ID: Order ID
+    ORDER_DATE: Order Date
+    NO_ORDERS_FOUND: No orders found
