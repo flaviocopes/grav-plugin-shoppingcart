@@ -6,82 +6,55 @@
 
     /***********************************************************/
     /* Load the shopping cart settings
-    /* #refactor
     /***********************************************************/
-    ShoppingCart.loadSettings = function loadSettings(callback) {
-        var interval = setInterval(function() {
-            if (ShoppingCart.baseURL != null) {
-                clearInterval(interval);
+    ShoppingCart.loadSettings = function loadSettings() {
+        ShoppingCart.settings = PLUGIN_SHOPPINGCART.settings;
 
-                // jQuery.getJSON(ShoppingCart.baseURL + 'index.php?option=com_shoppingcart&view=settings&format=json')
-                // .success(function(response) {
-                //     var i = 0, item;
-                //     response.settings = response.settings.replace(/(style='line-height: 1.6;')/g, "");
-                //     response.settings = response.settings.replace(/(style='line-height: 1.45em;')/g, "");
-                //     response.settings = response.settings.replace(/(style='line-height: 18.8500003814697px;')/g, "");
-                //     response.settings = response.settings.replace(/(\')/g, "&#39;").replace(/(\\\")/g, '\"').replace(/(:\"{\")/g, ':{\"').replace(/(}\"})/g, '}}');
-                //     response.settings = response.settings.replace(/(\\\\)/g, '\\').replace(/(\\\\)/g, '\\').replace(/(\\\\)/g, '\\').replace(/(\\\\)/g, '\\').replace(/(\\\\)/g, '\\').replace(/(\\\\)/g, '\\').replace(/(\\\\)/g, '\\');
-                //     response.settings = response.settings.replace(/(\\\/)/g, '/');
+        if (!ShoppingCart.settings) {
+            ShoppingCart.settings = {};
+        }
+        if (!ShoppingCart.settings.countries) {
+            ShoppingCart.settings.countries = {};
+        }
+        if (!ShoppingCart.settings.shipment) {
+            ShoppingCart.settings.shipment = {};
+        }
+        if (!ShoppingCart.settings.shipment.methods) {
+            ShoppingCart.settings.shipment.methods = [];
+        }
 
-                //     if (response) {
-                //         ShoppingCart.settings = JSON.parse(response.settings);
-                //     } else {
-                //         ShoppingCart.settings = {};
-                //         ShoppingCart.settings.countries = [];
-                //     }
+        i = 0;
 
-                //     if (!ShoppingCart.settings) {
-                //         ShoppingCart.settings = {};
-                //     }
-                //     if (!ShoppingCart.settings.countries) {
-                //         ShoppingCart.settings.countries = {};
-                //     }
-                //     if (!ShoppingCart.settings.shipment) {
-                //         ShoppingCart.settings.shipment = {};
-                //     }
-                //     if (!ShoppingCart.settings.shipment.methods) {
-                //         ShoppingCart.settings.shipment.methods = [];
-                //     }
+        while (i < ShoppingCart.settings.shipment.methods.length) {
+            item = ShoppingCart.settings.shipment.methods[i];
+            if (!item.allowedCountries) item.allowedCountries = [];
+            ShoppingCart.settings.shipment.methods[i] = item;
+            i++;
+        }
 
+        i = 0;
 
-                //     i = 0;
+        while (i < ShoppingCart.settings.countries.length) {
+            item = ShoppingCart.settings.countries[i];
 
-                //     while (i < ShoppingCart.settings.shipment.methods.length) {
-                //         item = ShoppingCart.settings.shipment.methods[i];
-                //         if (!item.allowedCountries) item.allowedCountries = [];
-                //         ShoppingCart.settings.shipment.methods[i] = item;
-                //         i++;
-                //     }
-
-                //     i = 0;
-
-                //     while (i < ShoppingCart.settings.countries.length) {
-                //         item = ShoppingCart.settings.countries[i];
-
-                //         if (item.allow === 'false' || item.allow === false) {
-                //             item.isAllowed = false;
-                //         } else {
-                //             item.isAllowed = true;
-                //         }
-                //         ShoppingCart.settings.countries[i] = item;
-
-                //         i++;
-                //     }
-
-                //     i = 0;
-
-                //     while (i < ShoppingCart.settings.payment.methods.length) {
-                //         item = ShoppingCart.settings.payment.methods[i];
-                //         ShoppingCart.settings.payment.methods[i] = item;
-
-                //         i++;
-                //     }
-
-                //     if (callback) callback();
-                // });
-
+            if (item.allow === 'false' || item.allow === false) {
+                item.isAllowed = false;
+            } else {
+                item.isAllowed = true;
             }
-        }, 50);
+            ShoppingCart.settings.countries[i] = item;
+
+            i++;
+        }
+
+        i = 0;
+
+        while (i < ShoppingCart.settings.payment.methods.length) {
+            item = ShoppingCart.settings.payment.methods[i];
+            ShoppingCart.settings.payment.methods[i] = item;
+
+            i++;
+        }
     };
 
     /***********************************************************/
