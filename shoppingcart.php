@@ -273,6 +273,8 @@ class ShoppingcartPlugin extends Plugin
             $output = '';
 
             foreach($settings as $key => $value) {
+                //Avoid putting the secretKey in the frontend available settings
+                if ($key == 'secretKey') continue;
 
                 $key = '["' . $key .'"]';
                 if (!is_array($value)) {
