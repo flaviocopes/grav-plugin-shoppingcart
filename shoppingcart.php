@@ -17,7 +17,6 @@ class ShoppingcartPlugin extends Plugin
     {
         return [
             'onPluginsInitialized' => ['onPluginsInitialized', 0],
-            'onTask.order.pay' => ['shoppingCartController', 0],
             'onGetPageTemplates' => ['onGetPageTemplates', 0]
         ];
     }
@@ -27,6 +26,10 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onPluginsInitialized()
     {
+        $this->checkoutURL = $this->config->get('plugins.shoppingcart.urls.checkoutURL');
+        $this->saveOrderURL = $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
+        $this->orderURL = $this->config->get('plugins.shoppingcart.urls.orderURL');
+
         if ($this->isAdmin()) {
             $this->enable([
                 'onPagesInitialized' => ['addCPTPage', 0]
@@ -44,18 +47,15 @@ class ShoppingcartPlugin extends Plugin
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
 
-        $this->checkoutURL = $this->config->get('plugins.shoppingcart.urls.checkoutURL');
         if ($this->checkoutURL && $this->checkoutURL == $uri->path()) {
             $this->enable([
                 'onPagesInitialized' => ['addCheckoutPage', 0]
             ]);
         }
-        $this->saveOrderURL = $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
-        $this->orderURL = $this->config->get('plugins.shoppingcart.urls.orderURL');
 
         if ($this->saveOrderURL && $this->saveOrderURL == $uri->path()) {
             $this->enable([
-                'onPagesInitialized' => ['addSaveOrderPage', 0]
+                'onPagesInitialized' => ['processOrder', 0]
             ]);
         }
 
@@ -73,12 +73,8 @@ class ShoppingcartPlugin extends Plugin
         $this->addPage($url, $filename);
     }
 
-    public function addSaveOrderPage()
+    public function processOrder()
     {
-        $url = $this->saveOrderURL;
-        $filename = 'shoppingcart_save_order.md';
-        $this->addPage($url, $filename);
-
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
         $task = $uri->query('task');
@@ -116,7 +112,6 @@ class ShoppingcartPlugin extends Plugin
         $twig->twig_vars['order_total_paid'] = json_decode($order)->total_paid;
         $twig->twig_vars['order_token'] = json_decode($order)->token;
         $twig->twig_vars['order_paid'] = json_decode($order)->paid;
-
         $twig->twig_vars['currency'] = $this->config->get('plugins.shoppingcart.general.defaultCurrency');
     }
 
