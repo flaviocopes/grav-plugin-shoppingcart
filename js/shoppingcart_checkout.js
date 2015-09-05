@@ -230,7 +230,7 @@
     /***********************************************************/
     ShoppingCart.configureStripe = function configureStripe() {
         ShoppingCart.stripeHandler = StripeCheckout.configure({
-            key: ShoppingCart.settings.payment.methods.stripe.publishableKey,
+            key: ShoppingCart.settings.payment.methods.stripe.publicKey,
             token: function(token, args) {
                 var order = {
                     products: storejs.get('grav-shoppingcart-basket-data'),
@@ -245,16 +245,13 @@
                 };
 
                 jQuery.ajax({
-                    url: 'index.php?option=com_shoppingcart&task=order.pay',
+                    url: ShoppingCart.settings.urls.baseURL + ShoppingCart.settings.urls.saveOrderURL + '?task=order.pay',
                     data: order,
                     type: 'POST'
                 })
                 .success(function(orderId) {
                     ShoppingCart.clearCart();
-
-                    //orderId
-                    //order.token
-                    window.location = ShoppingCart.settings.urls.baseURL + '/id:TODO/token:TODO'
+                    window.location = ShoppingCart.settings.urls.baseURL + ShoppingCart.settings.urls.orderURL + '/id:' + orderId + '/token:' + order.token;
                 })
                 .error(function() {
                     alert('Payment not successful. Please contact us.');

@@ -1,0 +1,40 @@
+{% extends 'partials/shoppingcart_base.html.twig' %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block content %}
+
+    {% if uri.param('token') == order_token %}
+
+        <h1>Thanks for your order!</h1>
+
+        <p>ORDER ID: {{ uri.param('id') }}</p>
+        <p>ORDER Token: {{ uri.param('token') }}</p>
+
+        <h2>Products ordered</h2>
+            {{dump(order_products)}}
+
+        {% for product_ordered in order_products %}
+            <li>
+                {{ product_ordered.quantity }} {{ product_ordered.product.title }} at {{ product_ordered.product.price}} each
+            </li>
+        {% endfor %}
+
+
+        <h3>Total paid</h3>
+
+        {{ order_total_paid }} {{ currency }}
+
+        <h3>Ship to</h3>
+
+        {{ order_address.firstname }} {{ order_address.lastname }}<br>
+        {{ order_address.address1 }}<br>
+        {{ order_address.address2 }}<br>
+        {{ order_address.zip }} {{ order_address.city }}<br>
+        {{ order_address.country }}<br>
+        {{ order_address.email }} {{ order_address.telephone }}<br>
+
+    {% endif %}
+
+{% endblock %}

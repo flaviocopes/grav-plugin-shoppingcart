@@ -6,6 +6,7 @@ use Grav\Common\Grav;
 use Grav\Common\Page\Page;
 use Grav\Common\Page\Types;
 use RocketTheme\Toolbox\Event\Event;
+use RocketTheme\Toolbox\File\File;
 
 class ShoppingcartPlugin extends Plugin
 {
@@ -16,9 +17,8 @@ class ShoppingcartPlugin extends Plugin
     {
         return [
             'onPluginsInitialized' => ['onPluginsInitialized', 0],
-            'onTask.order.save' => ['shoppingCartController', 0],
+            'onTask.order.pay' => ['shoppingCartController', 0],
             'onGetPageTemplates' => ['onGetPageTemplates', 0]
-
         ];
     }
 
@@ -41,52 +41,43 @@ class ShoppingcartPlugin extends Plugin
             'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0]
         ]);
 
-        // Register route to checkout page if it has been set.
+        /** @var Uri $uri */
+        $uri = $this->grav['uri'];
+
         $this->checkoutURL = $this->config->get('plugins.shoppingcart.urls.checkoutURL');
-        if ($this->checkoutURL) {
+        if ($this->checkoutURL && $this->checkoutURL == $uri->path()) {
             $this->enable([
                 'onPagesInitialized' => ['addCheckoutPage', 0]
             ]);
         }
-
-        /** @var Uri $uri */
-        $uri = $this->grav['uri'];
         $this->saveOrderURL = $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
+        $this->orderURL = $this->config->get('plugins.shoppingcart.urls.orderURL');
+
         if ($this->saveOrderURL && $this->saveOrderURL == $uri->path()) {
             $this->enable([
                 'onPagesInitialized' => ['addSaveOrderPage', 0]
             ]);
         }
 
+        if ($this->orderURL && $this->orderURL == $uri->path()) {
+            $this->enable([
+                'onPagesInitialized' => ['addOrderPage', 0]
+            ]);
+        }
     }
 
     public function addCheckoutPage()
     {
-        $pages = $this->grav['pages'];
-        $page = $pages->dispatch($this->checkoutURL);
-
-        if (!$page) {
-            // Only add checkout page if it hasn't already been defined.
-            $page = new Page;
-            $page->init(new \SplFileInfo(__DIR__ . "/pages/shoppingcart_checkout.md"));
-            $page->slug(basename($this->checkoutURL));
-
-            $pages->addPage($page, $this->checkoutURL);
-        }
+        $url = $this->checkoutURL;
+        $filename = 'shoppingcart_checkout.md';
+        $this->addPage($url, $filename);
     }
 
     public function addSaveOrderPage()
     {
-        $pages = $this->grav['pages'];
-        $page = $pages->dispatch($this->saveOrderURL);
-
-        if (!$page) {
-            // Only add checkout page if it hasn't already been defined.
-            $page = new Page;
-            $page->init(new \SplFileInfo(__DIR__ . "/pages/save_order.md"));
-            $page->slug(basename($this->saveOrderURL));
-error_log(1); echo '1';
-
+        $url = $this->saveOrderURL;
+        $filename = 'shoppingcart_save_order.md';
+        $this->addPage($url, $filename);
 
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
@@ -98,10 +89,44 @@ error_log(1); echo '1';
         $controller = new ShoppingCartController($this->grav, $task, $post);
         $controller->execute();
         $controller->redirect();
+    }
 
-exit();
+    public function addOrderPage()
+    {
+        $url = $this->orderURL;
+        $filename = 'shoppingcart_order.md';
+        $this->addPage($url, $filename);
 
-            $pages->addPage($page, $this->saveOrderURL);
+        /** @var Uri $uri */
+        $uri = $this->grav['uri'];
+
+        $ext = '.txt';
+        $filename = $uri->param('id');
+        $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename);
+        error_log(DATA_DIR . 'shoppingcart' . '/' . $filename);
+        $order = $file->content();
+
+        /** @var Twig $twig */
+        $twig = $this->grav['twig'];
+        $twig->twig_vars['order_products'] = json_decode(json_decode($order)->products);
+        $twig->twig_vars['order_address'] = json_decode(json_decode($order)->address);
+        $twig->twig_vars['order_total_paid'] = json_decode($order)->total_paid;
+        $twig->twig_vars['order_token'] = json_decode($order)->token;
+        $twig->twig_vars['order_paid'] = json_decode($order)->paid;
+
+        $twig->twig_vars['currency'] = $this->config->get('plugins.shoppingcart.general.defaultCurrency');
+    }
+
+    private function addPage($url, $filename)
+    {
+        $pages = $this->grav['pages'];
+        $page = $pages->dispatch($url);
+
+        if (!$page) {
+            $page = new Page;
+            $page->init(new \SplFileInfo(__DIR__ . "/pages/" . $filename));
+            $page->slug(basename($url));
+            $pages->addPage($page, $url);
         }
     }
 
@@ -314,7 +339,6 @@ exit();
 
     public function shoppingCartController()
     {
-        exit();
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
         $task = !empty($_POST['task']) ? $_POST['task'] : $uri->param('task');

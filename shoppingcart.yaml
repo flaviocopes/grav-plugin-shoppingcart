@@ -25,6 +25,7 @@ urls:
     baseURL: /grav
     checkoutURL: /checkout
     saveOrderURL: /save_order
+    orderURL: /order
 
 cart:
     maximumTotalQuantityValue: 1
@@ -74,8 +75,8 @@ payment:
         name: 'Stripe'
         description: 'Test description'
         enabled: true
-        secretKey: '2i39i21093i1209i3902i39021'
-        publicKey: 'j83j42je4i23jeio32joirej32e'
+        secretKey: 'sk_test_4okloV9Jsu3IiBSc4Y3zHXeZ'
+        publicKey: 'pk_test_8OfS5r77VXHMXE7Nszjlzwc6'
 
 notifications:
     emailTemplateNewOrderSubject: "New Order"
