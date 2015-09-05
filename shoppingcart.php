@@ -16,7 +16,9 @@ class ShoppingcartPlugin extends Plugin
     {
         return [
             'onPluginsInitialized' => ['onPluginsInitialized', 0],
+            'onTask.order.save' => ['shoppingCartController', 0],
             'onGetPageTemplates' => ['onGetPageTemplates', 0]
+
         ];
     }
 
@@ -26,8 +28,12 @@ class ShoppingcartPlugin extends Plugin
     public function onPluginsInitialized()
     {
         if ($this->isAdmin()) {
-            $this->active = false;
-            return;
+            $this->enable([
+                'onPagesInitialized' => ['addCPTPage', 0]
+            ]);
+
+            // $this->active = false;
+            // return;
         }
 
         $this->enable([
@@ -42,6 +48,16 @@ class ShoppingcartPlugin extends Plugin
                 'onPagesInitialized' => ['addCheckoutPage', 0]
             ]);
         }
+
+        /** @var Uri $uri */
+        $uri = $this->grav['uri'];
+        $this->saveOrderURL = $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
+        if ($this->saveOrderURL && $this->saveOrderURL == $uri->path()) {
+            $this->enable([
+                'onPagesInitialized' => ['addSaveOrderPage', 0]
+            ]);
+        }
+
     }
 
     public function addCheckoutPage()
@@ -56,6 +72,36 @@ class ShoppingcartPlugin extends Plugin
             $page->slug(basename($this->checkoutURL));
 
             $pages->addPage($page, $this->checkoutURL);
+        }
+    }
+
+    public function addSaveOrderPage()
+    {
+        $pages = $this->grav['pages'];
+        $page = $pages->dispatch($this->saveOrderURL);
+
+        if (!$page) {
+            // Only add checkout page if it hasn't already been defined.
+            $page = new Page;
+            $page->init(new \SplFileInfo(__DIR__ . "/pages/save_order.md"));
+            $page->slug(basename($this->saveOrderURL));
+error_log(1); echo '1';
+
+
+        /** @var Uri $uri */
+        $uri = $this->grav['uri'];
+        $task = $uri->query('task');
+        $task = substr($task, strlen('order.'));
+        $post = !empty($_POST) ? $_POST : [];
+
+        require_once __DIR__ . '/classes/controller.php';
+        $controller = new ShoppingCartController($this->grav, $task, $post);
+        $controller->execute();
+        $controller->redirect();
+
+exit();
+
+            $pages->addPage($page, $this->saveOrderURL);
         }
     }
 
@@ -202,12 +248,14 @@ class ShoppingcartPlugin extends Plugin
 
         function recurse_settings($base, $settings) {
             $output = '';
+
             foreach($settings as $key => $value) {
+
                 $key = '["' . $key .'"]';
                 if (!is_array($value)) {
                     $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = "' . $value . '"; ' . PHP_EOL;;
                 } else {
-                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;;
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = []; ' . PHP_EOL;;
                     $output .= recurse_settings($base . $key, $value);
                 }
             }
@@ -224,7 +272,11 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onTwigTemplatePaths()
     {
-        $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
+        if ($this->isAdmin()) {
+            $this->grav['twig']->twig_paths[] = __DIR__ . '/admin/templates';
+        } else {
+            $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
+        }
     }
 
     /**
@@ -239,4 +291,40 @@ class ShoppingcartPlugin extends Plugin
 
         }
     }
+
+    /**
+     * Add CPT Page in the Admin Plugin
+     */
+    public function addCPTPage()
+    {
+        $route = $this->config->get('plugins.shoppingcart.admin.route.orders');
+        /** @var Pages $pages */
+        $pages = $this->grav['pages'];
+        $page = $pages->dispatch($route);
+
+        if (!$page) {
+            // Only add login page if it hasn't already been defined.
+            $page = new Page;
+            $page->init(new \SplFileInfo(__DIR__ . "/admin/pages/orders.md"));
+            $page->slug('orders');
+            $page->folder(__DIR__ . "/admin/pages");
+            $pages->addPage($page, $route);
+        }
+    }
+
+    public function shoppingCartController()
+    {
+        exit();
+        /** @var Uri $uri */
+        $uri = $this->grav['uri'];
+        $task = !empty($_POST['task']) ? $_POST['task'] : $uri->param('task');
+        $task = substr($task, strlen('order.'));
+        $post = !empty($_POST) ? $_POST : [];
+
+        require_once __DIR__ . '/classes/controller.php';
+        $controller = new ShoppingCartController($this->grav, $task, $post);
+        $controller->execute();
+        $controller->redirect();
+    }
+
 }

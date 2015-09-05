@@ -91,8 +91,8 @@
     //         return;
     //     }
 
-    //     if (parseInt(new_quantity) > ShoppingCart.settings.cart.maximumQuantityValue) {
-    //         alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximumQuantityValue);
+    //     if (parseInt(new_quantity) > ShoppingCart.settings.cart.maximumTotalQuantityValue) {
+    //         alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximumTotalQuantityValue);
     //         jQuery(this).val(ShoppingCart.items[element_id].quantity);
     //         return;
     //     }

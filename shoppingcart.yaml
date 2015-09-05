@@ -1,5 +1,8 @@
 enabled: true
 built_in_css: true
+admin:
+    route:
+        orders: orders
 
 shipment:
     methods:
@@ -21,6 +24,7 @@ shipment:
 urls:
     baseURL: /grav
     checkoutURL: /checkout
+    saveOrderURL: /save_order
 
 cart:
     maximumTotalQuantityValue: 1

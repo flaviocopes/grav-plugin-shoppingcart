@@ -1,163 +1,168 @@
-@import "configuration/nucleus/base";
-@import "nucleus/mixins/base";
-@import "vendor/bourbon/bourbon";
+// @import "configuration/nucleus/base";
+// @import "nucleus/mixins/base";
+// @import "vendor/bourbon/bourbon";
 
-// mini grid system - http://arnaudleray.github.io/pocketgrid
-.block-group,.block,.block-group:after,.block:after,.block-group:before,.block:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
-.block-group{*zoom:1}
-.block-group:before,.block-group:after{display:table;content:"";line-height:0}
-.block-group:after{clear:both}
-.block-group{list-style-type:none;padding:0;margin:0}
-.block-group>.block-group{clear:none;float:left;margin:0 !important}
-.block{float:left;width:100%}
+// .shoppingcart {
 
-$cart-accent: #e74c3c;
 
-.shoppingcart-summary {
-    @extend %vertical-align;
-    display: inline-block;
-    float: right;
-    font-weight: bold;
-    margin-left:15px;
 
-    i {
-        position: relative;
-        font-size: 26px;
+//     // mini grid system - http://arnaudleray.github.io/pocketgrid
+//     .block-group,.block,.block-group:after,.block:after,.block-group:before,.block:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+//     .block-group{*zoom:1}
+//     .block-group:before,.block-group:after{display:table;content:"";line-height:0}
+//     .block-group:after{clear:both}
+//     .block-group{list-style-type:none;padding:0;margin:0}
+//     .block-group>.block-group{clear:none;float:left;margin:0 !important}
+//     .block{float:left;width:100%}
 
-        margin-right: 10px;
-        vertical-align: middle;
-    }
+//     $cart-accent: #e74c3c;
 
-    .shoppingcart-total-items {
-        position: absolute;
-        background: $cart-accent;
-        font-size: 12px;
-        display: block;
-        top: -6px;
-        right: -5px;
-        border-radius: 100%;
-        height: 16px;
-        width: 16px;
-        text-align: center;
-        line-height: 16px;
-        font-weight: bold;
-    }
-}
+//     .shoppingcart-summary {
+//         @extend %vertical-align;
+//         display: inline-block;
+//         float: right;
+//         font-weight: bold;
+//         margin-left:15px;
 
-// need to override an important setting in antimatter
-#header, #header.scrolled {
-    #navbar, .shoppingcart-summary{
-        span.shoppingcart-total-items {
-            color: #fff !important;
-        }
-    }
-}
+//         i {
+//             position: relative;
+//             font-size: 26px;
 
-.shoppingcart-categories {
-    @include clearfix;
-    .shoppingcart-item {
-        width: 50%;
-        float: left;
-        text-align: center;
+//             margin-right: 10px;
+//             vertical-align: middle;
+//         }
 
-        &.block {
-            width: 50%;
-            &:nth-child(2n+1) {
-                clear: left;
-            }
-            @include breakpoint((mobile-only, small-mobile-range)) {
-                width: 100%;
-                clear: left;
-            }
-        }
-    }
-}
+//         .shoppingcart-total-items {
+//             position: absolute;
+//             background: $cart-accent;
+//             font-size: 12px;
+//             display: block;
+//             top: -6px;
+//             right: -5px;
+//             border-radius: 100%;
+//             height: 16px;
+//             width: 16px;
+//             text-align: center;
+//             line-height: 16px;
+//             font-weight: bold;
+//         }
+//     }
 
-.shoppingcart-products {
-    @include clearfix;
-    .shoppingcart-item {
-        @include clearfix;
-        width: 33%;
-        float: left;
-        text-align: center;
+//     // need to override an important setting in antimatter
+//     #header, #header.scrolled {
+//         #navbar, .shoppingcart-summary{
+//             span.shoppingcart-total-items {
+//                 color: #fff !important;
+//             }
+//         }
+//     }
 
-        h3 {
-            font-size: 16px;
-        }
+//     .shoppingcart-categories {
+//         @include clearfix;
+//         .shoppingcart-item {
+//             width: 50%;
+//             float: left;
+//             text-align: center;
 
-        &.block {
-            width: 25%;
-            &:nth-child(4n+1) {
-                clear: left;
-            }
-            @include breakpoint((desktop-range,tablet-range)) {
-                width: 33%;
-                clear: none;
-                &:nth-child(3n+1) {
-                    clear: left;
-                }
-            }
-            @include breakpoint(mobile-only) {
-                width: 50%;
-                clear: none;
-                &:nth-child(2n+1) {
-                    clear: left;
-                }
-            }
-            @include breakpoint(small-mobile-range) {
-                width: 100%;
-                clear: left;
-            }
-        }
-    }
-}
+//             &.block {
+//                 width: 50%;
+//                 &:nth-child(2n+1) {
+//                     clear: left;
+//                 }
+//                 @include breakpoint((mobile-only, small-mobile-range)) {
+//                     width: 100%;
+//                     clear: left;
+//                 }
+//             }
+//         }
+//     }
 
-.shoppingcart-thumb {
-    position: relative;
-    display: inline-block;
+//     .shoppingcart-products {
+//         @include clearfix;
+//         .shoppingcart-item {
+//             @include clearfix;
+//             width: 33%;
+//             float: left;
+//             text-align: center;
 
-    .shoppingcart-price {
-        position: absolute;
-        top: 0;
-        right: -15px;
-        height: 60px;
-        line-height: 60px;
-        text-align: center;
-        width: 60px;
-        background: $cart-accent;
-        border-radius: 100%;
-        color: #fff;
-    }
-}
+//             h3 {
+//                 font-size: 16px;
+//             }
 
-#shoppingcart-detail {
-    padding-top: 50px;
+//             &.block {
+//                 width: 25%;
+//                 &:nth-child(4n+1) {
+//                     clear: left;
+//                 }
+//                 @include breakpoint((desktop-range,tablet-range)) {
+//                     width: 33%;
+//                     clear: none;
+//                     &:nth-child(3n+1) {
+//                         clear: left;
+//                     }
+//                 }
+//                 @include breakpoint(mobile-only) {
+//                     width: 50%;
+//                     clear: none;
+//                     &:nth-child(2n+1) {
+//                         clear: left;
+//                     }
+//                 }
+//                 @include breakpoint(small-mobile-range) {
+//                     width: 100%;
+//                     clear: left;
+//                 }
+//             }
+//         }
+//     }
 
-    h1, h2, h3, h4 {
-        line-height: 1.2;
-    }
+//     .shoppingcart-thumb {
+//         position: relative;
+//         display: inline-block;
 
-    .shoppingcart-info, .shoppingcart-details {
-        width: 50%;
-        @include breakpoint(mobile-only) {
-            width: 100%;
-        }
-    }
-    .shoppingcart-info {
-        text-align: center;
-    }
-    .shoppingcart-details {
-        padding-left: 30px;
+//         .shoppingcart-price {
+//             position: absolute;
+//             top: 0;
+//             right: -15px;
+//             height: 60px;
+//             line-height: 60px;
+//             text-align: center;
+//             width: 60px;
+//             background: $cart-accent;
+//             border-radius: 100%;
+//             color: #fff;
+//         }
+//     }
 
-        h1 {
-            text-align: left;
-        }
+//     #shoppingcart-detail {
+//         padding-top: 50px;
 
-    }
-    .shoppingcart-thumb .shoppingcart-price {
-        height: 100px;
-        line-height: 100px;
-        width: 100px;
-        font-size: $core-font-size + 0.5rem;
-    }
-}
+//         h1, h2, h3, h4 {
+//             line-height: 1.2;
+//         }
+
+//         .shoppingcart-info, .shoppingcart-details {
+//             width: 50%;
+//             @include breakpoint(mobile-only) {
+//                 width: 100%;
+//             }
+//         }
+//         .shoppingcart-info {
+//             text-align: center;
+//         }
+//         .shoppingcart-details {
+//             padding-left: 30px;
+
+//             h1 {
+//                 text-align: left;
+//             }
+
+//         }
+//         .shoppingcart-thumb .shoppingcart-price {
+//             height: 100px;
+//             line-height: 100px;
+//             width: 100px;
+//             font-size: $core-font-size + 0.5rem;
+//         }
+//     }
+// }

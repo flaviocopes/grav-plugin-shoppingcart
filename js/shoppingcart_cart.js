@@ -83,7 +83,7 @@
             }
         }
 
-        window.location.href = PLUGIN_SHOPPINGCART.checkout_url;
+        window.location.href = PLUGIN_SHOPPINGCART.settings.urls.baseURL + PLUGIN_SHOPPINGCART.settings.urls.checkoutURL;
     };
 
     /***********************************************************/

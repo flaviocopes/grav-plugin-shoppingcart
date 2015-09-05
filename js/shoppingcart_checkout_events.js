@@ -126,7 +126,6 @@
 
             //Proceed with the payment
             if (paymentMethod === 'paypal') {
-
                 var goToPayPal = function goToPayPal() {
                     var text = '';
                     var i = 0;
@@ -173,7 +172,8 @@
                 };
 
                 //Prevent multiple clicks of button
-                jQuery(that).attr('disabled', 'disabled');
+                //TODO: uncomment
+                //jQuery(that).attr('disabled', 'disabled');
 
                 //Save the order to db as 'not paid'
                 var order = {
@@ -181,57 +181,35 @@
                     address: storejs.get('grav-shoppingcart-person-address'),
                     shipment: storejs.get('grav-shoppingcart-shipment-method'),
                     payment: storejs.get('grav-shoppingcart-payment-method'),
-                    token: (JSON.parse(storejs.get('grav-shoppingcart-order-token')).token),
+                    token: JSON.parse(storejs.get('grav-shoppingcart-order-token')).token,
                     total_paid: ShoppingCart.totalOrderPrice,
-                    discount_code: ShoppingCart.discountCodeUsed
+                    // discount_code: ShoppingCart.discountCodeUsed
                 };
 
-                // jQuery.ajax({
-                //     url: ShoppingCart.baseURL + 'index.php?option=com_shoppingcart&task=order.save',
-                //     data: order,
-                //     type: 'POST',
-                //     cache: false
-                // })
-                // .success(function(orderId) {
-                //     goToPayPal(orderId);
-                // });
-            }
-
-            if (paymentMethod === 'stripe') {
-                jQuery(that).attr('disabled', 'disabled');
-
-                ShoppingCart.stripeHandler.open({
-                    name: unescape(jQuery(ShoppingCart.settings.payment.methods).filter(function(index, item) { if (item.name == 'Stripe') return true; }).toArray()[0].stripeName),
-                    description: unescape(jQuery(ShoppingCart.settings.payment.methods).filter(function(index, item) { if (item.name == 'Stripe') return true; }).toArray()[0].stripeDescription),
-                    email: JSON.parse(storejs.get('grav-shoppingcart-person-address')).email,
-                    amount: ShoppingCart.totalOrderPrice.toString().replace('.', ''),
-                    currency: ShoppingCart.settings.general.defaultCurrency
+                jQuery.ajax({
+                    url: ShoppingCart.settings.urls.baseURL + '/save_order?task=order.save',
+                    data: order,
+                    type: 'POST',
+                    cache: false
+                })
+                .success(function(orderId) {
+                    console.log(orderId);
+                    // goToPayPal(orderId);
                 });
             }
 
-            if (paymentMethod === 'offline') {
+//TODO
+            // if (paymentMethod === 'stripe') {
+            //     jQuery(that).attr('disabled', 'disabled');
 
-                //Prevent multiple clicks of button
-                jQuery(that).attr('disabled', 'disabled');
-
-                var order = {
-                    products: storejs.get('grav-shoppingcart-basket-data').replace(/(&quot;)/g, '\\"'),
-                    address: storejs.get('grav-shoppingcart-person-address'),
-                    shipment: storejs.get('grav-shoppingcart-shipment-method'),
-                    payment: storejs.get('grav-shoppingcart-payment-method'),
-                    token: JSON.parse(storejs.get('grav-shoppingcart-order-token')).token,
-                    total_paid: ShoppingCart.totalOrderPrice,
-                    discount_code: ShoppingCart.discountCodeUsed
-                };
-
-                // jQuery.post(ShoppingCart.baseURL + 'index.php?option=com_shoppingcart&task=order.save', order, function(orderId) {
-                //     //clear cart
-                //     ShoppingCart.clearCart();
-                //     setTimeout(function() {
-                //         window.location = ShoppingCart.offlineOrderSuccessfulPageURL;
-                //     }, 200);
-                // })
-            }
+            //     ShoppingCart.stripeHandler.open({
+            //         name: unescape(jQuery(ShoppingCart.settings.payment.methods).filter(function(index, item) { if (item.name == 'Stripe') return true; }).toArray()[0].stripeName),
+            //         description: unescape(jQuery(ShoppingCart.settings.payment.methods).filter(function(index, item) { if (item.name == 'Stripe') return true; }).toArray()[0].stripeDescription),
+            //         email: JSON.parse(storejs.get('grav-shoppingcart-person-address')).email,
+            //         amount: ShoppingCart.totalOrderPrice.toString().replace('.', ''),
+            //         currency: ShoppingCart.settings.general.defaultCurrency
+            //     });
+            // }
         };
 
 
