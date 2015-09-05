@@ -102,9 +102,12 @@ class ShoppingcartPlugin extends Plugin
 
         $ext = '.txt';
         $filename = $uri->param('id');
-        $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename);
-        error_log(DATA_DIR . 'shoppingcart' . '/' . $filename);
+        $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename . $ext);
         $order = $file->content();
+
+        if (!$order) {
+            //Order not valid. Manage case
+        }
 
         /** @var Twig $twig */
         $twig = $this->grav['twig'];

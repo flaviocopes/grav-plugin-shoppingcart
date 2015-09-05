@@ -251,7 +251,7 @@
                 })
                 .success(function(orderId) {
                     ShoppingCart.clearCart();
-                    window.location = ShoppingCart.settings.urls.baseURL + ShoppingCart.settings.urls.orderURL + '/id:' + orderId + '/token:' + order.token;
+                    window.location = ShoppingCart.settings.urls.baseURL + ShoppingCart.settings.urls.orderURL + '/id:' + orderId.replace('.txt', '') + '/token:' + order.token;
                 })
                 .error(function() {
                     alert('Payment not successful. Please contact us.');
