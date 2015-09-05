@@ -274,19 +274,20 @@
     /* #todo #stub
     /***********************************************************/
     ShoppingCart.orderAmountIsGreaterThenMinimum = function orderAmountIsGreaterThenMinimum() {
-        return true;
-        //TODO
-        // if (!ShoppingCart.settings.cart.minimumSumToPlaceOrder) return true;
-        // var cart = ShoppingCart.items;
-        // var orderPrice = 0;
-        // var i = 0;
+        if (!ShoppingCart.settings.cart.minimumSumToPlaceOrder) {
+            return true;
+        }
 
-        // while (i < cart.length) {
-        //     orderPrice += cart[i].product.price * cart[i].quantity;
-        //     i++;
-        // }
+        var cart = ShoppingCart.items;
+        var orderPrice = 0;
+        var i = 0;
 
-        // return (parseInt(orderPrice) >= parseInt(ShoppingCart.settings.cart.minimumSumToPlaceOrder));
+        while (i < cart.length) {
+            orderPrice += cart[i].product.price * cart[i].quantity;
+            i++;
+        }
+
+        return (parseInt(orderPrice) >= parseInt(ShoppingCart.settings.cart.minimumSumToPlaceOrder));
     };
 
     /***********************************************************/

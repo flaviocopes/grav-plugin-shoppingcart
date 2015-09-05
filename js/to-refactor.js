@@ -49,12 +49,6 @@
     //         return n % 1 == 0;
     //     };
 
-    //     if (!ShoppingCart.canAddToCartThisQuantityOfThisProduct(ShoppingCart.items[element_id].product, new_quantity)) {
-    //         alert(window.PLUGIN_SHOPPINGCART.translations.OUT_OF_STOCK);
-    //         jQuery(this).val(ShoppingCart.items[element_id].quantity);
-    //         return;
-    //     }
-
     //     if (!isInt(new_quantity)) {
     //         alert(window.PLUGIN_SHOPPINGCART.translations.VALUE_NOT_ACCEPTABLE);
     //         jQuery(this).val(ShoppingCart.items[element_id].quantity);
@@ -105,12 +99,8 @@
 
     //     var product_id = jQuery(event.target).data('product_id');
 
-    //     if (ShoppingCart.canAddToCartThisQuantityOfThisProduct(ShoppingCart.currentProducts[product_id], 1)) {
-    //         ShoppingCart.addProduct(ShoppingCart.currentProducts[product_id], null, 1);
-    //         button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);
-    //     } else {
-    //         button.html(window.PLUGIN_SHOPPINGCART.translations.OUT_OF_STOCK);
-    //     }
+//         ShoppingCart.addProduct(ShoppingCart.currentProducts[product_id], null, 1);
+//         button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);
 
     //     setTimeout(function() {
     //         button.html(window.PLUGIN_SHOPPINGCART.translations.ADD_TO_CART);
