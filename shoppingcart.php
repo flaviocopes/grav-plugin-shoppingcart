@@ -274,11 +274,13 @@ class ShoppingcartPlugin extends Plugin
 
             foreach($settings as $key => $value) {
                 //Avoid putting the secretKey in the frontend available settings
-                if ($key == 'secretKey') continue;
-
                 $key = '["' . $key .'"]';
                 if (!is_array($value)) {
-                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = "' . $value . '"; ' . PHP_EOL;;
+                    if ($key == '["secretKey"]') {
+                        $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ""; ' . PHP_EOL;;
+                    } else {
+                        $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = "' . $value . '"; ' . PHP_EOL;;
+                    }
                 } else {
                     $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = []; ' . PHP_EOL;;
                     $output .= recurse_settings($base . $key, $value);
