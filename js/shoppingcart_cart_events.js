@@ -52,7 +52,6 @@
     /* #event
     /***********************************************************/
     jQuery(document).on('click tap', '.js__button-add-to-cart', function(event) {
-        var variations = {};
         var quantity = 1; //jQuery('#quantity').val(); //TODO
         var button = jQuery(this);
         button.attr('disabled', 'disabled');
@@ -62,29 +61,6 @@
         var product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
 
         //TODO
-        // if (product.variations && product.variations.variations) {
-        //     var variationsNumber = product.variations.variations.length;
-        //     if (variationsNumber > 0) {
-        //         while (i < variationsNumber) {
-
-        //             if (jQuery('.variations select').get(i)) {
-        //                 var name = product.variations.variations[i].name;
-        //                 var val = jQuery(jQuery('.variations select').get(i)).val();
-
-        //                 if (!val) {
-        //                     alert(window.PLUGIN_SHOPPINGCART.translations.CHOOSE_AN_OPTION + ': ' + name);
-        //                     button.attr('disabled', null);
-        //                     return;
-        //                 }
-
-        //                 variations[name] = val;
-        //             }
-
-        //             i++;
-        //         }
-        //     }
-        // }
-
         // if (product.openOption && product.openOption.enabled === true) {
         //     var name = product.openOption.text;
         //     var val = jQuery('#js__shoppingcart__openOption-textarea').val();
@@ -95,16 +71,14 @@
         //             return;
         //         }
         //     }
-
-        //     variations[name] = val;
         // }
 
-        // if (ShoppingCart.canAddToCartThisQuantityOfThisProduct(product, quantity)) {
-            ShoppingCart.addProduct(product, variations, quantity);
+        if (ShoppingCart.canAddToCartThisQuantityOfThisProduct(product, quantity)) {
+            ShoppingCart.addProduct(product, quantity);
             button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);
-        // } else {
-        //     button.html(window.PLUGIN_SHOPPINGCART.translations.OUT_OF_STOCK);
-        // }
+        } else {
+            button.html(window.PLUGIN_SHOPPINGCART.translations.OUT_OF_STOCK);
+        }
 
         setTimeout(function() {
             button.html(window.PLUGIN_SHOPPINGCART.translations.ADD_TO_CART);

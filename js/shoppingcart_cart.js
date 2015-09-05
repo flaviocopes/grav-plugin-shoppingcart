@@ -106,21 +106,14 @@
     /* Add a product to the cart
     /* #refactor #todo #later
     /***********************************************************/
-    ShoppingCart.addProduct = function addProduct(product, variations, quantity) {
+    ShoppingCart.addProduct = function addProduct(product, quantity) {
         var existingProducts = jQuery(ShoppingCart.items).filter(function(index, item) { if (product.id == item.product.id) return true; }).toArray();
-
-        //LATER
-        // for (var variation in variations) {
-        //     if (variations.hasOwnProperty(variation)) {
-        //         existingProducts = jQuery(existingProducts).filter(function(index, item) { if (variations[variation] == item['variations'][variation]) return true; }).toArray();
-        //     }
-        // }
 
         var existingProduct = existingProducts[0];
 
         if (!existingProduct) {
             if (product.type === 'digital') product.isDigital = true;
-            ShoppingCart.items.push({product: product, variations: variations, quantity: quantity});
+            ShoppingCart.items.push({product: product, quantity: quantity});
         } else {
             existingProduct.quantity = parseInt(existingProduct.quantity) + parseInt(quantity);
         }
@@ -865,75 +858,31 @@
     /* #todo #stub
     /***********************************************************/
     ShoppingCart.canAddToCartThisQuantityOfThisProduct = function canAddToCartThisQuantityOfThisProduct(product, quantity) {
+        if (ShoppingCart.settings.cart.limitDigitalProductsToSingleQuantity && (product.isDigital || product.type == 'digital')) {
+            for (var j = 0; j < ShoppingCart.items.length; j++) {
+                if (ShoppingCart.items[j].product.id == product.id) {
+                    return false;
+                }
+            }
+        }
+
+        if (product.quantity_available === '') return true;
+
+        for (var j = 0; j < ShoppingCart.items.length; j++) {
+            if (ShoppingCart.items[j].product.id == product.id) {
+                if (parseInt(ShoppingCart.items[j].quantity) + parseInt(quantity) > parseInt(product.quantity_available)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        if (parseInt(quantity) > parseInt(product.quantity_available)) {
+            return false;
+        }
 
         return true;
-
-        // if (ShoppingCart.settings.cart.limitDigitalProductsToSingleQuantity && (product.isDigital || product.type == 'digital')) {
-        //     for (var j = 0; j < ShoppingCart.items.length; j++) {
-        //         if (ShoppingCart.items[j].product.id == product.id) {
-        //             return false;
-        //         }
-        //     }
-        // }
-
-        // if (product.variations && product.variations.manageStock) { //variations have stock management
-        //     var variations = {};
-
-        //     if (product.variations && product.variations.variations) {
-        //         var i = 0;
-        //         var variationsNumber = product.variations.variations.length;
-        //         if (variationsNumber > 0) {
-        //             while (i < variationsNumber) {
-
-        //                 if (jQuery('.variations select').get(i)) {
-        //                     var name = product.variations.variations[i].name;
-        //                     var val = jQuery(jQuery('.variations select').get(i)).val();
-
-        //                     variations[name] = val;
-        //                 }
-
-        //                 i++;
-        //             }
-        //         }
-        //     }
-
-        //     for (var j = 0; j < ShoppingCart.items.length; j++) {
-        //         if (ShoppingCart.items[j].product.id == product.id && ShoppingCart.isEquivalent(ShoppingCart.items[j].variations, variations)) {
-        //             if (parseInt(ShoppingCart.items[j].quantity) + parseInt(quantity) > parseInt(product.quantity_available)) {
-        //                 return false;
-        //             } else {
-        //                 return true;
-        //             }
-        //         }
-        //     }
-
-        //     if (parseInt(quantity) > parseInt(product.quantity_available)) {
-        //         return false;
-        //     }
-
-        //     return true;
-
-        // } else {
-        //     if (product.quantity_available === '') return true;
-        // }
-
-        // for (var j = 0; j < ShoppingCart.items.length; j++) {
-        //     if (ShoppingCart.items[j].product.id == product.id) {
-        //         if (parseInt(ShoppingCart.items[j].quantity) + parseInt(quantity) > parseInt(product.quantity_available)) {
-        //             return false;
-        //         } else {
-        //             return true;
-        //         }
-        //     }
-        // }
-
-        // if (parseInt(quantity) > parseInt(product.quantity_available)) {
-        //     return false;
-        // }
-
-        // return true;
-
-
     };
 
     /***********************************************************/
@@ -1017,9 +966,7 @@
             } else {
                 row += item.product.title;
             }
-            // if (item.variations) {
-            //     row += '&nbsp;<span class="variations">' + ShoppingCart.printVariation(item) + '</span>';
-            // }
+
             row += '</td>';
 
             /***********************************************************/
