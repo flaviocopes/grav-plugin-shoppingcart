@@ -73,8 +73,10 @@
         //     }
         // }
 
-        ShoppingCart.addProduct(product, quantity);
-        button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);
+        if (ShoppingCart.canAddToCartThisQuantityOfThisProduct(product, quantity)) {
+            ShoppingCart.addProduct(product, quantity);
+            button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);
+        }
 
         setTimeout(function() {
             button.html(window.PLUGIN_SHOPPINGCART.translations.ADD_TO_CART);
