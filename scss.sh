@@ -1,2 +1,2 @@
 #!/bin/sh
-scss --watch scss:css --load-path ../shoppingcart/scss
+scss --watch scss:css --load-path ../../themes/antimatter/scss
