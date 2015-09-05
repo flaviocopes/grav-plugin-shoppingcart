@@ -87,9 +87,6 @@ jQuery(function() {
 
   <?php
 
-  $offlineOrderSuccessfulPageURL = 'index.php?option=com_joocommerce&view=order&layout=offline';
-  if ($this->itemid) $offlineOrderSuccessfulPageURL .= '&Itemid=' . $this->itemid;
-
   $orderSuccessfulPageURL = 'index.php?option=com_joocommerce&view=order&layout=success';
   if ($this->itemid) $orderSuccessfulPageURL .= '&Itemid=' . $this->itemid;
 
@@ -107,7 +104,6 @@ jQuery(function() {
   }
   ?>
 
-  ShoppingCart.offlineOrderSuccessfulPageURL = '<?php echo $protocol . $_SERVER["HTTP_HOST"] . JRoute::_($offlineOrderSuccessfulPageURL) ?>';
   ShoppingCart.orderSuccessfulPageURL = '<?php echo $protocol . $_SERVER["HTTP_HOST"] . JRoute::_($orderSuccessfulPageURL) ?>';
   ShoppingCart.orderCancelledPageURL = '<?php echo $protocol . $_SERVER["HTTP_HOST"] . JRoute::_($orderCancelledPageURL) ?>';
   ShoppingCart.ipnURL = '<?php echo JURI::root() . $ipnURL ?>';
@@ -115,11 +111,8 @@ jQuery(function() {
 });
 </script>
  #}
-{#
-<?php if ($paymentMethodStripe) : ?>
-  <script src="https://checkout.stripe.com/checkout.js"></script>
-{% endif %}
- #}
+
+    <script src="https://checkout.stripe.com/checkout.js"></script>
 
     <div class="joocommerce-container">
         <h1>{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_PAGE_TITLE'|t }}</h1>
@@ -244,54 +237,11 @@ jQuery(function() {
                         {{ 'PLUGIN_SHOPPINGCART.CHECKOUT_PAYMENT_METHOD'|t }}
                       </legend>
                       <div class="control-group">
-                        {% if paymentMethodPayPal %}
-                          <p id="paypal-payment">
-                            {% if atLeastTwoPaymentMethods %}
-                              <input class="payment-method" name="payment-method" id="payment-method-paypal" type="radio" checked="checked">
-                            {% endif %}
-                            {{ 'PLUGIN_SHOPPINGCART.PAYPAL'|t }} <img src="https://www.paypal.com/en_US/i/logo/PayPal_mark_37x23.gif" class="logo-paypal" alt="PayPal Express Logo">
-                          </p>
-                        {% endif %}
 
-                        {% if paymentMethodStripe %}
                           <p id="stripe-payment">
-                            {% if atLeastTwoPaymentMethods %}
-                              <input class="payment-method" name="payment-method" id="payment-method-stripe" type="radio" checked="checked">
-                            {% endif %}
-                            {{ 'PLUGIN_SHOPPINGCART.CREDITCARD'|t }} <img src="media/com_joocommerce/img/stripe.png" class="logo-stripe" alt="Stripe Logo">
+                            {{ 'PLUGIN_SHOPPINGCART.CREDITCARD'|t }} <img src="{{ url("plugin://images/stripe.png") }}" class="logo-stripe" alt="Stripe Logo">      {# TODO #}
                           </p>
-                        {% endif %}
 
-                        {% if paymentMethodOffline %}
-                          <p id="offline-payments">
-                            {% if atLeastTwoPaymentMethods %}
-                              <input class="payment-method" name="payment-method" id="payment-method-offline" type="radio">
-                            {% endif %}
-
-                            {% if paymentMethodOffline.title %}
-                                {{ paymentMethodOffline.title }}
-                            {% else %}
-                                Offline
-                            {% endif %}
-
-                            {% if paymentMethodOffline.textToShow %}
-                                <div id="payment-method-offline-message"
-                                    {% if paymentMethodPayPal or paymentMethodStripe %}
-                                        style="display: none"
-                                    {% endif %}
-                                >
-
-                                {{ paymentMethodOffline.textToShow }}
-                              </div>
-                            {% endif %}
-
-                            {% if paymentMethodOffline.askUserInfo %}
-                              <div id="payment-method-offline-textarea-div">
-                                <textarea id="payment-method-offline-textarea" {% if paymentMethodPayPal or paymentMethodStripe %}style="display: none"{% endif %}></textarea>
-                              </div>
-                            {% endif %}
-                          </p>
-                        {% endif %}
                       </div>
                     </div>
 
@@ -303,13 +253,6 @@ jQuery(function() {
                 </div>
 
                 <button class="btn btn-success center js__checkout__button__proceed-to-payment">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_BUTTON_PAY'|t }}</button>
-
-                {% if paymentMethodPayPal.useSandbox %}
-                    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" id="paypal-form"></form>
-                {% else %}
-                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal-form"></form>
-                {% endif %}
-
             </div>
         </div>
     </div>

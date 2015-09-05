@@ -70,21 +70,12 @@ countries:
 
 payment:
     methods:
-      -
-        name: 'PayPal'
-        enabled: true
-        isPayPal: true
-        params: {}
-      -
-        name: 'Offline'
-        enabled: false
-        isOffline: true
-        params: {}
-      -
+      stripe:
         name: 'Stripe'
-        enabled: false
-        isStripe: true
-        params: {}
+        description: 'Test description'
+        enabled: true
+        secretKey: '2i39i21093i1209i3902i39021'
+        publicKey: 'j83j42je4i23jeio32joirej32e'
 
 notifications:
     emailTemplateNewOrderSubject: "New Order"

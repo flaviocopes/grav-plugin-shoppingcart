@@ -177,7 +177,10 @@
         }
 
         total = parseFloat(total) + parseFloat(ShoppingCart.shipmentPrice);
-        return parseFloat(total).toFixed(2);
+
+        ShoppingCart.totalOrderPriceIncludingTaxesAndShipment = parseFloat(total).toFixed(2);
+
+        return ShoppingCart.totalOrderPriceIncludingTaxesAndShipment;
     };
 
     /***********************************************************/

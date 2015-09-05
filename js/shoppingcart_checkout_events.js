@@ -8,7 +8,7 @@
     });
 
     /***********************************************************/
-    /* Store order in localstorage and proceed to PayPal / save order if offline
+    /* Store order in localstorage and proceed to Stripe
     /***********************************************************/
     jQuery(document).on('click tap', '.js__checkout__button__proceed-to-payment', function(event) {
         var that = this;
@@ -35,33 +35,13 @@
 
             var url = '';
             var token = randomToken(10);
-            var paymentMethod = null;
+            var paymentMethod = 'stripe';
             var shippingMethod = {};
 
             //Agreed to terms and conditions?
             if (ShoppingCart.settings.general.agreeToTerms && !jQuery('#js__accepted-terms').prop("checked")) {
                 alert(window.PLUGIN_SHOPPINGCART.translations.PLEASE_ACCEPT_TERMS_AND_CONDITIONS);
                 return;
-            }
-
-            //Determine payment method
-            if (jQuery(ShoppingCart.settings.payment.methods).filter(function(index, item) { if (item.enabled == true) return true; }).toArray().length > 1) {
-                if (jQuery('#payment-method-offline').prop('checked')) paymentMethod = 'offline';
-                if (jQuery('#payment-method-paypal').prop('checked')) paymentMethod = 'paypal';
-                if (jQuery('#payment-method-stripe').prop('checked')) paymentMethod = 'stripe';
-            } else {
-                paymentMethod = jQuery(ShoppingCart.settings.payment.methods).filter(function(index, item) { if (item.enabled == true) return true; }).toArray()[0].name.toLowerCase();
-            }
-
-            //If offline, determine additional information
-            var userProvidedInfo = jQuery('#payment-method-offline-textarea').val();
-
-            if (paymentMethod === 'offline' && jQuery(ShoppingCart.settings.payment.methods).filter(function(index, item) { if (item.name == 'Offline') return true; }).toArray()[0].askUserInfo) {
-                if (!userProvidedInfo) {
-                    alert(window.PLUGIN_SHOPPINGCART.translations.PLEASE_FILL_PAYMENT_INFORMATION_TEXT_AREA);
-                    jQuery(that).attr('disabled', null);
-                    return;
-                }
             }
 
             //Determine shipping method
@@ -84,16 +64,9 @@
 
             //Store in localstorage
             storejs.set('grav-shoppingcart-shipment-method', JSON.stringify(shippingMethod));
-            if (paymentMethod === 'offline') {
-                storejs.set('grav-shoppingcart-payment-method', JSON.stringify({
-                    method: paymentMethod,
-                    message: userProvidedInfo
-                }));
-            } else {
-                storejs.set('grav-shoppingcart-payment-method', JSON.stringify({
-                    method: paymentMethod
-                }));
-            }
+            storejs.set('grav-shoppingcart-payment-method', JSON.stringify({
+                method: paymentMethod
+            }));
             storejs.set('grav-shoppingcart-order-token', JSON.stringify({
                 token: token
             }));
@@ -124,92 +97,18 @@
             if (!ShoppingCart.amountOfDiscount) ShoppingCart.amountOfDiscount = 0;
             ShoppingCart.totalOrderPrice = parseFloat(parseFloat(parseFloat(ShoppingCart.totalOrderPrice) - parseFloat(ShoppingCart.amountOfDiscount)).toFixed(2)).toFixed(2);
 
-            //Proceed with the payment
-            if (paymentMethod === 'paypal') {
-                var goToPayPal = function goToPayPal() {
-                    var text = '';
-                    var i = 0;
-                    var cart = ShoppingCart.items;
 
-                    while (i < cart.length) {
-                        text += '<input type="hidden" name="item_name_' + (i + 1) + '" value="' + cart[i].product.title + '">';
-                        text += '<input type="hidden" name="amount_' + (i + 1) + '" value="' + cart[i].product.price + '">';
-                        text += '<input type="hidden" name="quantity_' + (i + 1) + '" value="' + cart[i].quantity + '">';
-                        i++;
-                    }
+            jQuery(that).attr('disabled', 'disabled');
+            ShoppingCart.configureStripe();
 
-                    var address = JSON.parse(storejs.get('grav-shoppingcart-person-address'));
+            ShoppingCart.stripeHandler.open({
+                name: ShoppingCart.settings.payment.methods.stripe.name,
+                description: ShoppingCart.settings.payment.methods.stripe.description,
+                email: JSON.parse(storejs.get('grav-shoppingcart-person-address')).email,
+                amount: ShoppingCart.calculateTotalPriceIncludingTaxesAndShipment().toString().replace('.', ''),
+                currency: ShoppingCart.settings.general.defaultCurrency
+            });
 
-                    text += '\
-                        <input type="hidden" name="cmd" value="_cart"> \
-                        <input type="hidden" name="bn" value="JooCommerce_SP">\
-                        <input type="hidden" name="upload" value="1"> \
-                        <input type="hidden" name="shipping_1" value="' + ShoppingCart.shipmentPrice + '"> \
-                        <input type="hidden" name="business" value="' + jQuery(ShoppingCart.settings.payment.methods).filter(function(index, item) { if (item.name == 'PayPal') return true; }).toArray()[0].accountUsername + '"> \
-                        <input type="hidden" name="currency_code" value="' + ShoppingCart.settings.general.defaultCurrency + '"> \
-                        <input type="hidden" name="custom" value="' + token + '"> \
-                        <input type="hidden" name="return" value="' + ShoppingCart.orderSuccessfulPageURL + '"> \
-                        <input type="hidden" name="cancel_return" value="' + ShoppingCart.orderCancelledPageURL + '"> \
-                        <input type="hidden" name="notify_url" value="' + ShoppingCart.ipnURL + '"> \
-                        <input type="hidden" name="tax_cart" value="' + ShoppingCart.taxesApplied + '"> \
-                        <input type="hidden" name="first_name" value="' + address.firstname + '"> \
-                        <input type="hidden" name="last_name" value="' + address.lastname + '"> \
-                        <input type="hidden" name="address1" value="' + address.address1 + '"> \
-                        <input type="hidden" name="address2" value="' + address.address2 + '"> \
-                        <input type="hidden" name="city" value="' + address.city + '"> \
-                        <input type="hidden" name="state" value="' + (address.country == 'US' ? address.state : address.province) + '"> \
-                        <input type="hidden" name="zip" value="' + address.zip + '"> \
-                        <input type="hidden" name="lc" value="' + address.country + '"> \
-                        <input type="hidden" name="email" value="' + address.email + '"> \
-                        <input type="hidden" name="night_phone_b" value="' + address.telephone + '">';
-
-                    if (ShoppingCart.amountOfDiscount) {
-                        text += '<input type="hidden" name="discount_amount_cart" value="' + ShoppingCart.amountOfDiscount + '">';
-                    }
-
-                    jQuery('#paypal-form').append(text);
-                    jQuery('#paypal-form').submit();
-                };
-
-                //Prevent multiple clicks of button
-                //TODO: uncomment
-                //jQuery(that).attr('disabled', 'disabled');
-
-                //Save the order to db as 'not paid'
-                var order = {
-                    products: storejs.get('grav-shoppingcart-basket-data').replace(/(&quot;)/g, '\\"'),
-                    address: storejs.get('grav-shoppingcart-person-address'),
-                    shipment: storejs.get('grav-shoppingcart-shipment-method'),
-                    payment: storejs.get('grav-shoppingcart-payment-method'),
-                    token: JSON.parse(storejs.get('grav-shoppingcart-order-token')).token,
-                    total_paid: ShoppingCart.totalOrderPrice,
-                    // discount_code: ShoppingCart.discountCodeUsed
-                };
-
-                jQuery.ajax({
-                    url: ShoppingCart.settings.urls.baseURL + '/save_order?task=order.save',
-                    data: order,
-                    type: 'POST',
-                    cache: false
-                })
-                .success(function(orderId) {
-                    console.log(orderId);
-                    // goToPayPal(orderId);
-                });
-            }
-
-//TODO
-            // if (paymentMethod === 'stripe') {
-            //     jQuery(that).attr('disabled', 'disabled');
-
-            //     ShoppingCart.stripeHandler.open({
-            //         name: unescape(jQuery(ShoppingCart.settings.payment.methods).filter(function(index, item) { if (item.name == 'Stripe') return true; }).toArray()[0].stripeName),
-            //         description: unescape(jQuery(ShoppingCart.settings.payment.methods).filter(function(index, item) { if (item.name == 'Stripe') return true; }).toArray()[0].stripeDescription),
-            //         email: JSON.parse(storejs.get('grav-shoppingcart-person-address')).email,
-            //         amount: ShoppingCart.totalOrderPrice.toString().replace('.', ''),
-            //         currency: ShoppingCart.settings.general.defaultCurrency
-            //     });
-            // }
         };
 
 

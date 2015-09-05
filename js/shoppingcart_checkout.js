@@ -167,6 +167,7 @@
                 ShoppingCart.shippingAddress.state = jQuery('.js__billing__state').val();
             }
             ShoppingCart.calculateTotalPriceIncludingTaxes();
+            ShoppingCart.calculateTotalPriceIncludingTaxesAndShipment();
             ShoppingCart.renderCart();
         };
 
@@ -197,6 +198,7 @@
                 jQuery('#js__billing__province__control').removeClass('hidden');
             }
             ShoppingCart.calculateTotalPriceIncludingTaxes();
+            ShoppingCart.calculateTotalPriceIncludingTaxesAndShipment();
             ShoppingCart.renderCart();
         };
 
@@ -220,20 +222,6 @@
             _stateChanged();
         });
 
-
-        jQuery(document).delegate('input[name=payment-method]:radio', 'change', function() {
-            if (jQuery('#payment-method-offline').attr("checked")) {
-                //checked offline
-                jQuery('#payment-method-offline-message').show();
-                jQuery('#payment-method-offline-textarea').show();
-            }
-            else {
-                //checked THE OTHER
-                jQuery('#payment-method-offline-message').hide();
-                jQuery('#payment-method-offline-textarea').hide();
-            }
-        });
-
     };
 
     /***********************************************************/
@@ -241,44 +229,38 @@
     /* #todo
     /***********************************************************/
     ShoppingCart.configureStripe = function configureStripe() {
-        // var stripeHandler = StripeCheckout.configure({
-        //     key: jQuery(ShoppingCart.settings.payment.methods).filter(function(index, item) { if (item.name == 'Stripe') return true }).toArray()[0].publishableKey,
-        //     image: ShoppingCart.baseURL + '/images/stripe-image.png',
-        //     token: function(token, args) {
+        ShoppingCart.stripeHandler = StripeCheckout.configure({
+            key: ShoppingCart.settings.payment.methods.stripe.publishableKey,
+            token: function(token, args) {
+                var order = {
+                    products: storejs.get('grav-shoppingcart-basket-data'),
+                    address: storejs.get('grav-shoppingcart-person-address'),
+                    shipment: storejs.get('grav-shoppingcart-shipment-method'),
+                    payment: storejs.get('grav-shoppingcart-payment-method'),
+                    token: JSON.parse(storejs.get('grav-shoppingcart-order-token')).token,
+                    stripeToken: token.id,
+                    amount: ShoppingCart.totalOrderPrice.toString().replace('.', ''),
+                    total_paid: ShoppingCart.totalOrderPrice,
+                    discount_code: ShoppingCart.discountCodeUsed
+                };
 
-        //         var order = {
-        //             products: storejs.get('grav-shoppingcart-basket-data'),
-        //             address: storejs.get('grav-shoppingcart-person-address'),
-        //             shipment: storejs.get('grav-shoppingcart-shipment-method'),
-        //             payment: storejs.get('grav-shoppingcart-payment-method'),
-        //             token: JSON.parse(storejs.get('grav-shoppingcart-order-token')).token,
-        //             stripeToken: token.id,
-        //             amount: ShoppingCart.totalOrderPrice.toString().replace('.', ''),
-        //             total_paid: ShoppingCart.totalOrderPrice,
-        //             discount_code: ShoppingCart.discountCodeUsed
-        //         };
+                jQuery.ajax({
+                    url: 'index.php?option=com_shoppingcart&task=order.pay',
+                    data: order,
+                    type: 'POST'
+                })
+                .success(function(orderId) {
+                    ShoppingCart.clearCart();
 
-        //         jQuery.ajax({
-        //             url: 'index.php?option=com_shoppingcart&task=order.pay',
-        //             data: order,
-        //             type: 'POST'
-        //         })
-        //         .success(function(orderId) {
-        //             ShoppingCart.clearCart();
-
-        //             if (ShoppingCart.baseOrderURL.indexOf('?') === -1) {
-        //                 //SEF URL
-        //                 window.location = ShoppingCart.baseOrderURL + '/' + orderId + '/' + order.token;
-        //             } else {
-        //                 window.location = ShoppingCart.baseOrderURL + '&id=' + orderId + '&token=' + order.token;
-        //             }
-
-        //         })
-        //         .error(function() {
-        //             alert('Payment not successful. Please contact us.');
-        //         });
-        //     }
-        // });
+                    //orderId
+                    //order.token
+                    window.location = ShoppingCart.settings.urls.baseURL + '/id:TODO/token:TODO'
+                })
+                .error(function() {
+                    alert('Payment not successful. Please contact us.');
+                });
+            }
+        });
     };
 
 })(window.ShoppingCart);
