@@ -147,27 +147,6 @@ jQuery(function() {
                              <input type="text" class="js__billing__telephone">
                           </div>
                         </div>
-
-                        {% if ShoppingCart.settings.general.additionalCheckoutFields %}
-                            {% if ShoppingCart.settings.general.additionalCheckoutField1 %}
-                                <div class="control-group control-group__billing__additionalfield1">
-                                    <label class="control-label">{{ ShoppingCart.settings.general.additionalCheckoutField1 }} {% if ShoppingCart.settings.general.additionalCheckoutField1IsOptional %}*{% endif %}</label>
-                                    <div class="controls docs-input-sizes">
-                                        <input type="text" class="js__billing__additionalCheckoutField1">
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if ShoppingCart.settings.general.additionalCheckoutField2 %}
-                                <div class="control-group control-group__billing__additionalfield12">
-                                    <label class="control-label">{{ ShoppingCart.settings.general.additionalCheckoutField2 }} {% if ShoppingCart.settings.general.additionalCheckoutField2IsOptional %}*{% endif %}</label>
-                                    <div class="controls docs-input-sizes">
-                                        <input type="text" class="js__billing__additionalCheckoutField2">
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endif %}
-
-
                     </div>
 
                     <div class="well span6">
