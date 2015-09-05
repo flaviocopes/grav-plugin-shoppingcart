@@ -226,7 +226,7 @@ jQuery(function() {
 
                     <div class="span12 css-accept-terms-and-conditions">
                         {% if ShoppingCart.settings.general.agreeToTerms %}
-                            <input type="checkbox" id="js__accepted-terms"> {{ 'PLUGIN_SHOPPINGCART.AGREE'|t }} <a target="_blank" href="<?php echo JRoute::_('index.php?option=com_content&view=article&id=' . $this->settings->general->termsArticleId) ?>">{{ 'PLUGIN_SHOPPINGCART.TERMS_AND_CONDITIONS'|t }}</a>
+                            <input type="checkbox" id="js__accepted-terms"> {{ 'PLUGIN_SHOPPINGCART.AGREE'|t }} <a target="_blank" href="{{ ShoppingCart.settings.general.termsPageURL}}">{{ 'PLUGIN_SHOPPINGCART.TERMS_AND_CONDITIONS'|t }}</a>
                         {% endif %}
                     </div>
                 </div>
