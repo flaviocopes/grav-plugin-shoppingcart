@@ -1,8 +1,5 @@
 enabled: true
 built_in_css: true
-admin:
-    route:
-        orders: orders
 
 shipment:
     methods:
@@ -28,7 +25,7 @@ urls:
     orderURL: /order
 
 cart:
-    maximumTotalQuantityValue: 1
+    maximumTotalQuantityValue: 
 
 general:
     defaultTypeOfProduct: 'phisical'
