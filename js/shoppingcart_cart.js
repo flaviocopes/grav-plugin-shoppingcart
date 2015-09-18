@@ -77,7 +77,7 @@
                 return;
             }
 
-            if (parseInt(ShoppingCart.items[i].quantity) > ShoppingCart.settings.cart.maximumTotalQuantityValue) {
+            if (typeof ShoppingCart.settings.cart.maximumTotalQuantityValue !== undefined && ShoppingCart.settings.cart.maximumTotalQuantityValue > 0 && parseInt(ShoppingCart.items[i].quantity) > ShoppingCart.settings.cart.maximumTotalQuantityValue) {
                 alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximumTotalQuantityValue);
                 return;
             }
