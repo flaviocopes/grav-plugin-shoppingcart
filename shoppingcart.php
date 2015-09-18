@@ -31,39 +31,44 @@ class ShoppingcartPlugin extends Plugin
         $this->orderURL = $this->config->get('plugins.shoppingcart.urls.orderURL');
 
         if ($this->isAdmin()) {
+            // Admin
+
             $this->enable([
-                'onPagesInitialized' => ['addCPTPage', 0]
+                'onTwigTemplatePaths' => ['onTwigAdminTemplatePaths', 0]
             ]);
 
-            // $this->active = false;
-            // return;
-        }
+            $this->active = false;
+            return;
+        } else {
+            // Site
 
-        $this->enable([
-            'onPageInitialized' => ['onPageInitialized', 0],
-            'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0]
-        ]);
-
-        /** @var Uri $uri */
-        $uri = $this->grav['uri'];
-
-        if ($this->checkoutURL && $this->checkoutURL == $uri->path()) {
             $this->enable([
-                'onPagesInitialized' => ['addCheckoutPage', 0]
+                'onPageInitialized' => ['onPageInitialized', 0],
+                'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0]
             ]);
+
+            /** @var Uri $uri */
+            $uri = $this->grav['uri'];
+
+            if ($this->checkoutURL && $this->checkoutURL == $uri->path()) {
+                $this->enable([
+                    'onPagesInitialized' => ['addCheckoutPage', 0]
+                ]);
+            }
+
+            if ($this->saveOrderURL && $this->saveOrderURL == $uri->path()) {
+                $this->enable([
+                    'onPagesInitialized' => ['processOrder', 0]
+                ]);
+            }
+
+            if ($this->orderURL && $this->orderURL == $uri->path()) {
+                $this->enable([
+                    'onPagesInitialized' => ['addOrderPage', 0]
+                ]);
+            }
         }
 
-        if ($this->saveOrderURL && $this->saveOrderURL == $uri->path()) {
-            $this->enable([
-                'onPagesInitialized' => ['processOrder', 0]
-            ]);
-        }
-
-        if ($this->orderURL && $this->orderURL == $uri->path()) {
-            $this->enable([
-                'onPagesInitialized' => ['addOrderPage', 0]
-            ]);
-        }
     }
 
     public function addCheckoutPage()
@@ -295,15 +300,19 @@ class ShoppingcartPlugin extends Plugin
     }
 
     /**
-     * Add current directory to twig lookup paths.
+     * Add templates directory to twig lookup paths.
      */
     public function onTwigTemplatePaths()
     {
-        if ($this->isAdmin()) {
-            $this->grav['twig']->twig_paths[] = __DIR__ . '/admin/templates';
-        } else {
-            $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
-        }
+        $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
+    }
+
+    /**
+     * Add admin templates directory to twig lookup paths.
+     */
+    public function onTwigAdminTemplatePaths()
+    {
+        $this->grav['twig']->twig_paths[] = __DIR__ . '/templates/admin';
     }
 
     /**
@@ -316,26 +325,6 @@ class ShoppingcartPlugin extends Plugin
             $this->grav['assets']
                 ->add('plugin://shoppingcart/css/shoppingcart.css');
 
-        }
-    }
-
-    /**
-     * Add CPT Page in the Admin Plugin
-     */
-    public function addCPTPage()
-    {
-        $route = $this->config->get('plugins.shoppingcart.admin.route.orders');
-        /** @var Pages $pages */
-        $pages = $this->grav['pages'];
-        $page = $pages->dispatch($route);
-
-        if (!$page) {
-            // Only add login page if it hasn't already been defined.
-            $page = new Page;
-            $page->init(new \SplFileInfo(__DIR__ . "/admin/pages/orders.md"));
-            $page->slug('orders');
-            $page->folder(__DIR__ . "/admin/pages");
-            $pages->addPage($page, $route);
         }
     }
 
