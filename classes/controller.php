@@ -52,18 +52,6 @@ class ShoppingCartController
         return $success;
     }
 
-//    /**
-//     * Handle saving the order.
-//     *
-//     * @return bool True if the action was performed.
-//     */
-//    public function taskSave()
-//    {
-//        $order_id = $this->_saveOrder();
-//        echo $order_id;
-//        exit();
-//    }
-
     /**
      * Handle saving the order.
      *
