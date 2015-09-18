@@ -300,7 +300,7 @@
         } else if (ShoppingCart.settings.shipment.methods.length === 1) {
             ShoppingCart.shipmentPrice = parseFloat(ShoppingCart.settings.shipment.methods[0].price).toFixed(2);
 
-            if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type == 'phisical') return true }).toArray().length == 0) {
+            if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
                 //Digital only order. Don't show shipping options and set shipment price to 0
                 jQuery('#checkout-choose-shipping-block').hide();
                 jQuery('#checkout-choose-payment-block').removeClass('span6');
@@ -327,7 +327,7 @@
 
                 ShoppingCart.shipmentPrice = price;
 
-                if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type == 'phisical') return true }).toArray().length == 0) {
+                if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
                     //Digital only order. Don't show shipping options and set shipment price to 0
                     jQuery('#checkout-choose-shipping-block').hide();
                     jQuery('#checkout-choose-payment-block').removeClass('span6');

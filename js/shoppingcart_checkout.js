@@ -119,7 +119,7 @@
             }
         }
 
-        if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type == 'phisical') return true }).toArray().length == 0) {
+        if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
             //Digital only order. Don't show shipping options and set shipment price to 0
             jQuery('#checkout-choose-shipping-block').hide();
             jQuery('#checkout-choose-payment-block').removeClass('span6');
