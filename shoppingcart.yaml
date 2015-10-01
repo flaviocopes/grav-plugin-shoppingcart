@@ -23,14 +23,17 @@ shipment:
             starting_order_price: 0
             ending_order_price: 100000
             allowedCountries: ['*']
+        -
+            name: All other countries except Italy
+            allowedCountries: ['*']
+            disallowedCountries: ['it']
+            price: 20
 
 urls:
     baseURL: /
     checkoutURL: checkout
     saveOrderURL: save_order
     orderURL: order
-
-cart:
 
 ui:
     currencySymbolPosition: 'after'
@@ -50,19 +53,20 @@ cart:
     allowEditingQuantityFromCart: 0
     showQuantityChooserInProductPage: 1
     limitDigitalProductsToSingleQuantity: 0
+    maximumTotalQuantityValue:
 
 countries:
     -
-      readableName: 'United States'
-      name: 'US'
-      percentage: '10'
-      allow: true
+        readableName: 'United States'
+        name: 'US'
+        tax_percentage: '10'
+        allow: true
     -
-      readableName: 'All countries without rule'
-      name: '*'
-      percentage: '0'
-      allow: true
-
+        readableName: 'All unlisted countries'
+        name: '*'
+        tax_percentage: '0'
+        allow: true
+    
 payment:
     methods:
       stripe:
