@@ -26,9 +26,10 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onPluginsInitialized()
     {
-        $this->checkoutURL = $this->config->get('plugins.shoppingcart.urls.checkoutURL');
-        $this->saveOrderURL = $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
-        $this->orderURL = $this->config->get('plugins.shoppingcart.urls.orderURL');
+        $this->baseURL = $this->config->get('plugins.shoppingcart.urls.baseURL');
+        $this->checkoutURL = $this->baseURL . $this->config->get('plugins.shoppingcart.urls.checkoutURL');
+        $this->saveOrderURL = $this->baseURL . $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
+        $this->orderURL = $this->baseURL . $this->config->get('plugins.shoppingcart.urls.orderURL');
 
         if ($this->isAdmin()) {
             // Admin
@@ -320,7 +321,7 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onTwigSiteVariables()
     {
-        if ($this->config->get('plugins.shoppingcart.built_in_css')) {
+        if ($this->config->get('plugins.shoppingcart.ui.built_in_css')) {
 
             $this->grav['assets']
                 ->add('plugin://shoppingcart/css/shoppingcart.css');

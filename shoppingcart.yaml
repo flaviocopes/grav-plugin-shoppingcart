@@ -1,5 +1,11 @@
 enabled: true
-built_in_css: true
+
+general:
+    defaultTypeOfProduct: 'physical'
+    measurementSystem: 'kilograms'
+    defaultCurrency: 'USD'
+    productTaxes: 'included'
+    defaultCountry: 'IT'
 
 shipment:
     methods:
@@ -19,22 +25,12 @@ shipment:
             allowedCountries: ['*']
 
 urls:
-    baseURL: /grav
-    checkoutURL: /checkout
-    saveOrderURL: /save_order
-    orderURL: /order
+    baseURL: /
+    checkoutURL: checkout
+    saveOrderURL: save_order
+    orderURL: order
 
 cart:
-    maximumTotalQuantityValue: 
-
-general:
-    defaultTypeOfProduct: 'phisical'
-    measurementSystem: 'kilograms'
-    defaultCurrency: 'USD'
-    numberOfTimesDownloadable: 'No limit'
-    howLongCanItBeDownloaded: 'No limit'
-    productTaxes: 'included'
-    enableLogs: 0
 
 ui:
     currencySymbolPosition: 'after'
@@ -42,9 +38,10 @@ ui:
     categoriesListLayout: '2-columns'
     orderingInProductList: 'title'
     orderingInProductListDirection: 'ASC'
-    loadBootstrap: 1
-    hidePricesInProductsList: 0
-    useLightbox: 1
+    loadBootstrap: true
+    hidePricesInProductsList: false
+    useLightbox: true
+    built_in_css: true
 
 cart:
     addToCartInList: 0
