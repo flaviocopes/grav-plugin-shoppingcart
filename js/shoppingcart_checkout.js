@@ -8,16 +8,24 @@
         var select = document.getElementById('js__shipment__method');
 
         var methodIsAllowedInCountry = function methodIsAllowedInCountry(method, country) {
-            return (method.allowedCountries.indexOf(country) !== -1 ||
-                            method.allowedCountries.indexOf('*') !== -1);
+            for (index in method.allowedCountries) {
+                if (method.allowedCountries[index] == country) return true;
+                if (method.allowedCountries[index] == '*') return true;
+            }
         };
 
         var ifIsGenericThereIsNoCountrySpecificMethod = function ifIsGenericThereIsNoCountrySpecificMethod(method, country) {
-            if (method.allowedCountries.indexOf('*') == -1) return true; //is not generic, ignore
+            var goOn = true;
+            for (index in method.allowedCountries) {
+                if (method.allowedCountries[index] == '*') goOn = false;
+            }
+            if (!goOn) return true; //is not generic, ignore
 
             for (var i = 0; i < shipmentMethods.length; i++) {
                 var aMethod = shipmentMethods[i];
-                if (aMethod.allowedCountries.indexOf(country) !== -1) return false;
+                for (index in method.allowedCountries) {
+                    if (method.allowedCountries[index] == country) return false;
+                }
             }
 
             return true;
@@ -144,10 +152,8 @@
         var countries = ShoppingCart.getCountries();
         var select = document.getElementById('js__billing__country');
         for (index in countries) {
-            if (countries.hasOwnProperty(index)) {
-                if (ShoppingCart.countryCanBuy(countries[index])) {
-                    select.options[select.options.length] = new Option(index, countries[index]);
-                }
+            if (ShoppingCart.countryCanBuy(countries[index].code)) {
+                select.options[select.options.length] = new Option(countries[index].name, countries[index].code);
             }
         }
 
