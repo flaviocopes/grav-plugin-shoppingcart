@@ -19,8 +19,8 @@
         if (!ShoppingCart.settings.shipment) {
             ShoppingCart.settings.shipment = {};
         }
-        if (!ShoppingCart.settings.shipment.methods) {
-            ShoppingCart.settings.shipment.methods = [];
+        if (!ShoppingCart.settings.shipping.methods) {
+            ShoppingCart.settings.shipping.methods = [];
         }
         if (!ShoppingCart.settings.payment) {
             ShoppingCart.settings.payment = {};
@@ -31,10 +31,10 @@
 
         i = 0;
 
-        while (i < ShoppingCart.settings.shipment.methods.length) {
-            item = ShoppingCart.settings.shipment.methods[i];
+        while (i < ShoppingCart.settings.shipping.methods.length) {
+            item = ShoppingCart.settings.shipping.methods[i];
             if (!item.allowedCountries) item.allowedCountries = [];
-            ShoppingCart.settings.shipment.methods[i] = item;
+            ShoppingCart.settings.shipping.methods[i] = item;
             i++;
         }
 
@@ -294,11 +294,11 @@
     /* Calculate the shipment price
     /***********************************************************/
     ShoppingCart.generateShipmentPrice = function generateShipmentPrice() {
-        if (ShoppingCart.settings.shipment.methods.length === 0) {
+        if (ShoppingCart.settings.shipping.methods.length === 0) {
             ShoppingCart.shipmentPrice = 0.00;
             ShoppingCart.renderCart();
-        } else if (ShoppingCart.settings.shipment.methods.length === 1) {
-            ShoppingCart.shipmentPrice = parseFloat(ShoppingCart.settings.shipment.methods[0].price).toFixed(2);
+        } else if (ShoppingCart.settings.shipping.methods.length === 1) {
+            ShoppingCart.shipmentPrice = parseFloat(ShoppingCart.settings.shipping.methods[0].price).toFixed(2);
 
             if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
                 //Digital only order. Don't show shipping options and set shipment price to 0
@@ -314,7 +314,7 @@
                 if (shipmentMethodName) {
                     clearInterval(interval);
                 }
-                var thePrice = jQuery(ShoppingCart.settings.shipment.methods).filter(function(index, item) { if (shipmentMethodName == item.name) return true; }).toArray()[0];
+                var thePrice = jQuery(ShoppingCart.settings.shipping.methods).filter(function(index, item) { if (shipmentMethodName == item.name) return true; }).toArray()[0];
                 var price = 0;
                 if (typeof thePrice !== 'undefined') {
                     price = thePrice.price;

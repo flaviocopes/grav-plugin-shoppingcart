@@ -4,7 +4,7 @@
     /* Get the shipping options based on the settings
     /***********************************************************/
     ShoppingCart.populateShippingOptions = function populateShippingOptions() {
-        var shipmentMethods = ShoppingCart.settings.shipment.methods;
+        var shipmentMethods = ShoppingCart.settings.shipping.methods;
         var select = document.getElementById('js__shipment__method');
 
         var methodIsAllowedInCountry = function methodIsAllowedInCountry(method, country) {

@@ -45,15 +45,15 @@
             }
 
             //Determine shipping method
-            if (ShoppingCart.settings.shipment.methods.length === 0) {
+            if (ShoppingCart.settings.shipping.methods.length === 0) {
                 shippingMethod = {
                     method: '',
                     cost: 0
                 };
-            } else if (ShoppingCart.settings.shipment.methods.length === 1) {
+            } else if (ShoppingCart.settings.shipping.methods.length === 1) {
                 shippingMethod = {
-                    method: ShoppingCart.settings.shipment.methods[0].name,
-                    cost: ShoppingCart.settings.shipment.methods[0].price
+                    method: ShoppingCart.settings.shipping.methods[0].name,
+                    cost: ShoppingCart.settings.shipping.methods[0].price
                 };
             } else {
                 shippingMethod = {

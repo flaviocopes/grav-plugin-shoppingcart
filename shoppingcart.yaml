@@ -7,7 +7,7 @@ general:
     productTaxes: 'included'
     defaultCountry: 'IT'
 
-shipment:
+shipping:
     methods:
         -
             name: Favorite countries
@@ -66,15 +66,15 @@ countries:
         name: '*'
         tax_percentage: '0'
         allow: true
-    
+
 payment:
     methods:
-      stripe:
-        name: 'Stripe'
-        description: 'Test description'
-        enabled: true
-        secretKey: 'sk_test_4okloV9Jsu3IiBSc4Y3zHXeZ'
-        publicKey: 'pk_test_8OfS5r77VXHMXE7Nszjlzwc6'
+        stripe:
+            name: 'Stripe'
+            description: 'Test description'
+            enabled: true
+            secretKey: 'sk_test_4okloV9Jsu3IiBSc4Y3zHXeZ'
+            publicKey: 'pk_test_8OfS5r77VXHMXE7Nszjlzwc6'
 
 notifications:
     emailTemplateNewOrderSubject: "New Order"
