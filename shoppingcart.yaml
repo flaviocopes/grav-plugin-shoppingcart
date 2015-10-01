@@ -23,12 +23,6 @@ shipping:
             starting_order_price: 0
             ending_order_price: 100000
             allowedCountries: ['*']
-        -
-            name: All other countries except Italy
-            allowedCountries: ['*']
-            disallowedCountries: ['it']
-            price: 20
-
 urls:
     baseURL: /
     checkoutURL: checkout
