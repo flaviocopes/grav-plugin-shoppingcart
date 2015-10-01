@@ -59,7 +59,7 @@ class ShoppingCartController
      */
     public function taskPay()
     {
-        require_once __DIR__ . '/../libraries/Stripe/Stripe.php';
+        require_once('vendor/autoload.php');
 
         $currency = $this->grav['config']->get('plugins.shoppingcart.general.defaultCurrency');
         $secretKey = $this->grav['config']->get('plugins.shoppingcart.payment.methods.stripe.secretKey');
@@ -69,18 +69,18 @@ class ShoppingCartController
         $stripeToken = $this->post['stripeToken'];
 
         //process payment
-
-        \Stripe::setApiKey($secretKey);
+        
+        \Stripe\Stripe::setApiKey($secretKey);
 
         // Create the charge on Stripe's servers - this will charge the user's card
         try {
-            $charge = \Stripe_Charge::create([
+            $charge = \Stripe\Charge::create([
                 "amount" => $amount, // amount in cents, again
                 "currency" => $currency,
                 "card" => $stripeToken,
                 "description" => $description
             ]);
-        } catch(\Stripe_CardError $e) {
+        } catch(\Stripe\Error\Card $e) {
             // The card has been declined
             throw new \RuntimeException("Stripe payment not successful");
             //TODO: fail gracefully

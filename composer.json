@@ -1,0 +1,14 @@
+{
+    "name": "flaviocopes/grav-plugin-shoppingcart",
+    "description": "Shopping Cart Plugin for the Grav CMS",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Flavio Copes",
+            "email": "copesc@gmail.com"
+        }
+    ],
+    "require": {
+        "stripe/stripe-php": "3.*"
+    }
+}
