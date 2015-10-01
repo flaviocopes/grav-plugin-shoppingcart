@@ -184,7 +184,7 @@
         var i = 0;
         var totalPrice;
         var country = null;
-        var percentage = 0;
+        var tax_percentage = 0;
 
         while (i < ShoppingCart.items.length) {
             orderPrice += ShoppingCart.items[i].product.price * ShoppingCart.items[i].quantity;
@@ -201,21 +201,21 @@
 
             if (country) {
                 if (country.isAllowed) {
-                    percentage = parseInt(country.percentage);
+                    tax_percentage = parseInt(country.tax_percentage);
 
                     if (country.name === 'US') {
                         if (ShoppingCart.settings.us_states) {
                             var state = jQuery(ShoppingCart.settings.us_states).filter(function(index, item) { if (ShoppingCart.shippingAddress.state == item.name) return true; }).toArray()[0];
                             if (state) {
-                                percentage = state.percentage;
+                                tax_percentage = state.tax_percentage;
                             }
                         }
                     }
                 }
             }
 
-            if (percentage !== 0) {
-                totalPrice = orderPrice + orderPrice * (percentage / 100);
+            if (tax_percentage !== 0) {
+                totalPrice = orderPrice + orderPrice * (tax_percentage / 100);
             } else {
                 totalPrice = orderPrice;
             }
