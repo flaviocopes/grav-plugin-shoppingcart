@@ -279,16 +279,30 @@ class ShoppingcartPlugin extends Plugin
             $output = '';
 
             foreach($settings as $key => $value) {
-                //Avoid putting the secretKey in the frontend available settings
-                $key = '["' . $key .'"]';
+                // $key = '["' . $key .'"]';
                 if (!is_array($value)) {
-                    if ($key == '["secretKey"]') {
-                        $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ""; ' . PHP_EOL;;
-                    } else {
-                        $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = "' . $value . '"; ' . PHP_EOL;;
+                    //Avoid putting the secretKey in the frontend available settings
+                    if ($key != '["secretKey"]') {
+                        if (is_int($key)) {
+                            $key = '[' . $key . ']';
+                        } else {
+                            $key = '.' . $key;
+                        }
+
+                        if (is_int($value)) {
+                            $value = $value;
+                        } else {
+                            $value = '"' . $value . '"';
+                        }
+                        $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ' . $value . '; ' . PHP_EOL;;
                     }
                 } else {
-                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = []; ' . PHP_EOL;;
+                    if (is_int($key)) {
+                        $key = '[' . $key . ']';
+                    } else {
+                        $key = '.' . $key;
+                    }
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;;
                     $output .= recurse_settings($base . $key, $value);
                 }
             }
