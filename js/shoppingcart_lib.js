@@ -23,7 +23,7 @@
             }
         }
     };
-    
+
     /***********************************************************/
     /* Get the US States list
     /***********************************************************/
@@ -322,8 +322,21 @@
             {"code":"ZM","name":"Zambia","continent":"Africa"},
             {"code":"ZW","name":"Zimbabwe","continent":"Africa"}
         ];
+    };
 
-        countryCodes['Afghanistan'] = 'AF';
+    /***********************************************************/
+    /* Get the World Continents list
+    /***********************************************************/
+    ShoppingCart.getContinents = function getContinents() {
+        return [
+            {"code":"AF","name":"Africa"},
+            {"code":"AN","name":"Antarctica"},
+            {"code":"AS","name":"Asia"},
+            {"code":"EU","name":"Europe"},
+            {"code":"NA","name":"North America"},
+            {"code":"OC","name":"Oceania"},
+            {"code":"SA","name":"South America"},
+        ];
     };
 
     /***********************************************************/
