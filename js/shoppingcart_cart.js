@@ -988,23 +988,23 @@
             row += '<td class="cart-product-quantity">';
 
             //TODO
-            // if (ShoppingCart.settings.cart.allowEditingQuantityFromCart) {
-            //     if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
-            //         if (item.product.isDigital) {
-            //             if (ShoppingCart.settings.cart.limitDigitalProductsToSingleQuantity) {
-            //                 row += item.quantity;
-            //             } else {
-            //                 row += '<input value="' + item.quantity + '" class="input-mini js__shoppingcart__quantity-box-cart" data-id="' + i + '" />';
-            //             }
-            //         } else {
-            //             row += '<input value="' + item.quantity + '" class="input-mini js__shoppingcart__quantity-box-cart" data-id="' + i + '" />';
-            //         }
-            //     } else {
-            //         row += item.quantity;
-            //     }
-            // } else {
+            if (ShoppingCart.settings.cart.allowEditingQuantityFromCart) {
+                if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
+                    if (item.product.isDigital) {
+                        if (ShoppingCart.settings.cart.limitDigitalProductsToSingleQuantity) {
+                            row += item.quantity;
+                        } else {
+                            row += '<input value="' + item.quantity + '" class="input-mini js__shoppingcart__quantity-box-cart" data-id="' + i + '" />';
+                        }
+                    } else {
+                        row += '<input value="' + item.quantity + '" class="input-mini js__shoppingcart__quantity-box-cart" data-id="' + i + '" />';
+                    }
+                } else {
+                    row += item.quantity;
+                }
+            } else {
                 row += item.quantity;
-            // }
+            }
 
             /***********************************************************/
             /* Total
