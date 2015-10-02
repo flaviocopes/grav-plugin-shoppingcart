@@ -96,11 +96,11 @@
         };
 
         if (jQuery('#js__billing__country').val() === 'US') {
-            jQuery('#js__billing__state__control').removeClass('hidden');
-            jQuery('#js__billing__province__control').addClass('hidden');
+            jQuery('#js__billing__state__control').show();
+            jQuery('#js__billing__province__control').hide();
         } else {
-            jQuery('#js__billing__state__control').addClass('hidden');
-            jQuery('#js__billing__province__control').removeClass('hidden');
+            jQuery('#js__billing__state__control').hide();
+            jQuery('#js__billing__province__control').show();
         }
 
         if (shippingMethods.length === 0) {
@@ -214,11 +214,11 @@
             ShoppingCart.generateShippingPrice();
 
             if (jQuery('#js__billing__country').val() === 'US') {
-                jQuery('#js__billing__state__control').removeClass('hidden');
-                jQuery('#js__billing__province__control').addClass('hidden');
+                jQuery('#js__billing__state__control').show();
+                jQuery('#js__billing__province__control').hide();
             } else {
-                jQuery('#js__billing__state__control').addClass('hidden');
-                jQuery('#js__billing__province__control').removeClass('hidden');
+                jQuery('#js__billing__state__control').hide();
+                jQuery('#js__billing__province__control').show();
             }
             ShoppingCart.calculateTotalPriceIncludingTaxes();
             ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
@@ -231,10 +231,10 @@
         _countryChanged();
 
         if ((ShoppingCart.settings.general.defaultCountry || 'US') === 'US') {
-            jQuery('#js__billing__state__control').removeClass('hidden');
+            jQuery('#js__billing__state__control').show();
             _stateChanged();
         } else {
-            jQuery('#js__billing__province__control').removeClass('hidden');
+            jQuery('#js__billing__province__control').show();
         }
 
         jQuery(document).delegate('#js__billing__country', 'change', function() {

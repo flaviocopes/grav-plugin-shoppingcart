@@ -461,7 +461,7 @@
     ShoppingCart.renderCart = function renderCart() {
         var $cart = jQuery('.js__shoppingcart-cart');
         var $cartTitle = jQuery('.js__shoppingcart-cart__title');
-console.log('RenderCart');
+
         var thead = $cart.find('thead');
         var tbody = $cart.find('tbody');
 
