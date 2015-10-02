@@ -279,25 +279,25 @@ class ShoppingcartPlugin extends Plugin
             $output = '';
 
             foreach($settings as $key => $value) {
-                // $key = '["' . $key .'"]';
                 if (!is_array($value)) {
                     //Avoid putting the secretKey in the frontend available settings
-                    if ($key != '["secretKey"]') {
-                        if (is_int($key)) {
+                    if ($key !== '["secretKey"]') {
+                        if (is_numeric($key)) {
                             $key = '[' . $key . ']';
                         } else {
                             $key = '.' . $key;
                         }
 
-                        if (is_int($value)) {
+                        if (is_numeric($value)) {
                             $value = $value;
                         } else {
                             $value = '"' . $value . '"';
                         }
                         $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ' . $value . '; ' . PHP_EOL;;
                     }
+
                 } else {
-                    if (is_int($key)) {
+                    if (is_numeric($key)) {
                         $key = '[' . $key . ']';
                     } else {
                         $key = '.' . $key;

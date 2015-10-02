@@ -4,7 +4,11 @@
     /* Get the shipping options based on the settings
     /***********************************************************/
     ShoppingCart.populateShippingOptions = function populateShippingOptions() {
-        var shipmentMethods = ShoppingCart.settings.shipping.methods;
+        var shippingMethods = [];
+        for (index in ShoppingCart.settings.shipping.methods) {
+            shippingMethods[index] = ShoppingCart.settings.shipping.methods[index];
+        }
+        
         var select = document.getElementById('js__shipment__method');
 
         var methodIsAllowedInCountry = function methodIsAllowedInCountry(method, country) {
@@ -12,74 +16,83 @@
                 if (method.allowedCountries[index] == country) return true;
                 if (method.allowedCountries[index] == '*') return true;
             }
+            return false;
         };
 
         var ifIsGenericThereIsNoCountrySpecificMethod = function ifIsGenericThereIsNoCountrySpecificMethod(method, country) {
-            var goOn = true;
-            for (index in method.allowedCountries) {
-                if (method.allowedCountries[index] == '*') goOn = false;
-            }
-            if (!goOn) return true; //is not generic, ignore
-
-            for (var i = 0; i < shipmentMethods.length; i++) {
-                var aMethod = shipmentMethods[i];
-                for (index in method.allowedCountries) {
-                    if (method.allowedCountries[index] == country) return false;
-                }
-            }
-
             return true;
+
+            //TODO
+            // var goOn = true;
+            // for (index in method.allowedCountries) {
+            //     if (method.allowedCountries[index] == '*') goOn = false;
+            // }
+            // if (!goOn) return true; //is not generic, ignore
+
+            // for (var i = 0; i < shippingMethods.length; i++) {
+            //     var aMethod = shippingMethods[i];
+            //     for (index in method.allowedCountries) {
+            //         if (method.allowedCountries[index] == country) return false;
+            //     }
+            // }
+
+            // return true;
         };
 
         var orderWeightIsAllowedForThisMethod = function orderWeightIsAllowedForThisMethod(method) {
-
-            if (method.type !== 'weightBased') {
-                return true;
-            }
-
-            var orderWeight = 0;
-            var i = 0;
-            var cart = ShoppingCart.items;
-
-            while (i < cart.length) {
-                orderWeight += cart[i].product.size_weight * cart[i].quantity;
-                i++;
-            }
-
-            if (orderWeight < method.starting_order_weight) {
-                return false;
-            }
-
-            if (orderWeight > method.ending_order_weight) {
-                return false;
-            }
-
             return true;
+
+            //TODO
+            // if (method.type !== 'weightBased') {
+            //     return true;
+            // }
+
+            // var orderWeight = 0;
+            // var i = 0;
+            // var cart = ShoppingCart.items;
+
+            // while (i < cart.length) {
+            //     orderWeight += cart[i].product.size_weight * cart[i].quantity;
+            //     i++;
+            // }
+
+            // if (orderWeight < method.starting_order_weight) {
+            //     return false;
+            // }
+
+            // if (orderWeight > method.ending_order_weight) {
+            //     return false;
+            // }
+
+            // return true;
         };
 
         var orderPriceIsAllowedForThisMethod = function orderPriceIsAllowedForThisMethod(method) {
-            if (method.type !== 'priceBased') {
-                return true;
-            }
-
-            var orderPrice = 0;
-            var i = 0;
-            var cart = ShoppingCart.items;
-
-            while (i < cart.length) {
-                orderPrice += cart[i].product.price * cart[i].quantity;
-                i++;
-            }
-
-            if (orderPrice < method.starting_order_price) {
-                return false;
-            }
-
-            if (orderPrice > method.ending_order_price) {
-                return false;
-            }
-
             return true;
+
+            //TODO
+            // if (method.type !== 'priceBased') {
+            //     return true;
+            // }
+
+            // var orderPrice = 0;
+            // var i = 0;
+            // var cart = ShoppingCart.items;
+
+            // while (i < cart.length) {
+            //     orderPrice += cart[i].product.price * cart[i].quantity;
+            //     i++;
+            // }
+
+            // if (orderPrice < method.starting_order_price) {
+            //     return false;
+            // }
+
+            // if (orderPrice > method.ending_order_price) {
+            //     return false;
+            // }
+
+            // return true;
         };
 
         if (jQuery('#js__billing__country').val() === 'US') {
@@ -90,17 +103,18 @@
             jQuery('#js__billing__province__control').removeClass('hidden');
         }
 
-        if (shipmentMethods.length === 0) {
+        if (shippingMethods.length === 0) {
             jQuery('#checkout-choose-shipping-block').hide();
             jQuery('#checkout-choose-payment-block').removeClass('span6');
-        } else if (shipmentMethods.length === 1) {
+        } else if (shippingMethods.length === 1) {
 
-            var priceBlock = shipmentMethods[0].price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
+            var priceBlock = shippingMethods[0].price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
             if (ShoppingCart.settings.ui.currencySymbolPosition === 'before') {
-                priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + shipmentMethods[0].price;
+                priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + shippingMethods[0].price;
             }
 
-            jQuery('#checkout-choose-shipping-block .control-group').html(shipmentMethods[0].name + ' - ' + priceBlock);
+            jQuery('#checkout-choose-shipping-block .control-group').html(shippingMethods[0].name + ' - ' + priceBlock);
+            jQuery('#checkout-choose-shipping-block').show();
         } else {
 
             //Calculate shipment methods for the shipping country
@@ -108,31 +122,34 @@
 
             ShoppingCart.generateShipmentPrice();
 
-            for (index in shipmentMethods) {
-                if (shipmentMethods.hasOwnProperty(index)) {
-                    method = shipmentMethods[index];
+            for (index in shippingMethods) {
+                if (shippingMethods.hasOwnProperty(index)) {
+                    method = shippingMethods[index];
                     if (methodIsAllowedInCountry(method, ShoppingCart.shippingAddress.country) &&
                             ifIsGenericThereIsNoCountrySpecificMethod(method, ShoppingCart.shippingAddress.country) &&
                             orderWeightIsAllowedForThisMethod(method) &&
                             orderPriceIsAllowedForThisMethod(method)) {
 
-                        var priceBlock = shipmentMethods[index].price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
+                        var priceBlock = method.price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
                         if (ShoppingCart.settings.ui.currencySymbolPosition === 'before') {
-                            priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + shipmentMethods[index].price;
+                            priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + shippingMethods[index].price;
                         }
 
-                        select.options[select.options.length] = new Option(shipmentMethods[index].name + ' - ' + priceBlock, shipmentMethods[index].name);
+                        select.options[select.options.length] = new Option(method.name + ' - ' + priceBlock, method.name);
                     }
                 }
             }
+
+            jQuery('#checkout-choose-shipping-block').show();
         }
 
-        if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
-            //Digital only order. Don't show shipping options and set shipment price to 0
-            jQuery('#checkout-choose-shipping-block').hide();
-            jQuery('#checkout-choose-payment-block').removeClass('span6');
-            ShoppingCart.shipmentPrice = 0;
-        }
+        //TODO
+        // if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
+        //     //Digital only order. Don't show shipping options and set shipment price to 0
+        //     jQuery('#checkout-choose-shipping-block').hide();
+        //     jQuery('#checkout-choose-payment-block').removeClass('span6');
+        //     ShoppingCart.shipmentPrice = 0;
+        // }
 
     };
 

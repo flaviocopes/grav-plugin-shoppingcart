@@ -11,7 +11,7 @@ shipping:
     methods:
         -
             name: Favorite countries
-            allowedCountries: ['it', 'en', 'us']
+            allowedCountries: ['IT', 'EN', 'US']
             price: 10
         -
             name: All other countries

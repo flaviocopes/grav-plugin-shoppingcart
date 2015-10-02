@@ -300,16 +300,18 @@
         } else if (ShoppingCart.settings.shipping.methods.length === 1) {
             ShoppingCart.shipmentPrice = parseFloat(ShoppingCart.settings.shipping.methods[0].price).toFixed(2);
 
-            if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
-                //Digital only order. Don't show shipping options and set shipment price to 0
-                jQuery('#checkout-choose-shipping-block').hide();
-                jQuery('#checkout-choose-payment-block').removeClass('span6');
-                ShoppingCart.shipmentPrice = 0;
-            }
+            //TODO
+            // if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
+            //     //Digital only order. Don't show shipping options and set shipment price to 0
+            //     jQuery('#checkout-choose-shipping-block').hide();
+            //     jQuery('#checkout-choose-payment-block').removeClass('span6');
+            //     ShoppingCart.shipmentPrice = 0;
+            // }
 
             ShoppingCart.renderCart();
         } else {
             var interval = setInterval(function() {
+
                 var shipmentMethodName = jQuery('.js__shipment__method').val();
                 if (shipmentMethodName) {
                     clearInterval(interval);
@@ -327,12 +329,13 @@
 
                 ShoppingCart.shipmentPrice = price;
 
-                if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
-                    //Digital only order. Don't show shipping options and set shipment price to 0
-                    jQuery('#checkout-choose-shipping-block').hide();
-                    jQuery('#checkout-choose-payment-block').removeClass('span6');
-                    ShoppingCart.shipmentPrice = 0;
-                }
+                //TODO
+                // if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
+                //     //Digital only order. Don't show shipping options and set shipment price to 0
+                //     jQuery('#checkout-choose-shipping-block').hide();
+                //     jQuery('#checkout-choose-payment-block').removeClass('span6');
+                //     ShoppingCart.shipmentPrice = 0;
+                // }
 
                 ShoppingCart.renderCart();
             }, 50);
