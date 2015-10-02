@@ -16,8 +16,8 @@
         if (!ShoppingCart.settings.countries) {
             ShoppingCart.settings.countries = {};
         }
-        if (!ShoppingCart.settings.shipment) {
-            ShoppingCart.settings.shipment = {};
+        if (!ShoppingCart.settings.shipping) {
+            ShoppingCart.settings.shipping = {};
         }
         if (!ShoppingCart.settings.shipping.methods) {
             ShoppingCart.settings.shipping.methods = [];
@@ -159,21 +159,21 @@
     };
 
     /***********************************************************/
-    /* Calculate the total price of a cart including taxes and shipment
+    /* Calculate the total price of a cart including taxes and shipping
     /***********************************************************/
-    ShoppingCart.calculateTotalPriceIncludingTaxesAndShipment = function calculateTotalPriceIncludingTaxesAndShipment() {
+    ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping = function calculateTotalPriceIncludingTaxesAndShipping() {
         ShoppingCart.calculateTotalPriceIncludingTaxes();
 
         var total = parseFloat(ShoppingCart.totalOrderPriceIncludingTaxes).toFixed(2);
-        if (!ShoppingCart.shipmentPrice) {
+        if (!ShoppingCart.shippingPrice) {
             return total;
         }
 
-        total = parseFloat(total) + parseFloat(ShoppingCart.shipmentPrice);
+        total = parseFloat(total) + parseFloat(ShoppingCart.shippingPrice);
 
-        ShoppingCart.totalOrderPriceIncludingTaxesAndShipment = parseFloat(total).toFixed(2);
+        ShoppingCart.totalOrderPriceIncludingTaxesAndShipping = parseFloat(total).toFixed(2);
 
-        return ShoppingCart.totalOrderPriceIncludingTaxesAndShipment;
+        return ShoppingCart.totalOrderPriceIncludingTaxesAndShipping;
     };
 
     /***********************************************************/
@@ -291,50 +291,65 @@
     };
 
     /***********************************************************/
-    /* Calculate the shipment price
+    /* Calculate the shipping price
     /***********************************************************/
-    ShoppingCart.generateShipmentPrice = function generateShipmentPrice() {
-        if (ShoppingCart.settings.shipping.methods.length === 0) {
-            ShoppingCart.shipmentPrice = 0.00;
+    ShoppingCart.generateShippingPrice = function generateShippingPrice() {
+
+        var countMethods = 0;
+        for (index in ShoppingCart.settings.shipping.methods) {
+            countMethods++;
+        }
+
+        if (countMethods === 0) {
+            ShoppingCart.shippingPrice = 0.00;
             ShoppingCart.renderCart();
-        } else if (ShoppingCart.settings.shipping.methods.length === 1) {
-            ShoppingCart.shipmentPrice = parseFloat(ShoppingCart.settings.shipping.methods[0].price).toFixed(2);
+        } else if (countMethods === 1) {
+            var method;
+            for (index in ShoppingCart.settings.shipping.methods) {
+                method = ShoppingCart.settings.shipping.methods[index];
+            }
+
+            ShoppingCart.shippingPrice = parseFloat(method.price).toFixed(2);
 
             //TODO
             // if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
-            //     //Digital only order. Don't show shipping options and set shipment price to 0
+            //     //Digital only order. Don't show shipping options and set shipping price to 0
             //     jQuery('#checkout-choose-shipping-block').hide();
             //     jQuery('#checkout-choose-payment-block').removeClass('span6');
-            //     ShoppingCart.shipmentPrice = 0;
+            //     ShoppingCart.shippingPrice = 0;
             // }
 
             ShoppingCart.renderCart();
         } else {
             var interval = setInterval(function() {
 
-                var shipmentMethodName = jQuery('.js__shipment__method').val();
-                if (shipmentMethodName) {
+                var shippingMethodName = jQuery('.js__shipping__method').val();
+                if (shippingMethodName) {
                     clearInterval(interval);
                 }
-                var thePrice = jQuery(ShoppingCart.settings.shipping.methods).filter(function(index, item) { if (shipmentMethodName == item.name) return true; }).toArray()[0];
-                var price = 0;
-                if (typeof thePrice !== 'undefined') {
-                    price = thePrice.price;
+
+                var method;
+                for (index in ShoppingCart.settings.shipping.methods) {
+                    if (shippingMethodName == ShoppingCart.settings.shipping.methods[index].name) {
+                        method = ShoppingCart.settings.shipping.methods[index];
+                    }
                 }
+
+                var price = method.price;
                 if (isNaN(price)) {
                     price = 0;
                 }
 
                 price = parseFloat(price).toFixed(2);
 
-                ShoppingCart.shipmentPrice = price;
+                ShoppingCart.shippingPrice = price;
 
                 //TODO
                 // if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
-                //     //Digital only order. Don't show shipping options and set shipment price to 0
+                //     //Digital only order. Don't show shipping options and set shipping price to 0
                 //     jQuery('#checkout-choose-shipping-block').hide();
                 //     jQuery('#checkout-choose-payment-block').removeClass('span6');
-                //     ShoppingCart.shipmentPrice = 0;
+                //     ShoppingCart.shippingPrice = 0;
                 // }
 
                 ShoppingCart.renderCart();
@@ -446,7 +461,7 @@
     ShoppingCart.renderCart = function renderCart() {
         var $cart = jQuery('.js__shoppingcart-cart');
         var $cartTitle = jQuery('.js__shoppingcart-cart__title');
-
+console.log('RenderCart');
         var thead = $cart.find('thead');
         var tbody = $cart.find('tbody');
 
@@ -468,13 +483,22 @@
             $cartTitle.show();
         }
 
-        thead.html('<tr>' +
-                             '<th class="cart-product">' + window.PLUGIN_SHOPPINGCART.translations.ITEM + '</th>' +
-                             '<th class="cart-product-price">' + window.PLUGIN_SHOPPINGCART.translations.PRICE + '</th>' +
-                             '<th class="cart-product-quantity">' + window.PLUGIN_SHOPPINGCART.translations.QUANTITY + '</th>' +
-                             '<th class="cart-product-total">' + window.PLUGIN_SHOPPINGCART.translations.TOTAL + '</th>' +
-                             '<th class="cart-product-remove-button">' + '</th>' +
-                             '</tr>');
+        var row = '<tr>';
+        row += '<th class="cart-product">' + window.PLUGIN_SHOPPINGCART.translations.ITEM + '</th>';
+        row += '<th class="cart-product-price">' + window.PLUGIN_SHOPPINGCART.translations.PRICE + '</th>';
+        row += '<th class="cart-product-quantity">' + window.PLUGIN_SHOPPINGCART.translations.QUANTITY + '</th>';
+        row += '<th class="cart-product-total">' + window.PLUGIN_SHOPPINGCART.translations.TOTAL + '</th>';
+
+        if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
+            row += '<th class="cart-product-remove-button">';
+            row += '<a class="btn btn-small js__shoppingcart__remove-from-cart" data-id="' + i + '">' + window.PLUGIN_SHOPPINGCART.translations.REMOVE + '</a>';
+            row += '</th>';
+        }
+
+        row += '</tr>';
+
+        thead.html(row);
+
         var currencySymbol = ShoppingCart.currentCurrencySymbol();
 
         var rows_html = '';
@@ -543,13 +567,12 @@
                 row += '<td class="cart-product-total">' + '<span class="currency">' + currencySymbol + '</span> ' + parseFloat(ShoppingCart.cartSubtotalPrice(item)).toFixed(2) + '</td>';
             // }
 
-            row += '<td class="cart-product-remove-button">';
-
             if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
+                row += '<td class="cart-product-remove-button">';
                 row += '<a class="btn btn-small js__shoppingcart__remove-from-cart" data-id="' + i + '">' + window.PLUGIN_SHOPPINGCART.translations.REMOVE + '</a>';
+                row += '</td>';
             }
-
-            row += '</td>';
+            
             row += '</tr>';
 
             rows_html += row;
@@ -582,10 +605,8 @@
 
 
         /***********************************************************/
-        /* Checkout / or yet reached minimum order level
+        /* Checkout / or not yet reached minimum order level
         /***********************************************************/
-        row += '<td>';
-
         var atLeastAProductIsAdded = false;
 
         ShoppingCart.items.forEach(function(item) {
@@ -595,14 +616,16 @@
         });
 
         if (atLeastAProductIsAdded) {
+            
             if (ShoppingCart.orderAmountIsGreaterThenMinimum()) {
                 if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
-                    row += '<button class="btn btn-success js__shoppingcart__proceed-to-checkout">' + window.PLUGIN_SHOPPINGCART.translations.CHECKOUT + '</button>';
+                    row += '<td><button class="btn btn-success js__shoppingcart__proceed-to-checkout">' + window.PLUGIN_SHOPPINGCART.translations.CHECKOUT + '</button></td>';
                 }
                 if (ShoppingCart.currentPageIsOrderCancelled) {
-                    row += '<button class="btn btn-success js__shoppingcart__proceed-to-checkout">' + window.PLUGIN_SHOPPINGCART.translations.CHECKOUT + '</button>';
+                    row += '<td><button class="btn btn-success js__shoppingcart__proceed-to-checkout">' + window.PLUGIN_SHOPPINGCART.translations.CHECKOUT + '</button></td>';
                 }
             } else {
+                row += '<td>';
                 row += window.PLUGIN_SHOPPINGCART.translations.MINIMUM_TO_PLACE_AN_ORDER;
 
                 if (ShoppingCart.showCurrencyBeforePrice()) {
@@ -610,11 +633,11 @@
                 } else {
                     row += ShoppingCart.settings.cart.minimumSumToPlaceOrder + ' ' + ShoppingCart.currentCurrencySymbol();
                 }
+                row += '</td>';
             }
-
+            
         }
 
-        row += '</td>';
 
         if (ShoppingCart.currentPageIsCheckout) {
 
@@ -665,11 +688,9 @@
                     }
 
                     row += '</td>';
-                    row += '<td></td>';
 
                 } else {
                     row += '<td>' + window.PLUGIN_SHOPPINGCART.translations.PRICE_DO_NOT_INCLUDE_TAXES + '</td>';
-                    row += '<td></td>';
                     row += '<td></td>';
                     row += '<td></td>';
                     row += '<td></td>';
@@ -679,15 +700,15 @@
             }
 
             /***********************************************************/
-            /* Shipment price
+            /* Shipping price
             /***********************************************************/
-            if (ShoppingCart.shipmentPrice) {
-                row += '<tr class="cart-shipment-calculated">';
+            if (ShoppingCart.shippingPrice) {
+                row += '<tr class="cart-shipping-calculated">';
 
                 row += '<td><strong>';
 
                 if (ShoppingCart.settings.cart.addShippingAndTaxesCostToTotal) {
-                    row += window.PLUGIN_SHOPPINGCART.translations.INCLUDING_SHIPMENT;
+                    row += window.PLUGIN_SHOPPINGCART.translations.INCLUDING_SHIPPING;
                 } else {
                     row += window.PLUGIN_SHOPPINGCART.translations.SHIPPING;
                 }
@@ -704,17 +725,17 @@
                     row += ' ';
 
                     if (ShoppingCart.settings.cart.addShippingAndTaxesCostToTotal) {
-                        row += ShoppingCart.calculateTotalPriceIncludingTaxesAndShipment();
+                        row += ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
                     } else {
-                        row += ShoppingCart.shipmentPrice;
+                        row += ShoppingCart.shippingPrice;
                     }
 
                 } else {
 
                     if (ShoppingCart.settings.cart.addShippingAndTaxesCostToTotal) {
-                        row += ShoppingCart.calculateTotalPriceIncludingTaxesAndShipment();
+                        row += ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
                     } else {
-                        row += ShoppingCart.shipmentPrice;
+                        row += ShoppingCart.shippingPrice;
                     }
 
                     row += ' ';
@@ -723,7 +744,6 @@
                 }
 
                 row += '</td>';
-                row += '<td></td>';
                 row += '</tr>';
             }
 
@@ -776,9 +796,9 @@
             //     row += '</tr>';
             // } else {
 
-                var totalPriceIncludingTaxesAndShipment = ShoppingCart.calculateTotalPriceIncludingTaxesAndShipment();
+                var totalPriceIncludingTaxesAndShipping = ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
 
-                if (totalPriceIncludingTaxesAndShipment) {
+                if (totalPriceIncludingTaxesAndShipping) {
                     row += '<tr class="total-line">';
                     row += '<td><strong>' + window.PLUGIN_SHOPPINGCART.translations.TOTAL + '</strong></td>';
                     row += '<td></td>';
@@ -787,15 +807,14 @@
                     row += '<td>';
 
                     if (ShoppingCart.showCurrencyBeforePrice()) {
-                        row += ShoppingCart.currentCurrencySymbol() + ' ' + totalPriceIncludingTaxesAndShipment;
+                        row += ShoppingCart.currentCurrencySymbol() + ' ' + totalPriceIncludingTaxesAndShipping;
                     } else {
-                        row += totalPriceIncludingTaxesAndShipment + ' ' + ShoppingCart.currentCurrencySymbol();
+                        row += totalPriceIncludingTaxesAndShipping + ' ' + ShoppingCart.currentCurrencySymbol();
                     }
 
                     row += '</td>';
 
 
-                    row += '<td></td>';
                     row += '</tr>';
                 }
             // }

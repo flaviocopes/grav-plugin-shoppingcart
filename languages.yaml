@@ -24,8 +24,8 @@ en:
     CHECKOUT_PROVINCE: Province
     CHECKOUT_BUTTON_GO_TO_STEP_2: Continue to next step
     CHECKOUT_STEP2_SHIPPING_PAYMENT_DETAILS_TITLE: Step 2: Shipping and Payment
-    CHECKOUT_CHOOSE_SHIPMENT_METHOD: Choose Shipping Method
-    CHECKOUT_CHOOSE_SHIPMENT_METHOD_DESC: Please select how you would like your products to be delivered.
+    CHECKOUT_CHOOSE_SHIPPING_METHOD: Choose Shipping Method
+    CHECKOUT_CHOOSE_SHIPPING_METHOD_DESC: Please select how you would like your products to be delivered.
     CHECKOUT_CHOOSE_PAYMENT_METHOD: Choose Payment Method
     CHECKOUT_CHOOSE_PAYMENT_METHOD_QUESTION: How would you like to pay for your order
     CHECKOUT_PAYMENT_SECURE_NOTE: All transactions are secure and encrypted, and we never store your credit card information. To learn more, please view our privacy policy.
@@ -46,14 +46,14 @@ en:
     REMOVE: Remove
     UPDATE_QUANTITIES: Update quantities
     CHECKOUT: Checkout
-    INCLUDING_SHIPMENT: Including shipment
+    INCLUDING_SHIPPING: Including shipping
     ORDER_NOT_PAID_YET: We're processing the payment. If you're coming from PayPal, refresh this page in a few seconds, or contact us if this page shows up again.
     ORDER_CANCELLED: Order cancelled
     YOU_CANCELLED_THE_ORDER: You cancelled the order
     VALUE_NOT_ACCEPTABLE: Value of the quantity field not acceptable
     QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE: Quantity exceeds the maximum allowed value
     CHECKOUT_PAYMENT_METHOD: Payment Method
-    CHECKOUT_SHIPMENT_METHOD: Shipping Method
+    CHECKOUT_SHIPPING_METHOD: Shipping Method
     THANK_YOU: Thank you for your order
     OFFLINE_ORDER_TEXT: We'll get in touch soon to confirm the order and payment.
     CHOOSE_AN_OPTION: Choose an option

@@ -18,7 +18,7 @@ shipping:
             allowedCountries: ['*']
             price: 20
         -
-            name: 'Ordinary shipment'
+            name: 'Ordinary shipping'
             price: 10
             starting_order_price: 0
             ending_order_price: 100000
@@ -48,6 +48,7 @@ cart:
     showQuantityChooserInProductPage: 1
     limitDigitalProductsToSingleQuantity: 0
     maximumTotalQuantityValue:
+    addShippingAndTaxesCostToTotal: true
 
 countries:
     -

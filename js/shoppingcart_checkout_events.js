@@ -1,10 +1,10 @@
 (function(ShoppingCart) {
 
     /***********************************************************/
-    /* Generate the selected shipment price
+    /* Generate the selected shipping price
     /***********************************************************/
-    jQuery(document).on('change', '.js__shipment__method', function(event) {
-        ShoppingCart.generateShipmentPrice();
+    jQuery(document).on('change', '.js__shipping__method', function(event) {
+        ShoppingCart.generateShippingPrice();
     });
 
     /***********************************************************/
@@ -57,13 +57,13 @@
                 };
             } else {
                 shippingMethod = {
-                    method: jQuery('.js__shipment__method').val(),
-                    cost: ShoppingCart.shipmentPrice
+                    method: jQuery('.js__shipping__method').val(),
+                    cost: ShoppingCart.shippingPrice
                 };
             }
 
             //Store in localstorage
-            storejs.set('grav-shoppingcart-shipment-method', JSON.stringify(shippingMethod));
+            storejs.set('grav-shoppingcart-shipping-method', JSON.stringify(shippingMethod));
             storejs.set('grav-shoppingcart-payment-method', JSON.stringify({
                 method: paymentMethod
             }));
@@ -85,10 +85,10 @@
             }
 
             //////////////////////////////////////////////////////////
-            //Add shipment costs to the order price
+            //Add shipping costs to the order price
             //////////////////////////////////////////////////////////
-            ShoppingCart.generateShipmentPrice();
-            orderPrice = parseFloat(parseFloat(orderPrice) + parseFloat(ShoppingCart.shipmentPrice)).toFixed(2);
+            ShoppingCart.generateShippingPrice();
+            orderPrice = parseFloat(parseFloat(orderPrice) + parseFloat(ShoppingCart.shippingPrice)).toFixed(2);
             ShoppingCart.totalOrderPrice = orderPrice;
 
             //////////////////////////////////////////////////////////
@@ -105,7 +105,7 @@
                 name: ShoppingCart.settings.payment.methods.stripe.name,
                 description: ShoppingCart.settings.payment.methods.stripe.description,
                 email: JSON.parse(storejs.get('grav-shoppingcart-person-address')).email,
-                amount: ShoppingCart.calculateTotalPriceIncludingTaxesAndShipment().toString().replace('.', ''),
+                amount: ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping().toString().replace('.', ''),
                 currency: ShoppingCart.settings.general.defaultCurrency
             });
 

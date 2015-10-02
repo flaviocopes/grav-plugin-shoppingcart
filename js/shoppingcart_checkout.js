@@ -9,7 +9,7 @@
             shippingMethods[index] = ShoppingCart.settings.shipping.methods[index];
         }
         
-        var select = document.getElementById('js__shipment__method');
+        var select = document.getElementById('js__shipping__method');
 
         var methodIsAllowedInCountry = function methodIsAllowedInCountry(method, country) {
             for (index in method.allowedCountries) {
@@ -117,10 +117,10 @@
             jQuery('#checkout-choose-shipping-block').show();
         } else {
 
-            //Calculate shipment methods for the shipping country
+            //Calculate shipping methods for the shipping country
             select.options.length = 0;
 
-            ShoppingCart.generateShipmentPrice();
+            ShoppingCart.generateShippingPrice();
 
             for (index in shippingMethods) {
                 if (shippingMethods.hasOwnProperty(index)) {
@@ -145,10 +145,10 @@
 
         //TODO
         // if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
-        //     //Digital only order. Don't show shipping options and set shipment price to 0
+        //     //Digital only order. Don't show shipping options and set shipping price to 0
         //     jQuery('#checkout-choose-shipping-block').hide();
         //     jQuery('#checkout-choose-payment-block').removeClass('span6');
-        //     ShoppingCart.shipmentPrice = 0;
+        //     ShoppingCart.shippingPrice = 0;
         // }
 
     };
@@ -190,7 +190,7 @@
                 ShoppingCart.shippingAddress.state = jQuery('.js__billing__state').val();
             }
             ShoppingCart.calculateTotalPriceIncludingTaxes();
-            ShoppingCart.calculateTotalPriceIncludingTaxesAndShipment();
+            ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
             ShoppingCart.renderCart();
         };
 
@@ -211,7 +211,7 @@
 
             ShoppingCart.populateShippingOptions();
 
-            ShoppingCart.generateShipmentPrice();
+            ShoppingCart.generateShippingPrice();
 
             if (jQuery('#js__billing__country').val() === 'US') {
                 jQuery('#js__billing__state__control').removeClass('hidden');
@@ -221,7 +221,7 @@
                 jQuery('#js__billing__province__control').removeClass('hidden');
             }
             ShoppingCart.calculateTotalPriceIncludingTaxes();
-            ShoppingCart.calculateTotalPriceIncludingTaxesAndShipment();
+            ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
             ShoppingCart.renderCart();
         };
 
@@ -258,7 +258,7 @@
                 var order = {
                     products: storejs.get('grav-shoppingcart-basket-data'),
                     address: storejs.get('grav-shoppingcart-person-address'),
-                    shipment: storejs.get('grav-shoppingcart-shipment-method'),
+                    shipping: storejs.get('grav-shoppingcart-shipping-method'),
                     payment: storejs.get('grav-shoppingcart-payment-method'),
                     token: JSON.parse(storejs.get('grav-shoppingcart-order-token')).token,
                     stripeToken: token.id,

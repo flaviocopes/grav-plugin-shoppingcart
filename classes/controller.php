@@ -125,7 +125,7 @@ class ShoppingCartController
             'order' => json_encode(array(
                 'products' => $this->post['products'],
                 'address' => $this->post['address'],
-                'shipment' => $this->post['shipment'],
+                'shipping' => $this->post['shipping'],
                 'payment' => $this->post['payment'],
                 'token' => $this->post['token'],
                 'paid' => true,
