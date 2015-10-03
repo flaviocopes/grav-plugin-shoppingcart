@@ -123,7 +123,7 @@
     /* Save the shopping cart to the local storage
     /***********************************************************/
     ShoppingCart._saveCartToLocalstorage = function _saveCartToLocalstorage() {
-        storejs.set('grav-shoppingcart-basket-data', JSON.stringify(ShoppingCart.items));
+        storejs.set('grav-shoppingcart-basket-data', ShoppingCart.items);
         storejs.set('grav-shoppingcart-basket-data-updatetime', new Date().getTime());
     };
 

@@ -101,7 +101,7 @@
             }
 
             if (typeof storejs.get('grav-shoppingcart-basket-data') !== 'undefined') {
-                var items = JSON.parse(storejs.get('grav-shoppingcart-basket-data'));
+                var items = storejs.get('grav-shoppingcart-basket-data');
                 var itemsInCart = [];
 
                 items.forEach(function(item) {

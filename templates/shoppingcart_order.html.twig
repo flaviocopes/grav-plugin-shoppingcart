@@ -1,19 +1,15 @@
 {% extends 'partials/shoppingcart_base.html.twig' %}
 
-{% block javascripts %}
-{% endblock %}
-
 {% block content %}
 
     {% if uri.param('token') == order_token %}
 
         <h1>Thanks for your order!</h1>
 
-        <p>ORDER ID: {{ uri.param('id') }}</p>
-        <p>ORDER Token: {{ uri.param('token') }}</p>
+        <!-- <p>ORDER ID: {{ uri.param('id') }}</p>
+        <p>ORDER Token: {{ uri.param('token') }}</p> -->
 
-        <h2>Products ordered</h2>
-            {{dump(order_products)}}
+        <h3>Products ordered</h3>
 
         {% for product_ordered in order_products %}
             <li>

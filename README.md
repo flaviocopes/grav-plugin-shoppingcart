@@ -79,6 +79,10 @@ urls:
 
 You can configure pretty much everything there. Add your own shipping methods too.
 
+# Visualizing orders
+
+Orders are saved in the `user/data/shoppingcart` folder. You can view them through the Data Manager plugin.
+
 # Future
 
 In the future there will most probably be a Pro version with more advanced features such as stock management, digital downloads, product variations, shipping cost calculation etc. Not yet started/planned anything related to that.
@@ -89,6 +93,7 @@ Listing a few things here I want to do in the free version:
 
 - Solve all bugs (of course)
 - Add email notifications
+- Better visualization of the orders in the Data Manager
 - Add quantity selection in product detail
 - Improve tax management
 - Improve shipping options

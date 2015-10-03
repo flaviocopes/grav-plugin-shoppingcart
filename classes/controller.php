@@ -117,24 +117,36 @@ class ShoppingCartController
 
         /** @var Twig $twig */
         $twig = $this->grav['twig'];
-        $vars = array(
-            'order' => json_encode(array(
-                'products' => $this->post['products'],
-                'address' => $this->post['address'],
-                'shipping' => $this->post['shipping'],
-                'payment' => $this->post['payment'],
-                'token' => $this->post['token'],
-                'paid' => true,
-                'paid_on' => $this->udate($format),
-                'total_paid' => $this->post['total_paid'],
-            ))
-        );
+
+        $body = Yaml::dump(array(
+            'products' => $this->post['products'],
+            'address' => $this->post['address'],
+            'shipping' => $this->post['shipping'],
+            'payment' => $this->post['payment'],
+            'token' => $this->post['token'],
+            'paid' => true,
+            'paid_on' => $this->udate($format),
+            'total_paid' => $this->post['total_paid'],
+        ));
+
+        // $vars = array(
+        //     'order' => json_encode(array(
+        //         'products' => $this->post['products'],
+        //         'address' => $this->post['address'],
+        //         'shipping' => $this->post['shipping'],
+        //         'payment' => $this->post['payment'],
+        //         'token' => $this->post['token'],
+        //         'paid' => true,
+        //         'paid_on' => $this->udate($format),
+        //         'total_paid' => $this->post['total_paid'],
+        //     ))
+        // );
 
         $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename);
-        $body = $twig->processString(
-            '{{order}}',
-            $vars
-        );
+        // $body = $twig->processString(
+        //     '{{order}}',
+        //     $vars
+        // );
 
         $file->save($body);
 

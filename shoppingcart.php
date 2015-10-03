@@ -7,6 +7,7 @@ use Grav\Common\Page\Page;
 use Grav\Common\Page\Types;
 use RocketTheme\Toolbox\Event\Event;
 use RocketTheme\Toolbox\File\File;
+use Symfony\Component\Yaml\Yaml;
 
 class ShoppingcartPlugin extends Plugin
 {
@@ -107,19 +108,21 @@ class ShoppingcartPlugin extends Plugin
         $ext = '.txt';
         $filename = $uri->param('id');
         $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename . $ext);
-        $order = $file->content();
+        $order = Yaml::parse($file->content());
 
         if (!$order) {
-            //Order not valid. Manage case
+            //Order not valid.
+            //TODO: Manage case
         }
 
         /** @var Twig $twig */
         $twig = $this->grav['twig'];
-        $twig->twig_vars['order_products'] = json_decode(json_decode($order)->products);
-        $twig->twig_vars['order_address'] = json_decode(json_decode($order)->address);
-        $twig->twig_vars['order_total_paid'] = json_decode($order)->total_paid;
-        $twig->twig_vars['order_token'] = json_decode($order)->token;
-        $twig->twig_vars['order_paid'] = json_decode($order)->paid;
+
+        $twig->twig_vars['order_products'] = $order['products'];
+        $twig->twig_vars['order_address'] = $order['address'];
+        $twig->twig_vars['order_total_paid'] = $order['total_paid'];
+        $twig->twig_vars['order_token'] = $order['token'];
+        $twig->twig_vars['order_paid'] = $order['paid'];
         $twig->twig_vars['currency'] = $this->config->get('plugins.shoppingcart.general.currency');
     }
 

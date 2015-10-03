@@ -63,13 +63,9 @@
             }
 
             //Store in localstorage
-            storejs.set('grav-shoppingcart-shipping-method', JSON.stringify(shippingMethod));
-            storejs.set('grav-shoppingcart-payment-method', JSON.stringify({
-                method: paymentMethod
-            }));
-            storejs.set('grav-shoppingcart-order-token', JSON.stringify({
-                token: token
-            }));
+            storejs.set('grav-shoppingcart-shipping-method', shippingMethod);
+            storejs.set('grav-shoppingcart-payment-method', { method: paymentMethod });
+            storejs.set('grav-shoppingcart-order-token', { token: token });
 
             //Calculate the order price
             var orderPrice = ShoppingCart.totalOrderPriceIncludingTaxes;
@@ -104,7 +100,7 @@
             ShoppingCart.stripeHandler.open({
                 name: ShoppingCart.settings.payment.methods.stripe.name,
                 description: ShoppingCart.settings.payment.methods.stripe.description,
-                email: JSON.parse(storejs.get('grav-shoppingcart-person-address')).email,
+                email: storejs.get('grav-shoppingcart-person-address').email,
                 amount: ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping().toString().replace('.', ''),
                 currency: ShoppingCart.settings.general.currency
             });
@@ -177,7 +173,7 @@
 
             if (status === 0) { //valid email
                 ShoppingCart.shippingAddress = address;
-                storejs.set('grav-shoppingcart-person-address', JSON.stringify(address)); //Store address info in cookie
+                storejs.set('grav-shoppingcart-person-address', address); //Store address info in cookie
                 _goOnWithCheckout();
 
             } else {

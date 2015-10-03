@@ -8,7 +8,7 @@
         for (index in ShoppingCart.settings.shipping.methods) {
             shippingMethods[index] = ShoppingCart.settings.shipping.methods[index];
         }
-        
+
         var select = document.getElementById('js__shipping__method');
 
         var methodIsAllowedInCountry = function methodIsAllowedInCountry(method, country) {
@@ -157,7 +157,7 @@
     /* Setup the checkout page
     /***********************************************************/
     ShoppingCart.setupCheckout = function setupCheckout() {
-        if (!storejs.get('grav-shoppingcart-basket-data') || JSON.parse(storejs.get('grav-shoppingcart-basket-data')).length == 0) {
+        if (!storejs.get('grav-shoppingcart-basket-data') || storejs.get('grav-shoppingcart-basket-data').length == 0) {
             jQuery('.js__checkout__block').html(window.PLUGIN_SHOPPINGCART.translations.NO_ITEMS_IN_CART);
             jQuery('.js__checkout__block').show();
             return;
@@ -258,7 +258,7 @@
                     address: storejs.get('grav-shoppingcart-person-address'),
                     shipping: storejs.get('grav-shoppingcart-shipping-method'),
                     payment: storejs.get('grav-shoppingcart-payment-method'),
-                    token: JSON.parse(storejs.get('grav-shoppingcart-order-token')).token,
+                    token: storejs.get('grav-shoppingcart-order-token').token,
                     stripeToken: token.id,
                     amount: ShoppingCart.totalOrderPrice.toString().replace('.', ''),
                     total_paid: ShoppingCart.totalOrderPrice,

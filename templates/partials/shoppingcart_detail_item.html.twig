@@ -48,16 +48,9 @@
     title: "{{ page.header.title }}",
     id: "{{ md5(page.header.title) }}",
     price: "{{ page.header.price }}",
-    normal_price: "{{ page.header.price }}",
     defaultPhoto: "{{ shoppingcart_image|url_encode }}",
-    quantity_available: "{{ page.header.quantity_available }}",
     type: "{{ page.header.type }}",
-    hasFiles: "{{ page.header.hasFiles }}",
-    size_weight: "{{ page.header.size_weight }}",
     url: "{{ page.url|url_encode }}",
-    // hasFiles: '<?php echo $product->hasFiles ?>',
-    // size_weight: '<?php echo $product->size_weight ?>',
-    // openOption: <?php if ($product->openOption) : ?>JSON.parse('<?php echo $product->openOption ?>')<?php else : ?>null<?php endif ?>
   };
 
   var interval = setInterval(function() {
