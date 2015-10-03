@@ -42,32 +42,31 @@
     /* Handle change the quantity box in the cart
     /* #todo
     /***********************************************************/
-    // jQuery(document).on('keyup', '.js__shoppingcart__quantity-box-cart', function() {
-    //     var element_id = jQuery(this).data('id');
-    //     var new_quantity = jQuery(this).val();
-    //     var isInt = function isInt(n) {
-    //         return n % 1 == 0;
-    //     };
+    jQuery(document).on('keyup', '.js__shoppingcart__quantity-box-cart', function() {
+        var element_id = jQuery(this).data('id');
+        var new_quantity = jQuery(this).val();
+        var isInt = function isInt(n) {
+            return n % 1 == 0;
+        };
 
-    //     if (!isInt(new_quantity)) {
-    //         alert(window.PLUGIN_SHOPPINGCART.translations.VALUE_NOT_ACCEPTABLE);
-    //         jQuery(this).val(ShoppingCart.items[element_id].quantity);
-    //         return;
-    //     }
+        if (!isInt(new_quantity)) {
+            alert(window.PLUGIN_SHOPPINGCART.translations.VALUE_NOT_ACCEPTABLE);
+            jQuery(this).val(ShoppingCart.items[element_id].quantity);
+            return;
+        }
 
-    //     if (parseInt(new_quantity) > ShoppingCart.settings.cart.maximumTotalQuantityValue) {
-    //         alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximumTotalQuantityValue);
-    //         jQuery(this).val(ShoppingCart.items[element_id].quantity);
-    //         return;
-    //     }
+        if (parseInt(new_quantity) > ShoppingCart.settings.cart.maximumTotalQuantityValue) {
+            alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximumTotalQuantityValue);
+            jQuery(this).val(ShoppingCart.items[element_id].quantity);
+            return;
+        }
 
-    //     ShoppingCart.items[element_id].quantity = new_quantity;
-    //     ShoppingCart._saveCartToLocalstorage();
-    //    // ShoppingCart.calculateItemsLeft();
-    //     ShoppingCart.renderCart();
+        ShoppingCart.items[element_id].quantity = new_quantity;
+        ShoppingCart._saveCartToLocalstorage();
+        ShoppingCart.renderCart();
 
-    //     jQuery(".js__shoppingcart__quantity-box-cart[data-id='" + element_id + "']").focus().val(jQuery(".js__shoppingcart__quantity-box-cart[data-id='" + element_id + "']").val()); //this is to avoid browser auto-selecting text
-    // });
+        jQuery(".js__shoppingcart__quantity-box-cart[data-id='" + element_id + "']").focus().val(jQuery(".js__shoppingcart__quantity-box-cart[data-id='" + element_id + "']").val()); //this is to avoid browser auto-selecting text
+    });
 
     /***********************************************************/
     /* Handle show discount code box

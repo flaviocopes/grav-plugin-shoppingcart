@@ -119,10 +119,10 @@
         /***********************************************************/
         var renderCart = function renderCart() {
             var interval = setInterval(function() {
-                if (ShoppingCart.items) { // && ShoppingCart.settings) { //TODO
+                if (ShoppingCart.items) {
+                    clearInterval(interval);
                     setTimeout(function() {
                         ShoppingCart.renderCart();
-                        clearInterval(interval);
                     }, 300);
                 }
             }, 200);

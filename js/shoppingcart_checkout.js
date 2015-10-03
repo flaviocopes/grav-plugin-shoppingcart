@@ -225,9 +225,7 @@
             ShoppingCart.renderCart();
         };
 
-        //TODO
-        //jQuery("#js__billing__country").val(ShoppingCart.settings.general.defaultCountry || 'US');
-        jQuery("#js__billing__country").val('US');
+        jQuery("#js__billing__country").val(ShoppingCart.settings.general.defaultCountry || 'US');
         _countryChanged();
 
         if ((ShoppingCart.settings.general.defaultCountry || 'US') === 'US') {

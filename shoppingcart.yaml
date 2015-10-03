@@ -1,11 +1,9 @@
 enabled: true
 
 general:
-    defaultTypeOfProduct: 'physical'
-    measurementSystem: 'kilograms'
-    defaultCurrency: 'USD'
-    productTaxes: 'included'
-    defaultCountry: 'IT'
+    currency: 'USD' # The shop currency
+    defaultCountry: 'US' # Default country to be shown during Checkout
+    productTaxes: 'excluded'
 
 shipping:
     methods:
@@ -20,60 +18,40 @@ shipping:
         -
             name: 'Ordinary shipping'
             price: 10
-            starting_order_price: 0
-            ending_order_price: 100000
             allowedCountries: ['*']
+
 urls:
-    baseURL: /
-    checkoutURL: checkout
-    saveOrderURL: save_order
-    orderURL: order
+    baseURL: / # Change to your site subfolder is the site is not running in the domain root
+    checkoutURL: checkout # The checkout page URL. Change if conflicting with another route
+    saveOrderURL: save_order # The save order page URL. Change if conflicting with another route
+    orderURL: order # The order visualization page URL. Change if conflicting with another route
 
 ui:
-    currencySymbolPosition: 'after'
-    productsListLayout: '2-columns'
-    categoriesListLayout: '2-columns'
-    orderingInProductList: 'title'
-    orderingInProductListDirection: 'ASC'
-    loadBootstrap: true
-    hidePricesInProductsList: false
-    useLightbox: true
-    built_in_css: true
+    currencySymbolPosition: 'after' # Show currency `before` of `after` the price
+    useOwnCSS: true # Add our own CSS. Disable if you're using your own
 
 cart:
-    addToCartInList: 0
-    maximumQuantityValue: 100
-    addToCartInList: 0
-    allowEditingQuantityFromCart: 0
-    showQuantityChooserInProductPage: 1
-    limitDigitalProductsToSingleQuantity: 0
-    maximumTotalQuantityValue:
-    addShippingAndTaxesCostToTotal: true
+    allowEditingQuantityFromCart: 0 # Enable to allow editing a product quantity from the cart
+    maximumTotalQuantityValue: # Set if you want a global limit to the ordered products
+    addShippingAndTaxesCostToTotal: true #
 
-countries:
+countries: # Set countries where people can buy from, and corresponding taxes
     -
         readableName: 'United States'
         name: 'US'
-        tax_percentage: '10'
+        tax_percentage: '10' # If taxes are not factored in the product price, add them at checkout with this percentage
         allow: true
     -
         readableName: 'All unlisted countries'
-        name: '*'
-        tax_percentage: '0'
+        name: '*' # `*` identifies all countries
+        tax_percentage: '0' # If taxes are not factored in the product price, add them at checkout with this percentage
         allow: true
 
 payment:
     methods:
         stripe:
             name: 'Stripe'
-            description: 'Test description'
+            description: 'Test description' # The description appearing in the payment popup
             enabled: true
-            secretKey: 'sk_test_4okloV9Jsu3IiBSc4Y3zHXeZ'
-            publicKey: 'pk_test_8OfS5r77VXHMXE7Nszjlzwc6'
-
-notifications:
-    emailTemplateNewOrderSubject: "New Order"
-    emailTemplateOrderConfirmationSubject: "Order Confirmation"
-    emailTemplateNewOrderMessage: "<p>Hi, {CLIENT_NAME} ({CLIENT_EMAIL}) just placed an order.</p><div>&nbsp;</div><div>Here&#39;s the order summary:<div>&nbsp;</div><div>{PRODUCTS_BOUGHT_TABLE}</div></div>"
-    emailTemplateOrderConfirmationMessage: "<p>Hi {CLIENT_NAME}, thanks for completing your order.</p><div>&nbsp;</div><div><span>Here is the order summary:</span></div><div><span>{PRODUCTS_BOUGHT_TABLE}</span></div>"
-    emailAddressOwner: "your.email@your.server.com"
+            secretKey: '' # Add your own secret key
+            publicKey: '' # Add your own public key

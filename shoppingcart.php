@@ -26,6 +26,8 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onPluginsInitialized()
     {
+        require_once __DIR__ . '/vendor/autoload.php';
+
         $this->baseURL = $this->config->get('plugins.shoppingcart.urls.baseURL');
         $this->checkoutURL = $this->baseURL . $this->config->get('plugins.shoppingcart.urls.checkoutURL');
         $this->saveOrderURL = $this->baseURL . $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
@@ -118,7 +120,7 @@ class ShoppingcartPlugin extends Plugin
         $twig->twig_vars['order_total_paid'] = json_decode($order)->total_paid;
         $twig->twig_vars['order_token'] = json_decode($order)->token;
         $twig->twig_vars['order_paid'] = json_decode($order)->paid;
-        $twig->twig_vars['currency'] = $this->config->get('plugins.shoppingcart.general.defaultCurrency');
+        $twig->twig_vars['currency'] = $this->config->get('plugins.shoppingcart.general.currency');
     }
 
     private function addPage($url, $filename)
@@ -335,11 +337,8 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onTwigSiteVariables()
     {
-        if ($this->config->get('plugins.shoppingcart.ui.built_in_css')) {
-
-            $this->grav['assets']
-                ->add('plugin://shoppingcart/css/shoppingcart.css');
-
+        if ($this->config->get('plugins.shoppingcart.ui.useOwnCSS')) {
+            $this->grav['assets']->add('plugin://shoppingcart/css/shoppingcart.css');
         }
     }
 

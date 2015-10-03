@@ -106,7 +106,7 @@
                 description: ShoppingCart.settings.payment.methods.stripe.description,
                 email: JSON.parse(storejs.get('grav-shoppingcart-person-address')).email,
                 amount: ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping().toString().replace('.', ''),
-                currency: ShoppingCart.settings.general.defaultCurrency
+                currency: ShoppingCart.settings.general.currency
             });
 
         };
@@ -206,19 +206,8 @@
     /***********************************************************/
     jQuery(function() {
         jQuery('.js__checkout__block').hide();
-
-        var interval = setInterval(function() {
-        // if (ShoppingCart.settings != null) {
-          clearInterval(interval);
-          if (window.ShoppingCart && ShoppingCart.items) {
-            ShoppingCart.setupCheckout();
-            ShoppingCart.populateShippingOptions();
-            // <?php if ($paymentMethodStripe) : ?>
-            //   configureStripe();
-            // <?php endif ?>
-          }
-        // }
-        }, 50);
+        ShoppingCart.setupCheckout();
+        ShoppingCart.populateShippingOptions();
     });
 
 })(window.ShoppingCart);

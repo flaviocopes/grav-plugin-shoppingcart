@@ -9,8 +9,6 @@ use Symfony\Component\Yaml\Yaml;
 use RocketTheme\Toolbox\File\File;
 
 
-// use RocketTheme\Toolbox\Session\Message;
-
 class ShoppingCartController
 {
     /**
@@ -59,9 +57,8 @@ class ShoppingCartController
      */
     public function taskPay()
     {
-        require_once('vendor/autoload.php');
 
-        $currency = $this->grav['config']->get('plugins.shoppingcart.general.defaultCurrency');
+        $currency = $this->grav['config']->get('plugins.shoppingcart.general.currency');
         $secretKey = $this->grav['config']->get('plugins.shoppingcart.payment.methods.stripe.secretKey');
         $description = $this->grav['config']->get('plugins.shoppingcart.payment.methods.stripe.description');
 
@@ -69,7 +66,6 @@ class ShoppingCartController
         $stripeToken = $this->post['stripeToken'];
 
         //process payment
-        
         \Stripe\Stripe::setApiKey($secretKey);
 
         // Create the charge on Stripe's servers - this will charge the user's card
