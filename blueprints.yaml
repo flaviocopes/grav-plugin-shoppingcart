@@ -1,5 +1,5 @@
 name: Shopping Cart
-version: 0.1.0
+version: v0.1.0-alpha
 description: "This plugin turns your Grav site into a shopping cart"
 icon: shopping-cart
 author:
@@ -13,7 +13,7 @@ bugs: https://github.com/flaviocopes/grav-plugin-shoppingcart/issues
 license: MIT
 
 form:
-  validation: strict
+  validation: loose
   fields:
     enabled:
       type: toggle
