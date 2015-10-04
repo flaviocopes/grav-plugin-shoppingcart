@@ -266,13 +266,13 @@
                 };
 
                 jQuery.ajax({
-                    url: ShoppingCart.settings.urls.baseURL + ShoppingCart.settings.urls.saveOrderURL + '?task=order.pay',
+                    url: ShoppingCart.settings.baseURL + ShoppingCart.settings.urls.saveOrderURL + '?task=order.pay',
                     data: order,
                     type: 'POST'
                 })
                 .success(function(orderId) {
                     ShoppingCart.clearCart();
-                    window.location = ShoppingCart.settings.urls.baseURL + ShoppingCart.settings.urls.orderURL + '/id:' + orderId.replace('.txt', '') + '/token:' + order.token;
+                    window.location = ShoppingCart.settings.baseURL + ShoppingCart.settings.urls.orderURL + '/id:' + orderId.replace('.txt', '') + '/token:' + order.token;
                 })
                 .error(function() {
                     alert('Payment not successful. Please contact us.');

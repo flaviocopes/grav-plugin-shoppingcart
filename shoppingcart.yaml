@@ -21,10 +21,9 @@ shipping:
             allowedCountries: ['*']
 
 urls:
-    baseURL: / # Change to your site subfolder is the site is not running in the domain root
-    checkoutURL: checkout # The checkout page URL. Change if conflicting with another route
-    saveOrderURL: save_order # The save order page URL. Change if conflicting with another route
-    orderURL: order # The order visualization page URL. Change if conflicting with another route
+    checkoutURL: /checkout # The checkout page URL. Change if conflicting with another route
+    saveOrderURL: /save_order # The save order page URL. Change if conflicting with another route
+    orderURL: /order # The order visualization page URL. Change if conflicting with another route
 
 ui:
     currencySymbolPosition: 'after' # Show currency `before` of `after` the price

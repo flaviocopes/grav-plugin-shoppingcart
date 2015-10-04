@@ -16,7 +16,7 @@ You should now have all the plugin files under
 
 # Usage
 
-Since many themes already provide styling for Snipcart, the plugin follows the Snipcart naming conventions. So just create a page of type `shoppingcart.md` that contains a categories list as `shoppingcart_category.md` pages, which in turn has children pages as `shoppingcart_detail.md`.
+Since many themes already provide styling for Snipcart, the plugin follows the Snipcart naming conventions. Just, make sure you renaming "snipcart" to "shoppingcart". So, just create a page of type `shoppingcart.md` that contains a categories list as `shoppingcart_category.md` pages, which in turn has children pages as `shoppingcart_detail.md`.
 
 In short
 
@@ -41,7 +41,7 @@ In short
 			shoppingcart_detail.md
 ```
 
-You can use the [Shop Site Skeleton](https://github.com/getgrav/grav-skeleton-shop-site) to jump start.
+You can use the [Shop Site Skeleton](https://github.com/getgrav/grav-skeleton-shop-site) to jump start with the pages structure, and change the markdown page names.
 
 Product Pages using `shoppingcart_detail.md` will follow this structure:
 
@@ -68,13 +68,6 @@ payment:
         stripe:
             secretKey: 'sk_test_4okloV9Jsu3IiBSc42ke2iek'
             publicKey: 'pk_test_8OfS5r77VXHMXE7N2j3i2j2i'
-```
-
-Also add your own base URL if the site is not running in the domain root:
-
-```
-urls:
-    baseURL: /grav-site
 ```
 
 You can configure pretty much everything there. Add your own shipping methods too.

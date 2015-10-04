@@ -78,7 +78,7 @@
             }
         }
 
-        window.location.href = PLUGIN_SHOPPINGCART.settings.urls.baseURL + PLUGIN_SHOPPINGCART.settings.urls.checkoutURL;
+        window.location.href = PLUGIN_SHOPPINGCART.settings.baseURL + PLUGIN_SHOPPINGCART.settings.urls.checkoutURL;
     };
 
     /***********************************************************/
@@ -493,7 +493,7 @@
 
         if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
             row += '<th class="cart-product-remove-button">';
-            row += '<a class="btn btn-small js__shoppingcart__remove-from-cart" data-id="' + i + '">' + window.PLUGIN_SHOPPINGCART.translations.REMOVE + '</a>';
+            row += window.PLUGIN_SHOPPINGCART.translations.REMOVE;
             row += '</th>';
         }
 
@@ -583,7 +583,7 @@
         row = '<tr>';
 
         if (ShoppingCart.currentPageIsProduct) {
-            row += '<td class="goback"><a class="btn btn-success js__shoppingcart__continue-shopping">' + window.PLUGIN_SHOPPINGCART.translations.CONTINUE_SHOPPING + '</a></td>';
+            row += '<td class="goback"><a href="#" class="btn btn-success js__shoppingcart__continue-shopping">' + window.PLUGIN_SHOPPINGCART.translations.CONTINUE_SHOPPING + '</a></td>';
         } else {
             row += '<td class="empty"></td>';
         }
