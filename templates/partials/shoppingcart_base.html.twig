@@ -1,6 +1,7 @@
 {% extends 'partials/base.html.twig' %}
 
 {% block javascripts %}
+    {{ parent() }}
     {% do assets.addJs('plugin://shoppingcart/js/lib/store.min.js') %}
     {% do assets.addJs('plugin://shoppingcart/js/shoppingcart.js') %}
     {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_cart.js') %}
