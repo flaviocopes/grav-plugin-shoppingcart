@@ -16,9 +16,16 @@ You should now have all the plugin files under
 
 # Usage
 
-Since many themes already provide styling for Snipcart, the plugin follows the Snipcart naming conventions. Just, make sure you renaming "snipcart" to "shoppingcart". So, just create a page of type `shoppingcart.md` that contains a categories list as `shoppingcart_category.md` pages, which in turn has children pages as `shoppingcart_detail.md`.
+Since many themes already provide styling for Snipcart, the plugin follows some Snipcart conventions.
+Just make sure you rename "snipcart" to "shoppingcart".
 
-In short
+So, to start with, just create a page of type `shoppingcart.md`.
+This page will contain a list of categories, provided by its subpages.
+The categories are pages of type `shoppingcart_category.md`.
+
+In turn, those pages have subpages of type `shoppingcart_detail.md`, which are the product pages.
+
+Here's an example of a possible page structure:
 
 ```
 01.shop
@@ -43,6 +50,42 @@ In short
 
 You can use the [Shop Site Skeleton](https://github.com/getgrav/grav-skeleton-shop-site) to jump start with the pages structure, and change the markdown page names.
 
+The main "Shop" page, with the list of the available categories, will follow this structure:
+
+```
+---
+title: Shop
+body_classes: fullwidth
+content:
+    items: @self.children
+    order:
+        by: title
+        dir: asc
+---
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat.
+```
+
+The category page will follow this structure:
+
+```
+---
+title: Geek Toys
+category: Geek Toys
+content:
+    items: @self.children
+    order:
+        by: title
+        dir: asc
+---
+
+# Geek Toys
+## Anime, Gaming, Movies, Comics, we have **all your toys**
+```
+
 Product Pages using `shoppingcart_detail.md` will follow this structure:
 
 ```
@@ -55,6 +98,8 @@ price: 19.99
 
 Product description
 ```
+
+
 
 # Configure the shopping cart options
 
@@ -78,7 +123,9 @@ Orders are saved in the `user/data/shoppingcart` folder. You can view them throu
 
 # Future
 
-In the future there will most probably be a Pro version with more advanced features such as stock management, digital downloads, product variations, shipping cost calculation etc. Not yet started/planned anything related to that.
+In the future there will probably be a Pro version with more advanced features such as stock management, digital downloads, product variations, shipping cost calculation etc.
+
+Not yet started/planned anything related to that.
 
 The focus now is on the free version.
 
