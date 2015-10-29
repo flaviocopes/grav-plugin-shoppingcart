@@ -8,7 +8,10 @@
     <div class="shoppingcart-thumb">
         {% if shoppingcart_image %}
             <a href="{{ page.url }}">{{ shoppingcart_image.cropResize(200,200).html('page.header.title','shoppingcart-thumb-image') }}</a>
+        {% else %}
+            <br><br><br>
         {% endif %}
+
         <span class="shoppingcart-price">
         ${{ page.header.price }}
         </span>

@@ -13,6 +13,8 @@
         <div class="shoppingcart-thumb">
             {% if shoppingcart_image %}
                 {{ shoppingcart_image.cropResize(400,400).html(page.header.title,'shoppingcart-thumb-image') }}
+            {% else %}
+                <br><br><br>
             {% endif %}
             <span class="shoppingcart-price">
             ${{ page.header.price }}
@@ -34,7 +36,6 @@
         <h1>{{ page.header.title }}</h1>
 
         <p>{{ page.content }}</p>
-
     </div>
 </div>
 
