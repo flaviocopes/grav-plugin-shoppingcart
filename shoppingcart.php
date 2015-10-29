@@ -157,10 +157,13 @@ class ShoppingcartPlugin extends Plugin
 
         /** @var Page $page */
         $page = $this->grav['page'];
-        if (isset($page->header()->shoppingcart)) {
-            $page->header()->shoppingcart = array_merge($defaults, $page->header()->shoppingcart);
-        } else {
-            $page->header()->shoppingcart = $defaults;
+
+        if ($page->header() != null) {
+            if (isset($page->header()->shoppingcart)) {
+                $page->header()->shoppingcart = array_merge($defaults, $page->header()->shoppingcart);
+            } else {
+                $page->header()->shoppingcart = $defaults;
+            }
         }
 
         $this->enable([
