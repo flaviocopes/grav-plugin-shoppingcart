@@ -139,4 +139,5 @@ Listing a few things here I want to do in the free version:
 - Improve shipping options
 - Add PayPal Standard Payments
 - Allow to set options in the Admin Panel
+- Use the Form plugin for the checkout form
 
