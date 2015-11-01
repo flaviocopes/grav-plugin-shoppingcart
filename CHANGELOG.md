@@ -1,3 +1,13 @@
+# v0.1.2
+## 29-10-2015
+
+1. [](#bugfix)
+    * Fix loading jQuery
+1. [](#improved)
+    * Improve readme
+1. [](#improved)
+    * When image is not present, avoid overlap of price and add button
+
 # v0.1.1
 ## 04-10-2015
 

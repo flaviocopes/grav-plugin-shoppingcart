@@ -12,10 +12,6 @@
     {{ parent() }}
 {% endblock %}
 
-{% block header_extra %}
-    {% include 'partials/shoppingcart_cart.html.twig' %}
-{% endblock %}
-
 {% block content %}
     {% if config.plugins.breadcrumbs.enabled %}
         {% include 'partials/breadcrumbs.html.twig' ignore missing %}

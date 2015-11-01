@@ -1,12 +1,6 @@
 {% set shoppingcart_image = page.media.images|first %}
 
-<div class="js__shoppingcart-cart">
-  <h3 class="js__shoppingcart-cart__title" style="display: none"></h3>
-  <table class="table js__shoppingcart-cart__table">
-    <thead></thead>
-    <tbody></tbody>
-  </table>
-</div>
+{% include 'partials/shoppingcart_cart.html.twig' %}
 
 <div id="shoppingcart-detail" class="block-group">
     <div class="shoppingcart-info block">
@@ -42,23 +36,16 @@
 <script>
 (function() {
 
-  var currentProduct = {
-    title: "{{ page.header.title }}",
-    id: "{{ md5(page.header.title) }}",
-    price: "{{ page.header.price }}",
-    defaultPhoto: "{{ shoppingcart_image|url_encode }}",
-    type: "{{ page.header.type }}",
-    url: "{{ page.url|url_encode }}",
-  };
+    var currentProduct = {
+        title: "{{ page.header.title }}",
+        id: "{{ md5(page.header.title) }}",
+        price: "{{ page.header.price }}",
+        defaultPhoto: "{{ shoppingcart_image|url_encode }}",
+        type: "{{ page.header.type }}",
+        url: "{{ page.url|url_encode }}",
+    };
 
-  var interval = setInterval(function() {
-    if (typeof ShoppingCart !== 'undefined') {
-      ShoppingCart.currentProduct = currentProduct;
-      ShoppingCart.currentPageIsProduct = true;
-      clearInterval(interval);
-    }
-  }, 200);
-
-
+    ShoppingCart.currentProduct = currentProduct;
+    ShoppingCart.currentPageIsProduct = true;
 }());
 </script>

@@ -5,6 +5,15 @@
     {{ parent() }}
 
     <div class="content-wrapper">
+
+        {% include 'partials/shoppingcart_cart.html.twig' %}
+
+        <script>
+        (function() {
+            ShoppingCart.currentPageIsProducts = true;
+        }());
+        </script>
+
         {{ page.content }}
 
         <div class="shoppingcart-categories block-group">

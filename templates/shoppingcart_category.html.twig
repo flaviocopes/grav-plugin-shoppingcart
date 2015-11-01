@@ -1,6 +1,13 @@
 {% extends 'partials/shoppingcart_base.html.twig' %}
 
 {% block content %}
+    {% include 'partials/shoppingcart_cart.html.twig' %}
+
+    <script>
+    (function() {
+        ShoppingCart.currentPageIsProducts = true;
+    }());
+    </script>
 
     {{ parent() }}
 
