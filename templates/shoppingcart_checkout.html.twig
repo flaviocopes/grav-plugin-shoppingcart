@@ -3,7 +3,6 @@
 {% block javascripts %}
     {{ parent() }}
     {% do assets.addJs('plugin://shoppingcart/js/lib/verimail.min.js') %}
-    {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_lib.js') %}
     {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_checkout.js') %}
     {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_checkout_events.js') %}
 {% endblock %}

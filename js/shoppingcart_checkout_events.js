@@ -122,16 +122,6 @@
             province: jQuery('.js__billing__province').val()
         };
 
-        //TODO
-        // if (ShoppingCart.settings.general.additionalCheckoutFields) {
-        //     if (ShoppingCart.settings.general.additionalCheckoutField1) {
-        //         address.additionalCheckoutField1 = jQuery('.js__billing__additionalCheckoutField1').val();
-        //     }
-        //     if (ShoppingCart.settings.general.additionalCheckoutField2) {
-        //         address.additionalCheckoutField2 = jQuery('.js__billing__additionalCheckoutField2').val();
-        //     }
-        // }
-
         var verimail = new Comfirm.AlphaMail.Verimail();
         var allFieldsFilled = true;
 
@@ -145,16 +135,6 @@
                 !address.country) {
             allFieldsFilled = false;
         }
-
-        //TODO
-        // if (ShoppingCart.settings.general.additionalCheckoutFields) {
-        //     if (ShoppingCart.settings.general.additionalCheckoutField1 && !ShoppingCart.settings.general.additionalCheckoutField1IsOptional && !address.additionalCheckoutField1) {
-        //         allFieldsFilled = false;
-        //     }
-        //     if (ShoppingCart.settings.general.additionalCheckoutField2 && !ShoppingCart.settings.general.additionalCheckoutField2IsOptional && !address.additionalCheckoutField2) {
-        //         allFieldsFilled = false;
-        //     }
-        // }
 
         if (address.country === 'US' && !address.state) {
             allFieldsFilled = false;
@@ -188,13 +168,6 @@
             }
         });
 
-    });
-
-    /***********************************************************/
-    /* Render the clicked product image
-    /***********************************************************/
-    jQuery(document).on('click tap', '.shoppingcart__product-image', function() {
-        //jQuery('.shoppingcart__default-image').attr('src', ShoppingCart.baseURL + "/media/com_shoppingcart/attachments/" + jQuery(this).data('filename'));
     });
 
     /***********************************************************/

@@ -42,6 +42,7 @@
 
     /***********************************************************/
     /* Continue shopping
+    /* #event
     /***********************************************************/
     jQuery(document).on('click tap', '.js__shoppingcart__continue-shopping', function(event) {
         history.back();
@@ -49,6 +50,7 @@
 
     /***********************************************************/
     /* Allow only numbers in quantity box
+    /* #event
     /***********************************************************/
     jQuery(document).on('keydown', '#js__shoppingcart__quantity', function(e) {
         // Allow: backspace, delete
@@ -77,19 +79,6 @@
         // Deep copy
         var product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
 
-        //TODO
-        // if (product.openOption && product.openOption.enabled === true) {
-        //     var name = product.openOption.text;
-        //     var val = jQuery('#js__shoppingcart__openOption-textarea').val();
-
-        //     if (product.openOption.mandatory === true) {
-        //         if (!val) {
-        //             alert(window.PLUGIN_SHOPPINGCART.translations.CHOOSE_AN_OPTION + ': ' + name);
-        //             return;
-        //         }
-        //     }
-        // }
-
         if (ShoppingCart.canAddToCartThisQuantityOfThisProduct(product, quantity)) {
             ShoppingCart.addProduct(product, quantity);
             button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);
@@ -103,8 +92,36 @@
     });
 
     /***********************************************************/
+    /* Handle change the quantity box in the cart
+    /***********************************************************/
+    jQuery(document).on('keyup', '.js__shoppingcart__quantity-box-cart', function() {
+        var element_id = jQuery(this).data('id');
+        var new_quantity = jQuery(this).val();
+        var isInt = function isInt(n) {
+            return n % 1 == 0;
+        };
+
+        if (!isInt(new_quantity)) {
+            alert(window.PLUGIN_SHOPPINGCART.translations.VALUE_NOT_ACCEPTABLE);
+            jQuery(this).val(ShoppingCart.items[element_id].quantity);
+            return;
+        }
+
+        if (ShoppingCart.settings.cart.maximumTotalQuantityValue && (parseInt(new_quantity) > ShoppingCart.settings.cart.maximumTotalQuantityValue)) {
+            alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximumTotalQuantityValue);
+            jQuery(this).val(ShoppingCart.items[element_id].quantity);
+            return;
+        }
+
+        ShoppingCart.items[element_id].quantity = new_quantity;
+        ShoppingCart._saveCartToLocalstorage();
+        ShoppingCart.renderCart();
+
+        jQuery(".js__shoppingcart__quantity-box-cart[data-id='" + element_id + "']").focus().val(jQuery(".js__shoppingcart__quantity-box-cart[data-id='" + element_id + "']").val()); //this is to avoid browser auto-selecting text
+    });
+
+    /***********************************************************/
     /* Initialize and render the shopping cart at page start
-    /* #event
     /***********************************************************/
     jQuery(function() {
         ShoppingCart.loadSettings();
@@ -148,5 +165,6 @@
         initializeCart();
         renderCart();
     });
+
 
 })(window.ShoppingCart);

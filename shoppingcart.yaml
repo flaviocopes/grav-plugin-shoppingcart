@@ -30,7 +30,7 @@ ui:
     useOwnCSS: true # Add our own CSS. Disable if you're using your own
 
 cart:
-    allowEditingQuantityFromCart: 0 # Enable to allow editing a product quantity from the cart
+    allowEditingQuantityFromCart: true # Enable to allow editing a product quantity from the cart
     maximumTotalQuantityValue: # Set if you want a global limit to the ordered products
     addShippingAndTaxesCostToTotal: true #
 

@@ -4,6 +4,7 @@
     {{ parent() }}
     {% do assets.addJs('plugin://shoppingcart/js/lib/store.min.js') %}
     {% do assets.addJs('plugin://shoppingcart/js/shoppingcart.js') %}
+    {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_lib.js') %}
     {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_cart.js') %}
     {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_cart_events.js') %}
 {% endblock %}

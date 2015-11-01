@@ -21,78 +21,14 @@
 
         var ifIsGenericThereIsNoCountrySpecificMethod = function ifIsGenericThereIsNoCountrySpecificMethod(method, country) {
             return true;
-
-            //TODO
-            // var goOn = true;
-            // for (index in method.allowedCountries) {
-            //     if (method.allowedCountries[index] == '*') goOn = false;
-            // }
-            // if (!goOn) return true; //is not generic, ignore
-
-            // for (var i = 0; i < shippingMethods.length; i++) {
-            //     var aMethod = shippingMethods[i];
-            //     for (index in method.allowedCountries) {
-            //         if (method.allowedCountries[index] == country) return false;
-            //     }
-            // }
-
-            // return true;
         };
 
         var orderWeightIsAllowedForThisMethod = function orderWeightIsAllowedForThisMethod(method) {
             return true;
-
-            //TODO
-            // if (method.type !== 'weightBased') {
-            //     return true;
-            // }
-
-            // var orderWeight = 0;
-            // var i = 0;
-            // var cart = ShoppingCart.items;
-
-            // while (i < cart.length) {
-            //     orderWeight += cart[i].product.size_weight * cart[i].quantity;
-            //     i++;
-            // }
-
-            // if (orderWeight < method.starting_order_weight) {
-            //     return false;
-            // }
-
-            // if (orderWeight > method.ending_order_weight) {
-            //     return false;
-            // }
-
-            // return true;
         };
 
         var orderPriceIsAllowedForThisMethod = function orderPriceIsAllowedForThisMethod(method) {
             return true;
-
-            //TODO
-            // if (method.type !== 'priceBased') {
-            //     return true;
-            // }
-
-            // var orderPrice = 0;
-            // var i = 0;
-            // var cart = ShoppingCart.items;
-
-            // while (i < cart.length) {
-            //     orderPrice += cart[i].product.price * cart[i].quantity;
-            //     i++;
-            // }
-
-            // if (orderPrice < method.starting_order_price) {
-            //     return false;
-            // }
-
-            // if (orderPrice > method.ending_order_price) {
-            //     return false;
-            // }
-
-            // return true;
         };
 
         if (jQuery('#js__billing__country').val() === 'US') {
@@ -142,15 +78,6 @@
 
             jQuery('#checkout-choose-shipping-block').show();
         }
-
-        //TODO
-        // if (jQuery(ShoppingCart.items).filter(function(index, item) { if (item.product.type != 'digital') return true }).toArray().length > 0) {
-        //     //Digital only order. Don't show shipping options and set shipping price to 0
-        //     jQuery('#checkout-choose-shipping-block').hide();
-        //     jQuery('#checkout-choose-payment-block').removeClass('span6');
-        //     ShoppingCart.shippingPrice = 0;
-        // }
-
     };
 
     /***********************************************************/
@@ -164,6 +91,7 @@
         }
 
         jQuery('.js__checkout__block').show();
+
         //I have items in the cart, I can go on
 
         var countries = ShoppingCart.getCountries();
@@ -247,7 +175,6 @@
 
     /***********************************************************/
     /* Configure Stripe
-    /* #todo
     /***********************************************************/
     ShoppingCart.configureStripe = function configureStripe() {
         ShoppingCart.stripeHandler = StripeCheckout.configure({
