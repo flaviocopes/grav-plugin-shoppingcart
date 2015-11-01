@@ -131,10 +131,8 @@ The focus now is on the free version.
 
 Listing a few things here I want to do in the free version:
 
-- Solve all bugs (of course)
 - Add email notifications
 - Better visualization of the orders in the Data Manager
-- Add quantity selection in product detail
 - Improve tax management
 - Improve shipping options
 - Add PayPal Standard Payments

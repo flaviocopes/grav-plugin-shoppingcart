@@ -48,11 +48,28 @@
     });
 
     /***********************************************************/
+    /* Allow only numbers in quantity box
+    /***********************************************************/
+    jQuery(document).on('keydown', '#js__shoppingcart__quantity', function(e) {
+        // Allow: backspace, delete
+        if (jQuery.inArray(e.keyCode, [46, 8]) !== -1 ||
+            // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+            return;
+        }
+
+        // Ensure that it is a number
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+
+    /***********************************************************/
     /* Add a product to the cart (from the product page)
     /* #event
     /***********************************************************/
-    jQuery(document).on('click tap', '.js__button-add-to-cart', function(event) {
-        var quantity = 1; //jQuery('#quantity').val(); //TODO
+    jQuery(document).on('click tap', '.js__shoppingcart__button-add-to-cart', function(event) {
+        var quantity = jQuery('#js__shoppingcart__quantity').val() || 1;
         var button = jQuery(this);
         button.attr('disabled', 'disabled');
         var i = 0;

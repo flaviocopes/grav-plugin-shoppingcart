@@ -161,5 +161,16 @@
     line-height: 100px;
     width: 100px;
     font-size: 1.5rem; }
+  #shoppingcart-detail .shoppingcart-quantity-chooser {
+    text-align: center; }
+    #shoppingcart-detail .shoppingcart-quantity-chooser label {
+      display: inline; }
+    #shoppingcart-detail .shoppingcart-quantity-chooser input {
+      display: inline;
+      width: 20%;
+      margin-left: 20px; }
+
+a.btn {
+  cursor: pointer; }
 
 /*# sourceMappingURL=shoppingcart.css.map */

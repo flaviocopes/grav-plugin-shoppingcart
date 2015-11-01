@@ -15,8 +15,11 @@
             </span>
         </div>
         <p>
+            <div class="shoppingcart-quantity-chooser">
+                <label>Quantity:</label> <input type="text" class="small" id="js__shoppingcart__quantity" placeholder="1" value="1" />
+            </div>
             <a href="#"
-                class="button js__button-add-to-cart"
+                class="button js__shoppingcart__button-add-to-cart"
                 data-item-id="{{ page.header.product_id }}"
                 data-item-name="{{ page.header.title }}"
                 data-item-price="{{ page.header.price }}"
