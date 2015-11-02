@@ -1,3 +1,13 @@
+# v0.1.3
+## 02-11-2015
+
+1. [](#improved)
+    * Improved code
+1. [](#improved)
+    * Added cart to all pages
+1. [](#feature)
+    * Quantity chooser
+
 # v0.1.2
 ## 29-10-2015
 
