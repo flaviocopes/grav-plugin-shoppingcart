@@ -1,3 +1,9 @@
+# v0.1.4
+## 24-11-2015
+
+1. [](#bugfix)
+    * Fixed a bug in the Admin plugin `shoppingcart/templates/admin" directory does not exist`
+
 # v0.1.3
 ## 02-11-2015
 
