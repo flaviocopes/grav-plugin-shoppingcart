@@ -2,9 +2,6 @@
 @import "nucleus/mixins/base";
 @import "vendor/bourbon/bourbon";
 
-
-
-
 // mini grid system - http://arnaudleray.github.io/pocketgrid
 .block-group,.block,.block-group:after,.block:after,.block-group:before,.block:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 .block-group{*zoom:1}
@@ -65,12 +62,8 @@
 
          &.block {
              width: 50%;
-             &:nth-child(2n+1) {
-                 clear: left;
-             }
              @include breakpoint((mobile-only, small-mobile-range)) {
                  width: 100%;
-                 clear: left;
              }
          }
      }
@@ -90,26 +83,14 @@
 
          &.block {
              width: 25%;
-             &:nth-child(4n+1) {
-                 clear: left;
-             }
              @include breakpoint((desktop-range,tablet-range)) {
                  width: 33%;
-                 clear: none;
-                 &:nth-child(3n+1) {
-                     clear: left;
-                 }
              }
              @include breakpoint(mobile-only) {
                  width: 50%;
-                 clear: none;
-                 &:nth-child(2n+1) {
-                     clear: left;
-                 }
              }
              @include breakpoint(small-mobile-range) {
                  width: 100%;
-                 clear: left;
              }
          }
      }
