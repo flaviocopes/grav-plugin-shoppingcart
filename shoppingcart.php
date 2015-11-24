@@ -35,11 +35,6 @@ class ShoppingcartPlugin extends Plugin
 
         if ($this->isAdmin()) {
             // Admin
-
-            $this->enable([
-                'onTwigTemplatePaths' => ['onTwigAdminTemplatePaths', 0]
-            ]);
-
             $this->active = false;
             return;
         } else {
@@ -327,14 +322,6 @@ class ShoppingcartPlugin extends Plugin
     public function onTwigTemplatePaths()
     {
         $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
-    }
-
-    /**
-     * Add admin templates directory to twig lookup paths.
-     */
-    public function onTwigAdminTemplatePaths()
-    {
-        $this->grav['twig']->twig_paths[] = __DIR__ . '/templates/admin';
     }
 
     /**
