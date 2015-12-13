@@ -153,6 +153,16 @@ class ShoppingcartPlugin extends Plugin
         /** @var Page $page */
         $page = $this->grav['page'];
 
+        $template = $page->template();
+
+        if (!in_array($template, ['shoppingcart',
+                                  'shoppingcart_category',
+                                  'shoppingcart_detail',
+                                  'shoppingcart_checkout',
+                                  'shoppingcart_order'])) {
+            return;
+        }
+
         if ($page->header() != null) {
             if (isset($page->header()->shoppingcart)) {
                 $page->header()->shoppingcart = array_merge($defaults, $page->header()->shoppingcart);
@@ -236,9 +246,7 @@ class ShoppingcartPlugin extends Plugin
             'PRODUCTS_BOUGHT',
             'SEE_THE_ORDER_DETAILS',
             'MESSAGE_FROM_THE_CLIENT',
-            'AGREE',
             'TERMS_AND_CONDITIONS',
-            'PLEASE_ACCEPT_TERMS_AND_CONDITIONS',
             'SORRY_THE_EMAIL_IS_NOT_VALID',
             'SORRY_THE_EMAIL_IS_NOT_VALID_DID_YOU_MEAN',
             'SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY',

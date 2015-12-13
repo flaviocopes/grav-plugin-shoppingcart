@@ -31,17 +31,16 @@
             return true;
         };
 
-        if (jQuery('#js__billing__country').val() === 'US') {
-            jQuery('#js__billing__state__control').show();
-            jQuery('#js__billing__province__control').hide();
+        if (jQuery('.js__billing__country').val() === 'US') {
+            jQuery('.js__billing__state__control').show();
+            jQuery('.js__billing__province__control').hide();
         } else {
-            jQuery('#js__billing__state__control').hide();
-            jQuery('#js__billing__province__control').show();
+            jQuery('.js__billing__state__control').hide();
+            jQuery('.js__billing__province__control').show();
         }
 
         if (shippingMethods.length === 0) {
-            jQuery('#checkout-choose-shipping-block').hide();
-            jQuery('#checkout-choose-payment-block').removeClass('span6');
+            jQuery('.checkout-choose-shipping-block').hide();
         } else if (shippingMethods.length === 1) {
 
             var priceBlock = shippingMethods[0].price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
@@ -49,8 +48,8 @@
                 priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + shippingMethods[0].price;
             }
 
-            jQuery('#checkout-choose-shipping-block .control-group').html(shippingMethods[0].name + ' - ' + priceBlock);
-            jQuery('#checkout-choose-shipping-block').show();
+            jQuery('.checkout-choose-shipping-block .form-select-wrapper').html(shippingMethods[0].name + ' - ' + priceBlock);
+            jQuery('.checkout-choose-shipping-block').show();
         } else {
 
             //Calculate shipping methods for the shipping country
@@ -76,7 +75,7 @@
                 }
             }
 
-            jQuery('#checkout-choose-shipping-block').show();
+            jQuery('.checkout-choose-shipping-block').show();
         }
     };
 
@@ -141,12 +140,12 @@
 
             ShoppingCart.generateShippingPrice();
 
-            if (jQuery('#js__billing__country').val() === 'US') {
-                jQuery('#js__billing__state__control').show();
-                jQuery('#js__billing__province__control').hide();
+            if (jQuery('.js__billing__country').val() === 'US') {
+                jQuery('.js__billing__state__control').show();
+                jQuery('.js__billing__province__control').hide();
             } else {
-                jQuery('#js__billing__state__control').hide();
-                jQuery('#js__billing__province__control').show();
+                jQuery('.js__billing__state__control').hide();
+                jQuery('.js__billing__province__control').show();
             }
             ShoppingCart.calculateTotalPriceIncludingTaxes();
             ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
@@ -157,17 +156,17 @@
         _countryChanged();
 
         if ((ShoppingCart.settings.general.defaultCountry || 'US') === 'US') {
-            jQuery('#js__billing__state__control').show();
+            jQuery('.js__billing__state__control').show();
             _stateChanged();
         } else {
-            jQuery('#js__billing__province__control').show();
+            jQuery('.js__billing__province__control').show();
         }
 
-        jQuery(document).delegate('#js__billing__country', 'change', function() {
+        jQuery(document).delegate('.js__billing__country', 'change', function() {
             _countryChanged();
         });
 
-        jQuery(document).delegate('#js__billing__state', 'change', function() {
+        jQuery(document).delegate('.js__billing__state', 'change', function() {
             _stateChanged();
         });
 

@@ -9,12 +9,12 @@ en:
     NO_PRODUCTS_FOUND: No products found
     CHECKOUT_PAGE_TITLE: Checkout
     CHECKOUT_STEP1_BILLING_DETAILS_TITLE: Step 1: Billing Details
-    CHECKOUT_HEADLINE_YOUR_PERSONAL_DETAILS: Your Personal Details
+    CHECKOUT_HEADLINE_YOUR_PERSONAL_DETAILS: "## Your Personal Details"
     CHECKOUT_FIRST_NAME: First Name
     CHECKOUT_LAST_NAME: Last Name
     CHECKOUT_EMAIL: Email Address
     CHECKOUT_PHONE: Telephone
-    CHECKOUT_HEADLINE_YOUR_ADDRESS: Your Address
+    CHECKOUT_HEADLINE_YOUR_ADDRESS: "## Your Address"
     CHECKOUT_ADDRESS_1: Address 1
     CHECKOUT_ADDRESS_2: Address 2
     CHECKOUT_CITY: City
@@ -53,7 +53,7 @@ en:
     VALUE_NOT_ACCEPTABLE: Value of the quantity field not acceptable
     QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE: Quantity exceeds the maximum allowed value
     CHECKOUT_PAYMENT_METHOD: Payment Method
-    CHECKOUT_SHIPPING_METHOD: Shipping Method
+    CHECKOUT_SHIPPING_METHOD: "## Shipping Method"
     THANK_YOU: Thank you for your order
     OFFLINE_ORDER_TEXT: We'll get in touch soon to confirm the order and payment.
     CHOOSE_AN_OPTION: Choose an option
@@ -64,9 +64,7 @@ en:
     PRODUCTS_BOUGHT: Products bought
     SEE_THE_ORDER_DETAILS: See the order details
     MESSAGE_FROM_THE_CLIENT: Message from the client
-    AGREE: I agree to the
-    TERMS_AND_CONDITIONS: terms and conditions
-    PLEASE_ACCEPT_TERMS_AND_CONDITIONS: Please accept the terms and conditions
+    TERMS_AND_CONDITIONS: "Accept the <a href='#'>terms and conditions</a>"
     SORRY_THE_EMAIL_IS_NOT_VALID: Sorry, the email is not valid
     SORRY_THE_EMAIL_IS_NOT_VALID_DID_YOU_MEAN: Sorry, email not valid! Did you mean
     SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY: Sorry, we cannot ship to your country

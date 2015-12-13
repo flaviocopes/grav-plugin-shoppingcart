@@ -157,4 +157,10 @@
 a.btn {
   cursor: pointer; }
 
+.hidden {
+  display: none; }
+
+.inline {
+  display: inline; }
+
 /*# sourceMappingURL=shoppingcart.css.map */

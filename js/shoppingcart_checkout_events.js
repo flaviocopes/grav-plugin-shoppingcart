@@ -10,7 +10,9 @@
     /***********************************************************/
     /* Store order in localstorage and proceed to Stripe
     /***********************************************************/
-    jQuery(document).on('click tap', '.js__checkout__button__proceed-to-payment', function(event) {
+    jQuery(document).on('submit', 'form[name=checkout]', function(event) {
+        event.preventDefault();
+
         var that = this;
 
         /********************************************************/
@@ -37,12 +39,6 @@
             var token = randomToken(10);
             var paymentMethod = 'stripe';
             var shippingMethod = {};
-
-            //Agreed to terms and conditions?
-            if (ShoppingCart.settings.general.agreeToTerms && !jQuery('#js__accepted-terms').prop("checked")) {
-                alert(window.PLUGIN_SHOPPINGCART.translations.PLEASE_ACCEPT_TERMS_AND_CONDITIONS);
-                return;
-            }
 
             //Determine shipping method
             if (ShoppingCart.settings.shipping.methods.length === 0) {
@@ -107,7 +103,6 @@
 
         };
 
-
         var address = {
             firstname: jQuery('.js__billing__firstname').val(),
             lastname: jQuery('.js__billing__lastname').val(),
@@ -122,59 +117,22 @@
             province: jQuery('.js__billing__province').val()
         };
 
-        var verimail = new Comfirm.AlphaMail.Verimail();
-        var allFieldsFilled = true;
-
-        if (!address.firstname ||
-                !address.lastname ||
-                !address.email ||
-                !address.telephone ||
-                !address.address1 ||
-                !address.city ||
-                !address.zip ||
-                !address.country) {
-            allFieldsFilled = false;
-        }
-
-        if (address.country === 'US' && !address.state) {
-            allFieldsFilled = false;
-        }
         if (address.country != 'US' && !address.province) {
-            allFieldsFilled = false;
-        }
-
-        if (!allFieldsFilled) {
             alert(window.PLUGIN_SHOPPINGCART.translations.PLEASE_FILL_ALL_THE_REQUIRED_FIELDS);
             return;
         }
 
-        verimail.verify(address.email, function(status, message, suggestion) {
-            var message = '';
+        ShoppingCart.shippingAddress = address;
+        storejs.set('grav-shoppingcart-person-address', address); //Store address info in cookie
 
-            if (status === 0) { //valid email
-                ShoppingCart.shippingAddress = address;
-                storejs.set('grav-shoppingcart-person-address', address); //Store address info in cookie
-                _goOnWithCheckout();
-
-            } else {
-                // Incorrect syntax!
-                if (suggestion) {
-                    message = window.PLUGIN_SHOPPINGCART.translations.SORRY_THE_EMAIL_IS_NOT_VALID_DID_YOU_MEAN + ' ' + suggestion + '?';
-                } else {
-                    message = window.PLUGIN_SHOPPINGCART.translations.SORRY_THE_EMAIL_IS_NOT_VALID
-                }
-
-                alert(message);
-            }
-        });
-
+        _goOnWithCheckout();
     });
 
     /***********************************************************/
     /* Initialize the checkout at page load
     /***********************************************************/
     jQuery(function() {
-        jQuery('.js__checkout__block').hide();
+        //Query('.js__checkout__block').hide();
         ShoppingCart.setupCheckout();
         ShoppingCart.populateShippingOptions();
     });

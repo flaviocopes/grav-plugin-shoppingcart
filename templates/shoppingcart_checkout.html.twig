@@ -2,7 +2,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% do assets.addJs('plugin://shoppingcart/js/lib/verimail.min.js') %}
     {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_checkout.js') %}
     {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_checkout_events.js') %}
 {% endblock %}
@@ -16,208 +15,31 @@
     }());
     </script>
 
-{#
-$paymentMethods = $this->settings->payment->methods;
-$paymentMethodPayPal = null;
-$paymentMethodOffline = null;
-$paymentMethodStripe = null;
-$paymentMethodsEnabled = 0;
-$atLeastTwoPaymentMethods = false;
-
-foreach ($paymentMethods as $paymentMethod) {
-  if (isset($paymentMethod->isPayPal) && $paymentMethod->enabled) {
-    $paymentMethodPayPal = $paymentMethod;
-    $paymentMethodsEnabled++;
-  }
-  if (isset($paymentMethod->isOffline) && $paymentMethod->enabled) {
-    $paymentMethodOffline = $paymentMethod;
-    $paymentMethodsEnabled++;
-  }
-  if (isset($paymentMethod->isStripe) && $paymentMethod->enabled) {
-    $paymentMethodStripe = $paymentMethod;
-    $paymentMethodsEnabled++;
-  }
-}
-
-if ($paymentMethodsEnabled > 1) {
-  $atLeastTwoPaymentMethods = true;
-}
-?> #}
-{#
-jQuery(function() {
-  ShoppingCart.currentPageIsCheckout = true;
-  ShoppingCart.baseOrderURL = '<?php echo $this->baseOrderURL ?>';
-  ShoppingCart.baseURL = '<?php echo $this->baseURL ?>';
-
-  jQuery('.js__checkout__block').hide();
-
-  var interval = setInterval(function() {
-    if (ShoppingCart.settings != null) {
-      clearInterval(interval);
-
-      if (ShoppingCart.items) {
-        ShoppingCart.setupCheckout();
-        ShoppingCart.populateShippingOptions();
-
-        <?php if (JFactory::getUser()->get('id')) : ?>
-          ShoppingCart.prefillValuesIfShouldDoIt();
-        {% endif %}
-
-        <?php if ($paymentMethodStripe) : ?>
-          ShoppingCart.configureStripe();
-        {% endif %}
-      }
-    }
-  }, 50);
-
-
-  <?php
-
-  $orderSuccessfulPageURL = 'view=order&layout=success';
-  if ($this->itemid) $orderSuccessfulPageURL .= '&Itemid=' . $this->itemid;
-
-  $orderCancelledPageURL = 'view=order&layout=cancelled';
-  if ($this->itemid) $orderCancelledPageURL .= '&Itemid=' . $this->itemid;
-
-  $ipnURL = 'view=order&layout=ipn';
-  ?>
-
-  <?php
-  if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) {
-    $protocol = "https://";
-  } else {
-    $protocol = "http://";
-  }
-  ?>
-
-  ShoppingCart.orderSuccessfulPageURL = '<?php echo $protocol . $_SERVER["HTTP_HOST"] . JRoute::_($orderSuccessfulPageURL) ?>';
-  ShoppingCart.orderCancelledPageURL = '<?php echo $protocol . $_SERVER["HTTP_HOST"] . JRoute::_($orderCancelledPageURL) ?>';
-  ShoppingCart.ipnURL = '<?php echo JURI::root() . $ipnURL ?>';
-  ShoppingCart.baseURL = '<?php echo $this->baseURL ?>';
-});
-</script>
- #}
-
     <script src="https://checkout.stripe.com/checkout.js"></script>
 
-    <div class="joocommerce-container">
+    <div class="joocommerce-container js__checkout__block">
         <h1>{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_PAGE_TITLE'|t }}</h1>
 
-        <div class="container-fluid no-padding">
-            <div class="js__checkout__block">
+        {% set form = config.plugins.shoppingcart.checkout_form %}
+        <form name="{{ form.name }}"
+              action="{{ form.action ? base_url ~ form.action : page.url }}"
+              method="{{ method }}"{{ multipart }}>
 
-                <div class="row-fluid">
-                    <div class="well span6">
-                        <h2>{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_HEADLINE_YOUR_PERSONAL_DETAILS'|t }}</h2>
-                        <div class="control-group control-group__billing__firstname">
-                            <label class="control-label">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_FIRST_NAME'|t }} *</label>
-                            <div class="controls docs-input-sizes">
-                                <input type="text" class="js__billing__firstname">
-                            </div>
-                        </div>
-                        <div class="control-group control-group__billing__lastname">
-                            <label class="control-label">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_LAST_NAME'|t }} *</label>
-                            <div class="controls docs-input-sizes">
-                             <input type="text" class="js__billing__lastname">
-                          </div>
-                        </div>
-                        <div class="control-group control-group__billing__email">
-                            <label class="control-label">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_EMAIL'|t }} *</label>
-                            <div class="controls docs-input-sizes">
-                             <input type="text" class="js__billing__email">
-                          </div>
-                        </div>
-                        <div class="control-group control-group__billing__telephone">
-                            <label class="control-label">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_PHONE'|t }} *</label>
-                            <div class="controls docs-input-sizes">
-                             <input type="text" class="js__billing__telephone">
-                          </div>
-                        </div>
-                    </div>
-
-                    <div class="well span6">
-                       <h2>{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_HEADLINE_YOUR_ADDRESS'|t }}</h2>
-                       <div class="control-group control-group__billing__address1">
-                          <label class="control-label">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_ADDRESS_1'|t }} *</label>
-                          <div class="controls docs-input-sizes">
-                             <input type="text" class="js__billing__address1">
-                          </div>
-                       </div>
-                       <div class="control-group control-group__billing__address2">
-                          <label class="control-label">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_ADDRESS_2'|t }}</label>
-                          <div class="controls docs-input-sizes">
-                             <input type="text" class="js__billing__address2">
-                          </div>
-                       </div>
-                       <div class="control-group control-group__billing__city">
-                          <label class="control-label">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_CITY'|t }} *</label>
-                          <div class="controls docs-input-sizes">
-                             <input type="text" class="js__billing__city">
-                          </div>
-                       </div>
-                       <div class="control-group control-group__billing__zip">
-                          <label class="control-label">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_ZIP'|t }} *</label>
-                          <div class="controls docs-input-sizes">
-                             <input type="text" class="js__billing__zip">
-                          </div>
-                       </div>
-                       <div class="control-group control-group__billing__country">
-                          <label class="control-label">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_COUNTRY'|t }} *</label>
-                          <div class="controls docs-input-sizes">
-                             <select class="js__billing__country" id="js__billing__country"></select>
-                          </div>
-                       </div>
-
-                       <div class="control-group hidden" id="js__billing__state__control">
-                          <label class="control-label">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_STATE'|t }} *</label>
-                          <div class="controls docs-input-sizes">
-                             <select class="js__billing__state" id="js__billing__state"></select>
-                          </div>
-                       </div>
-
-                       <div class="control-group hidden" id="js__billing__province__control">
-                          <label class="control-label">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_PROVINCE'|t }} *</label>
-                          <div class="controls docs-input-sizes">
-                            <input type="text" class="js__billing__province">
-                          </div>
-                       </div>
-                    </div>
-                </div>
-
-                <br><br>
-
-                <div class="row-fluid">
-                    <div class="well span6" id="checkout-choose-shipping-block">
-                      <h2>{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_SHIPPING_METHOD'|t }}</h2>
-                      <div class="control-group">
-                        <p>{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_CHOOSE_SHIPPING_METHOD_DESC'|t }}</p>
-                        <div>
-                          <select class="js__shipping__method" id="js__shipping__method"></select>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="well span6" id="checkout-choose-payment-block">
-                      <h2>
-                        {{ 'PLUGIN_SHOPPINGCART.CHECKOUT_PAYMENT_METHOD'|t }}
-                      </h2>
-                      <div class="control-group">
-                          <p id="stripe-payment">
-                            {{ 'PLUGIN_SHOPPINGCART.CREDITCARD'|t }} <img src="{{ url("plugin://shoppingcart/images/stripe.png") }}" class="logo-stripe" alt="Stripe Logo">
-                          </p>
-                      </div>
-                    </div>
-
-                    <div class="span12 css-accept-terms-and-conditions">
-                        {% if ShoppingCart.settings.general.agreeToTerms %}
-                            <input type="checkbox" id="js__accepted-terms"> {{ 'PLUGIN_SHOPPINGCART.AGREE'|t }} <a target="_blank" href="{{ ShoppingCart.settings.general.termsPageURL}}">{{ 'PLUGIN_SHOPPINGCART.TERMS_AND_CONDITIONS'|t }}</a>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <button class="btn btn-success center js__checkout__button__proceed-to-payment">{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_BUTTON_PAY'|t }}</button>
+        {% for field in form.fields %}
+            {% set value = form.value(field.name) %}
+            <div>
+                {% include "forms/fields/#{field.type}/#{field.type}.html.twig" %}
             </div>
-        </div>
+        {% endfor %}
+
+          <div class="buttons">
+          {% for button in form.buttons %}
+              <button class="{{ button.classes|default('button') }}" type="{{ button.type|default('submit') }}">{{ button.value|t|default('Submit') }}</button>
+          {% endfor %}
+          </div>
+
+          {{ nonce_field('form', 'form-nonce') }}
+        </form>
     </div>
 
 
