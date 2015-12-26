@@ -179,7 +179,7 @@ class ShoppingcartPlugin extends Plugin
          * Add translations needed in JavaScript code
          */
         $assets = $this->grav['assets'];
-        $translations  = 'if (!window.translations) window.PLUGIN_SHOPPINGCART = {}; ' . PHP_EOL . 'window.PLUGIN_SHOPPINGCART.translations = {};' . PHP_EOL;
+        $translations = 'if (!window.PLUGIN_SHOPPINGCART) { window.PLUGIN_SHOPPINGCART = {}; } ' . PHP_EOL . 'window.PLUGIN_SHOPPINGCART.translations = {};' . PHP_EOL;
 
         $strings = [
             'DETAILS',
@@ -282,7 +282,7 @@ class ShoppingcartPlugin extends Plugin
          * Add plugin settings as JavaScript code
          */
         $settings = $this->config->get('plugins.shoppingcart');
-        $settings_js = 'window.PLUGIN_SHOPPINGCART.settings = {};' . PHP_EOL;
+        $settings_js = 'if (!window.PLUGIN_SHOPPINGCART) { window.PLUGIN_SHOPPINGCART = {}; } ' . PHP_EOL . 'window.PLUGIN_SHOPPINGCART.settings = {};' . PHP_EOL;
         $settings_js .= "PLUGIN_SHOPPINGCART.settings.baseURL = '$this->baseURL';" . PHP_EOL;;
 
         function recurse_settings($base, $settings) {
