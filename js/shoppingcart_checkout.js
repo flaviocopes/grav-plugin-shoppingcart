@@ -172,39 +172,4 @@
 
     };
 
-    /***********************************************************/
-    /* Configure Stripe
-    /***********************************************************/
-    ShoppingCart.configureStripe = function configureStripe() {
-        ShoppingCart.stripeHandler = StripeCheckout.configure({
-            key: ShoppingCart.settings.payment.methods.stripe.publicKey,
-            token: function(token, args) {
-                var order = {
-                    products: storejs.get('grav-shoppingcart-basket-data'),
-                    address: storejs.get('grav-shoppingcart-person-address'),
-                    shipping: storejs.get('grav-shoppingcart-shipping-method'),
-                    payment: storejs.get('grav-shoppingcart-payment-method'),
-                    token: storejs.get('grav-shoppingcart-order-token').token,
-                    stripeToken: token.id,
-                    amount: ShoppingCart.totalOrderPrice.toString().replace('.', ''),
-                    total_paid: ShoppingCart.totalOrderPrice,
-                    discount_code: ShoppingCart.discountCodeUsed
-                };
-
-                jQuery.ajax({
-                    url: ShoppingCart.settings.baseURL + ShoppingCart.settings.urls.saveOrderURL + '?task=order.pay',
-                    data: order,
-                    type: 'POST'
-                })
-                .success(function(orderId) {
-                    ShoppingCart.clearCart();
-                    window.location = ShoppingCart.settings.baseURL + ShoppingCart.settings.urls.orderURL + '/id:' + orderId.replace('.txt', '') + '/token:' + order.token;
-                })
-                .error(function() {
-                    alert('Payment not successful. Please contact us.');
-                });
-            }
-        });
-    };
-
 })(window.ShoppingCart);

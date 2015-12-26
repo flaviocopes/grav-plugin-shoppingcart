@@ -18,7 +18,8 @@ class ShoppingcartPlugin extends Plugin
     {
         return [
             'onPluginsInitialized' => ['onPluginsInitialized', 0],
-            'onGetPageTemplates' => ['onGetPageTemplates', 0]
+            'onGetPageTemplates' => ['onGetPageTemplates', 0],
+            'onShoppingCartSaveOrder' => ['onShoppingCartSaveOrder', 0],
         ];
     }
 
@@ -42,7 +43,8 @@ class ShoppingcartPlugin extends Plugin
 
             $this->enable([
                 'onPageInitialized' => ['onPageInitialized', 0],
-                'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0]
+                'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
+                'onShoppingCartPay' => ['onShoppingCartPay', 0]
             ]);
 
             /** @var Uri $uri */
@@ -66,8 +68,20 @@ class ShoppingcartPlugin extends Plugin
                 ]);
             }
         }
-
     }
+
+    public function onShoppingCartPay($event)
+    {
+        require_once __DIR__ . '/classes/gateway.php';
+
+        $this->gateways['stripe'] = function() {
+            require_once __DIR__ . '/gateways/stripe/gateway.php';
+            return new ShoppingCartStripeGateway($this->grav);
+        };
+
+        $this->gateways['stripe']()->onShoppingCartPay($event);
+    }
+
 
     public function addCheckoutPage()
     {
@@ -81,7 +95,6 @@ class ShoppingcartPlugin extends Plugin
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
         $task = $uri->query('task');
-        $task = substr($task, strlen('order.'));
         $post = !empty($_POST) ? $_POST : [];
 
         require_once __DIR__ . '/classes/controller.php';
@@ -157,6 +170,7 @@ class ShoppingcartPlugin extends Plugin
 
         if (!in_array($template, ['shoppingcart',
                                   'shoppingcart_category',
+                                  'shoppingcart_payment',
                                   'shoppingcart_detail',
                                   'shoppingcart_checkout',
                                   'shoppingcart_order'])) {
@@ -285,43 +299,45 @@ class ShoppingcartPlugin extends Plugin
         $settings_js = 'if (!window.PLUGIN_SHOPPINGCART) { window.PLUGIN_SHOPPINGCART = {}; } ' . PHP_EOL . 'window.PLUGIN_SHOPPINGCART.settings = {};' . PHP_EOL;
         $settings_js .= "PLUGIN_SHOPPINGCART.settings.baseURL = '$this->baseURL';" . PHP_EOL;;
 
-        function recurse_settings($base, $settings) {
-            $output = '';
 
-            foreach($settings as $key => $value) {
-                if (!is_array($value)) {
-                    //Avoid putting the secretKey in the frontend available settings
-                    if ($key !== '["secretKey"]') {
-                        if (is_numeric($key)) {
-                            $key = '[' . $key . ']';
-                        } else {
-                            $key = '.' . $key;
-                        }
+        $settings_js .= $this->recurse_settings('', $settings);
+        $assets->addInlineJs($settings_js);
+    }
 
-                        if (is_numeric($value)) {
-                            $value = $value;
-                        } else {
-                            $value = '"' . $value . '"';
-                        }
-                        $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ' . $value . '; ' . PHP_EOL;;
-                    }
+    protected function recurse_settings($base, $settings)
+    {
+        $output = '';
 
-                } else {
+        foreach($settings as $key => $value) {
+            if (!is_array($value)) {
+                //Avoid putting the secretKey in the frontend available settings
+                if ($key !== '["secretKey"]') {
                     if (is_numeric($key)) {
                         $key = '[' . $key . ']';
                     } else {
                         $key = '.' . $key;
                     }
-                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;;
-                    $output .= recurse_settings($base . $key, $value);
-                }
-            }
 
-            return $output;
+                    if (is_numeric($value)) {
+                        $value = $value;
+                    } else {
+                        $value = '"' . $value . '"';
+                    }
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ' . $value . '; ' . PHP_EOL;;
+                }
+
+            } else {
+                if (is_numeric($key)) {
+                    $key = '[' . $key . ']';
+                } else {
+                    $key = '.' . $key;
+                }
+                $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;;
+                $output .= $this->recurse_settings($base . $key, $value);
+            }
         }
 
-        $settings_js .= recurse_settings('', $settings);
-        $assets->addInlineJs($settings_js);
+        return $output;
     }
 
     /**
@@ -347,7 +363,6 @@ class ShoppingcartPlugin extends Plugin
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
         $task = !empty($_POST['task']) ? $_POST['task'] : $uri->param('task');
-        $task = substr($task, strlen('order.'));
         $post = !empty($_POST) ? $_POST : [];
 
         require_once __DIR__ . '/classes/controller.php';
@@ -356,4 +371,72 @@ class ShoppingcartPlugin extends Plugin
         $controller->redirect();
     }
 
+    /**
+     * Saves the order and sends the order emails
+     */
+    public function onShoppingCartSaveOrder($event)
+    {
+        $order_id = $this->saveOrderToFilesystem($event['order']);
+        // $this->_sendEmails($order_id);
+
+        // return $order_id;
+        echo $order_id;
+        exit();
+    }
+
+    // /**
+    //  * Sends the order emails
+    //  */
+    // private function _sendEmails()
+    // {
+    //    //TODO
+    // }
+
+    /**
+     * Saves the order to the filesystem in the user/data/ folder
+     */
+    private function saveOrderToFilesystem($order) {
+        $prefix = 'order-';
+        $format = 'Ymd-His-u';
+        $ext = '.txt';
+        $filename = $prefix . $this->udate($format) . $ext;
+
+        /** @var Twig $twig */
+        $twig = $this->grav['twig'];
+
+        $body = Yaml::dump(array(
+            'products' => $order['products'],
+            'address' => $order['address'],
+            'shipping' => $order['shipping'],
+            'payment' => $order['payment'],
+            'token' => $order['token'],
+            'paid' => true,
+            'paid_on' => $this->udate($format),
+            'total_paid' => $order['total_paid'],
+        ));
+
+        $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename);
+        $file->save($body);
+
+        return $filename;
+    }
+
+    /**
+     * Create unix timestamp for storing the data into the filesystem.
+     *
+     * @param string $format
+     * @param int $utimestamp
+     * @return string
+     */
+    private function udate($format = 'u', $utimestamp = null)
+    {
+        if (is_null($utimestamp)) {
+            $utimestamp = microtime(true);
+        }
+
+        $timestamp = floor($utimestamp);
+        $milliseconds = round(($utimestamp - $timestamp) * 1000000);
+
+        return date(preg_replace('`(?<!\\\\)u`', \sprintf('%06d', $milliseconds), $format), $timestamp);
+    }
 }

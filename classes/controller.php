@@ -6,8 +6,8 @@ use Grav\Common\Grav;
 use Grav\Common\User\User;
 use Grav\Common\Page\Page;
 use Symfony\Component\Yaml\Yaml;
+use RocketTheme\Toolbox\Event\Event;
 use RocketTheme\Toolbox\File\File;
-
 
 class ShoppingCartController
 {
@@ -57,83 +57,7 @@ class ShoppingCartController
      */
     public function taskPay()
     {
-
-        $currency = $this->grav['config']->get('plugins.shoppingcart.general.currency');
-        $secretKey = $this->grav['config']->get('plugins.shoppingcart.payment.methods.stripe.secretKey');
-        $description = $this->grav['config']->get('plugins.shoppingcart.payment.methods.stripe.description');
-
-        $amount = $this->post['amount'];
-        $stripeToken = $this->post['stripeToken'];
-
-        //process payment
-        \Stripe\Stripe::setApiKey($secretKey);
-
-        // Create the charge on Stripe's servers - this will charge the user's card
-        try {
-            $charge = \Stripe\Charge::create([
-                "amount" => $amount, // amount in cents, again
-                "currency" => $currency,
-                "card" => $stripeToken,
-                "description" => $description
-            ]);
-        } catch(\Stripe\Error\Card $e) {
-            // The card has been declined
-            throw new \RuntimeException("Stripe payment not successful");
-            //TODO: fail gracefully
-        }
-
-        //all fine, save order to db
-        $order_id = $this->_saveOrder();
-        echo $order_id; exit();
-    }
-
-    /**
-     * Saves the order and sends the order emails
-     */
-    private function _saveOrder()
-    {
-        $order_id = $this->_saveOrderToFilesystem();
-        $this->_sendEmails($order_id);
-
-        return $order_id;
-    }
-
-    /**
-     * Sends the order emails
-     */
-    private function _sendEmails()
-    {
-       //TODO
-    }
-
-    /**
-     * Saves the order to the filesystem in the user/data/ folder
-     */
-    private function _saveOrderToFilesystem() {
-        $prefix = 'order-';
-        $format = 'Ymd-His-u';
-        $ext = '.txt';
-        $filename = $prefix . $this->udate($format) . $ext;
-
-        /** @var Twig $twig */
-        $twig = $this->grav['twig'];
-
-        $body = Yaml::dump(array(
-            'products' => $this->post['products'],
-            'address' => $this->post['address'],
-            'shipping' => $this->post['shipping'],
-            'payment' => $this->post['payment'],
-            'token' => $this->post['token'],
-            'paid' => true,
-            'paid_on' => $this->udate($format),
-            'total_paid' => $this->post['total_paid'],
-        ));
-
-        $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename);
-
-        $file->save($body);
-
-        return $filename;
+        $this->grav->fireEvent('onShoppingCartPay', new Event(['gateway' => 'stripe', 'order' => $this->post]));
     }
 
     /**
@@ -152,24 +76,5 @@ class ShoppingCartController
             unset($post['_json']);
         }
         return $post;
-    }
-
-    /**
-     * Create unix timestamp for storing the data into the filesystem.
-     *
-     * @param string $format
-     * @param int $utimestamp
-     * @return string
-     */
-    private function udate($format = 'u', $utimestamp = null)
-    {
-        if (is_null($utimestamp)) {
-            $utimestamp = microtime(true);
-        }
-
-        $timestamp = floor($utimestamp);
-        $milliseconds = round(($utimestamp - $timestamp) * 1000000);
-
-        return date(preg_replace('`(?<!\\\\)u`', \sprintf('%06d', $milliseconds), $format), $timestamp);
     }
 }

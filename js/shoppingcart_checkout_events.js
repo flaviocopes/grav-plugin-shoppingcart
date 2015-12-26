@@ -89,18 +89,9 @@
             if (!ShoppingCart.amountOfDiscount) ShoppingCart.amountOfDiscount = 0;
             ShoppingCart.totalOrderPrice = parseFloat(parseFloat(parseFloat(ShoppingCart.totalOrderPrice) - parseFloat(ShoppingCart.amountOfDiscount)).toFixed(2)).toFixed(2);
 
-
             jQuery(that).attr('disabled', 'disabled');
-            ShoppingCart.configureStripe();
 
-            ShoppingCart.stripeHandler.open({
-                name: ShoppingCart.settings.payment.methods.stripe.name,
-                description: ShoppingCart.settings.payment.methods.stripe.description,
-                email: storejs.get('grav-shoppingcart-person-address').email,
-                amount: ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping().toString().replace('.', ''),
-                currency: ShoppingCart.settings.general.currency
-            });
-
+            jQuery(document).trigger('proceedToPayment', ShoppingCart);
         };
 
         var address = {
