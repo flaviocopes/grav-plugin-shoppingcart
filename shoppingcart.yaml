@@ -1,5 +1,7 @@
 enabled: true
 
+test_mode: true
+
 general:
     currency: 'USD' # The shop currency
     defaultCountry: 'US' # Default country to be shown during Checkout
@@ -160,6 +162,20 @@ checkout_form:
             id: js__shipping__method
             validate:
                 required: true
+
+        -
+            type: display
+            content: PLUGIN_SHOPPINGCART.CHECKOUT_PAYMENT_METHOD
+            markdown: true
+            outerclasses: checkout-choose-payment-block-title
+
+        -
+            name: payment_method
+            type: select
+            label: PLUGIN_SHOPPINGCART.CHECKOUT_CHOOSE_PAYMENT_METHOD_DESC
+            classes: js__payment__method
+            outerclasses: checkout-choose-payment-block
+            id: js__payment__method
 
         -
             name: agree_to_terms

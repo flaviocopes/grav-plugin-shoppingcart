@@ -29,6 +29,12 @@ class ShoppingcartPlugin extends Plugin
     public function onPluginsInitialized()
     {
         require_once __DIR__ . '/vendor/autoload.php';
+
+        $proEnabled = $this->config->get('plugins.shoppingcart-pro.enabled');
+        if ($proEnabled && $proEnabled !== false) {
+            $this->config->set('plugins.shoppingcart', array_replace_recursive($this->config->get('plugins.shoppingcart'), $this->config->get('plugins.shoppingcart-pro')));
+        }
+
         $this->baseURL = $this->grav['uri']->rootUrl();
         $this->checkoutURL = $this->config->get('plugins.shoppingcart.urls.checkoutURL');
         $this->saveOrderURL = $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
@@ -44,7 +50,10 @@ class ShoppingcartPlugin extends Plugin
             $this->enable([
                 'onPageInitialized' => ['onPageInitialized', 0],
                 'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
-                'onShoppingCartPay' => ['onShoppingCartPay', 0]
+                'onShoppingCartPay' => ['onShoppingCartPay', 0],
+                //'onShoppingCartPreparePayment' => ['onShoppingCartPreparePayment', 10],
+                'onShoppingCartReturnOrderPageUrlForAjax' => ['onShoppingCartReturnOrderPageUrlForAjax', 10],
+                'onShoppingCartRedirectToOrderPageUrl' => ['onShoppingCartRedirectToOrderPageUrl', 10]
             ]);
 
             /** @var Uri $uri */
@@ -58,7 +67,7 @@ class ShoppingcartPlugin extends Plugin
 
             if ($this->saveOrderURL && $this->saveOrderURL == $uri->path()) {
                 $this->enable([
-                    'onPagesInitialized' => ['processOrder', 0]
+                    'onPagesInitialized' => ['saveOrder', 0]
                 ]);
             }
 
@@ -90,7 +99,7 @@ class ShoppingcartPlugin extends Plugin
         $this->addPage($url, $filename);
     }
 
-    public function processOrder()
+    public function saveOrder()
     {
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
@@ -100,7 +109,6 @@ class ShoppingcartPlugin extends Plugin
         require_once __DIR__ . '/classes/controller.php';
         $controller = new ShoppingCartController($this->grav, $task, $post);
         $controller->execute();
-        $controller->redirect();
     }
 
     public function addOrderPage()
@@ -127,7 +135,7 @@ class ShoppingcartPlugin extends Plugin
 
         $twig->twig_vars['order_products'] = $order['products'];
         $twig->twig_vars['order_address'] = $order['address'];
-        $twig->twig_vars['order_total_paid'] = $order['total_paid'];
+        $twig->twig_vars['order_amount'] = $order['amount'];
         $twig->twig_vars['order_token'] = $order['token'];
         $twig->twig_vars['order_paid'] = $order['paid'];
         $twig->twig_vars['currency'] = $this->config->get('plugins.shoppingcart.general.currency');
@@ -296,9 +304,9 @@ class ShoppingcartPlugin extends Plugin
          * Add plugin settings as JavaScript code
          */
         $settings = $this->config->get('plugins.shoppingcart');
+
         $settings_js = 'if (!window.PLUGIN_SHOPPINGCART) { window.PLUGIN_SHOPPINGCART = {}; } ' . PHP_EOL . 'window.PLUGIN_SHOPPINGCART.settings = {};' . PHP_EOL;
         $settings_js .= "PLUGIN_SHOPPINGCART.settings.baseURL = '$this->baseURL';" . PHP_EOL;;
-
 
         $settings_js .= $this->recurse_settings('', $settings);
         $assets->addInlineJs($settings_js);
@@ -376,12 +384,29 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onShoppingCartSaveOrder($event)
     {
-        $order_id = $this->saveOrderToFilesystem($event['order']);
+        $this->order_id = $this->saveOrderToFilesystem($event['order']);
         // $this->_sendEmails($order_id);
+    }
 
-        // return $order_id;
-        echo $order_id;
+    /**
+     * Saves the order and sends the order emails
+     */
+    public function onShoppingCartReturnOrderPageUrlForAjax($event)
+    {
+        require_once __DIR__ . '/classes/order.php';
+        $order = new Order($event['order']);
+        echo $this->grav['base_url'] . $this->orderURL . '/id:' . str_replace('.txt', '', $this->order_id) . '/token:' . $order->token;
         exit();
+    }
+
+    /**
+     * Saves the order and sends the order emails
+     */
+    public function onShoppingCartRedirectToOrderPageUrl($event)
+    {
+        require_once __DIR__ . '/classes/order.php';
+        $order = new Order($event['order']);
+        $this->grav->redirect($this->orderURL . '/id:' . str_replace('.txt', '', $this->order_id) . '/token:' . $order->token);
     }
 
     // /**
@@ -395,7 +420,8 @@ class ShoppingcartPlugin extends Plugin
     /**
      * Saves the order to the filesystem in the user/data/ folder
      */
-    private function saveOrderToFilesystem($order) {
+    private function saveOrderToFilesystem($order)
+    {
         $prefix = 'order-';
         $format = 'Ymd-His-u';
         $ext = '.txt';
@@ -405,14 +431,14 @@ class ShoppingcartPlugin extends Plugin
         $twig = $this->grav['twig'];
 
         $body = Yaml::dump(array(
-            'products' => $order['products'],
-            'address' => $order['address'],
-            'shipping' => $order['shipping'],
-            'payment' => $order['payment'],
-            'token' => $order['token'],
+            'products' => $order->products,
+            'address' => $order->address,
+            'shipping' => $order->shipping,
+            'payment' => $order->payment,
+            'token' => $order->token,
             'paid' => true,
             'paid_on' => $this->udate($format),
-            'total_paid' => $order['total_paid'],
+            'amount' => $order->amount,
         ));
 
         $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename);

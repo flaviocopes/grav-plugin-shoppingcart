@@ -24,6 +24,19 @@ class ShoppingCartController
     }
 
     /**
+     * Add message into the session queue.
+     *
+     * @param string $msg
+     * @param string $type
+     */
+    public function setMessage($msg, $type = 'info')
+    {
+        /** @var Message $messages */
+        $messages = $this->grav['messages'];
+        $messages->add($msg, $type);
+    }
+
+    /**
      * Performs a task.
      */
     public function execute()
@@ -57,7 +70,25 @@ class ShoppingCartController
      */
     public function taskPay()
     {
-        $this->grav->fireEvent('onShoppingCartPay', new Event(['gateway' => 'stripe', 'order' => $this->post]));
+        $orderData = $this->post;
+        require_once __DIR__ . '/order.php';
+        $order = new Order($orderData);
+
+        $this->grav->fireEvent('onShoppingCartPay', new Event(['gateway' => $order->gateway, 'order' => $order]));
+    }
+
+    /**
+     * Handle saving the order.
+     *
+     * @return bool True if the action was performed.
+     */
+    public function taskPreparePayment()
+    {
+        $orderData = $this->post;
+        require_once __DIR__ . '/order.php';
+        $order = new Order($orderData);
+
+        $this->grav->fireEvent('onShoppingCartPreparePayment', new Event(['gateway' => $order->gateway, 'order' => $order]));
     }
 
     /**

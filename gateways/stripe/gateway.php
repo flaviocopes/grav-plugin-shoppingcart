@@ -13,18 +13,17 @@ class ShoppingCartStripeGateway extends ShoppingCartGateway
     /**
      * Handle paying via this gateway
      */
-    public function onShoppingCartPay(Event $event) {
-        if ($event['gateway'] != $this->name) {
-            return;
-        }
+    public function onShoppingCartPay(Event $event)
+    {
+        if (!$this->isCurrentGateway($event['gateway'])) { return; }
 
-        $order = $event['order'];
+        $order = $this->getOrderFromEvent($event);
 
-        $amount = $order['amount'];
+        $amount = $order->amount;
         $currency = $this->grav['config']->get('plugins.shoppingcart.general.currency');
         $description = $this->grav['config']->get('plugins.shoppingcart.payment.methods.stripe.description');
 
-        $token = $order['stripeToken'];
+        $token = $order->extra['stripeToken'];
         $secretKey = $this->grav['config']->get('plugins.shoppingcart.payment.methods.stripe.secretKey');
 
         $gateway = Omnipay::create('Stripe');
@@ -39,7 +38,8 @@ class ShoppingCartStripeGateway extends ShoppingCartGateway
 
             if ($response->isSuccessful()) {
                 // mark order as complete
-                $this->grav->fireEvent('onShoppingCartSaveOrder', new Event(['gateway' => 'stripe', 'order' => $order]));
+                $this->grav->fireEvent('onShoppingCartSaveOrder', new Event(['gateway' => $this->name, 'order' => $order]));
+                $this->grav->fireEvent('onShoppingCartReturnOrderPageUrlForAjax', new Event(['gateway' => $this->name, 'order' => $order]));
             } elseif ($response->isRedirect()) {
                 $response->redirect();
             } else {
@@ -48,7 +48,7 @@ class ShoppingCartStripeGateway extends ShoppingCartGateway
             }
         } catch (\Exception $e) {
             // internal error, log exception and display a generic message to the customer
-            throw new \RuntimeException('Sorry, there was an error processing your payment. Please try again later.');
+            throw new \RuntimeException('Sorry, there was an error processing your payment: ' . $e->getMessage());
         }
     }
 }

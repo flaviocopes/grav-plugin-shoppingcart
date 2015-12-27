@@ -183,7 +183,6 @@
             i++;
         }
 
-
         if (ShoppingCart.productPriceDoesNotIncludeTaxes()) {
             //calculate country taxes
             var country;

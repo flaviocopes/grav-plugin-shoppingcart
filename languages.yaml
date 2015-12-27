@@ -27,7 +27,7 @@ en:
     CHECKOUT_CHOOSE_SHIPPING_METHOD: Choose Shipping Method
     CHECKOUT_CHOOSE_SHIPPING_METHOD_DESC: Please select how you would like your products to be delivered.
     CHECKOUT_CHOOSE_PAYMENT_METHOD: Choose Payment Method
-    CHECKOUT_CHOOSE_PAYMENT_METHOD_QUESTION: How would you like to pay for your order
+    CHECKOUT_CHOOSE_PAYMENT_METHOD_DESC: Please select a payment method
     CHECKOUT_PAYMENT_SECURE_NOTE: All transactions are secure and encrypted, and we never store your credit card information. To learn more, please view our privacy policy.
     CHECKOUT_BUTTON_BACK: Back
     CHECKOUT_BUTTON_PAY: Go on and pay
@@ -52,7 +52,7 @@ en:
     YOU_CANCELLED_THE_ORDER: You cancelled the order
     VALUE_NOT_ACCEPTABLE: Value of the quantity field not acceptable
     QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE: Quantity exceeds the maximum allowed value
-    CHECKOUT_PAYMENT_METHOD: Payment Method
+    CHECKOUT_PAYMENT_METHOD: "## Payment Method"
     CHECKOUT_SHIPPING_METHOD: "## Shipping Method"
     THANK_YOU: Thank you for your order
     OFFLINE_ORDER_TEXT: We'll get in touch soon to confirm the order and payment.
