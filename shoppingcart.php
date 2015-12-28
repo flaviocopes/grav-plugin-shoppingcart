@@ -141,7 +141,7 @@ class ShoppingcartPlugin extends Plugin
         $twig->twig_vars['currency'] = $this->config->get('plugins.shoppingcart.general.currency');
     }
 
-    private function addPage($url, $filename)
+    protected function addPage($url, $filename)
     {
         $pages = $this->grav['pages'];
         $page = $pages->dispatch($url);
