@@ -1,3 +1,13 @@
+# v0.2.0
+## 28-12-2015
+
+1. [](#new)
+    * Use the Form plugin to render and validate the checkout form. Dropped custom validation
+1. [](#new)
+    * Use Omnipay to handle the payment
+1. [](#new)
+    * Added base ShoppingCartGateway and Order classes
+
 # v0.1.5
 ## 24-11-2015
 

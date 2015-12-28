@@ -135,7 +135,4 @@ Listing a few things here I want to do in the free version:
 - Better visualization of the orders in the Data Manager
 - Improve tax management
 - Improve shipping options
-- Add PayPal Standard Payments
 - Allow to set options in the Admin Panel
-- Use the Form plugin for the checkout form
-
