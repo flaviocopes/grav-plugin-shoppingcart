@@ -6,7 +6,7 @@ author:
   name: Flavio Copes
   email: copesc@gmail.com
   url: http://flaviocopes.com
-homepage: https://github.com/flaviocopes/grav-plugin-shoppingcart
+homepage: http://gravshoppingcart.com/
 # demo: http://demo.getgrav.org/shop-skeleton
 keywords: shoppingcart, ecommerce, e-commerce, plugin, shop, cart
 bugs: https://github.com/flaviocopes/grav-plugin-shoppingcart/issues
@@ -17,11 +17,11 @@ form:
   fields:
     enabled:
       type: toggle
-      label: Plugin status
+      label: PLUGIN_ADMIN.PLUGIN_STATUS
       highlight: 1
       default: 0
       options:
-        1: Enabled
-        0: Disabled
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
