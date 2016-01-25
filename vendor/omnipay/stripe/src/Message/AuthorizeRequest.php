@@ -1,12 +1,12 @@
 <?php
-/**
- * Stripe Authorize Request
- */
 
+/**
+ * Stripe Authorize Request.
+ */
 namespace Omnipay\Stripe\Message;
 
 /**
- * Stripe Authorize Request
+ * Stripe Authorize Request.
  *
  * An Authorize request is similar to a purchase request but the
  * charge issues an authorization (or pre-authorization), and no money
@@ -82,6 +82,7 @@ class AuthorizeRequest extends AbstractRequest
 
     /**
      * @param string $value
+     *
      * @return AbstractRequest provides a fluent interface.
      */
     public function setDestination($value)
@@ -99,6 +100,7 @@ class AuthorizeRequest extends AbstractRequest
 
     /**
      * @param string $value
+     *
      * @return AbstractRequest provides a fluent interface.
      */
     public function setSource($value)
@@ -124,6 +126,7 @@ class AuthorizeRequest extends AbstractRequest
 
     /**
      * @param string $value
+     *
      * @return AbstractRequest provides a fluent interface.
      */
     public function setApplicationFee($value)
@@ -168,17 +171,20 @@ class AuthorizeRequest extends AbstractRequest
 
         if ($this->getSource()) {
             $data['source'] = $this->getSource();
-        } elseif ($this->getCustomerReference()) {
-            $data['customer'] = $this->getCustomerReference();
-            if ($this->getCardReference()) {
-                $data['source'] = $this->getCardReference();
-            }
         } elseif ($this->getCardReference()) {
             $data['source'] = $this->getCardReference();
+            if ($this->getCustomerReference()) {
+                $data['customer'] = $this->getCustomerReference();
+            }
         } elseif ($this->getToken()) {
             $data['source'] = $this->getToken();
+            if ($this->getCustomerReference()) {
+                $data['customer'] = $this->getCustomerReference();
+            }
         } elseif ($this->getCard()) {
             $data['source'] = $this->getCardData();
+        } elseif ($this->getCustomerReference()) {
+            $data['customer'] = $this->getCustomerReference();
         } else {
             // one of cardReference, token, or card is required
             $this->validate('source');

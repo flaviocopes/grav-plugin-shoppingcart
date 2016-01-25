@@ -1,12 +1,12 @@
 <?php
-/**
- * Stripe Update Customer Request
- */
 
+/**
+ * Stripe Update Customer Request.
+ */
 namespace Omnipay\Stripe\Message;
 
 /**
- * Stripe Update Customer Request
+ * Stripe Update Customer Request.
  *
  * Customer objects allow you to perform recurring charges and
  * track multiple charges that are associated with the same customer.
@@ -30,7 +30,7 @@ namespace Omnipay\Stripe\Message;
  * a result of updating the customer's card.)
  *
  * This request accepts mostly the same arguments as the customer
- * creation call. 
+ * creation call.
  *
  * @link https://stripe.com/docs/api#update_customer
  */
@@ -55,6 +55,6 @@ class UpdateCustomerRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-        return $this->endpoint . '/customers/' . $this->getCustomerReference();
+        return $this->endpoint.'/customers/'.$this->getCustomerReference();
     }
 }

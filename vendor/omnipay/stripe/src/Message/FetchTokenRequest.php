@@ -1,12 +1,12 @@
 <?php
-/**
- * Stripe Fetch Token Request
- */
 
+/**
+ * Stripe Fetch Token Request.
+ */
 namespace Omnipay\Stripe\Message;
 
 /**
- * Stripe Fetch Token Request
+ * Stripe Fetch Token Request.
  *
  * Often you want to be able to charge credit cards or send payments
  * to bank accounts without having to hold sensitive card information
@@ -18,7 +18,7 @@ namespace Omnipay\Stripe\Message;
  * You can then use a token anywhere in our API that a card or bank account
  * is accepted. Note that tokens are not meant to be stored or used more
  * than once—to store these details for use later, you should create
- * Customer or Recipient objects. 
+ * Customer or Recipient objects.
  *
  * @link https://stripe.com/docs/api#tokens
  */
