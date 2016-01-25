@@ -1,6 +1,10 @@
 # Grav Shopping Cart Plugin
 
+### Screenshot of Products Listing
+
 ![Screenshot](assets/screenshot1.jpg)
+
+### Screenshot of Single Product
 
 ![Screenshot](assets/screenshot2.jpg)
 
