@@ -1,5 +1,9 @@
 # Grav Shopping Cart Plugin
 
+![Screenshot](assets/screenshot1.jpg)
+
+![Screenshot](assets/screenshot2.jpg)
+
 `Shopping Cart` is a [Grav](http://github.com/getgrav/grav) plugin that adds e-commerce support to Grav. Currenty Stripe is the only payment method supported.
 
 > IMPORTANT!!! This plugin is currently in development as is to be considered an experimental **alpha release**. No backwards compatibility is guaranteed at this time.
