@@ -9,7 +9,6 @@
         }
     ],
     "require": {
-        "omnipay/common": "~2.0",
-        "omnipay/stripe": "~2.0"
+        "omnipay/common": "~2.0"
     }
 }

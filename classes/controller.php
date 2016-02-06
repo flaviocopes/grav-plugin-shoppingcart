@@ -18,7 +18,7 @@ class ShoppingCartController
      */
     public function __construct(Grav $grav, $task, $post)
     {
-        $this->grav = $grav;
+        $this->grav = Grav::instance();
         $this->task = $task ?: 'display';
         $this->post = $this->getPost($post);
     }
@@ -41,12 +41,6 @@ class ShoppingCartController
      */
     public function execute()
     {
-        // Set redirect if available.
-        if (isset($this->post['_redirect'])) {
-            $redirect = $this->post['_redirect'];
-            unset($this->post['_redirect']);
-        }
-
         $success = false;
         $method = 'task' . ucfirst($this->task);
 
@@ -100,12 +94,6 @@ class ShoppingCartController
     protected function getPost($post)
     {
         unset($post['task']);
-
-        // Decode JSON encoded fields and merge them to data.
-        if (isset($post['_json'])) {
-            $post = array_merge_recursive($post, $this->jsonDecode($post['_json']));
-            unset($post['_json']);
-        }
         return $post;
     }
 }

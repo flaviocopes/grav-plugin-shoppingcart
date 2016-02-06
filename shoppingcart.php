@@ -5,12 +5,20 @@ use Grav\Common\Plugin;
 use Grav\Common\Grav;
 use Grav\Common\Page\Page;
 use Grav\Common\Page\Types;
+use Grav\Common\Twig\Twig;
+use Grav\Common\Uri;
 use RocketTheme\Toolbox\Event\Event;
 use RocketTheme\Toolbox\File\File;
 use Symfony\Component\Yaml\Yaml;
 
 class ShoppingcartPlugin extends Plugin
 {
+    protected $baseURL;
+    protected $checkoutURL;
+    protected $saveOrderURL;
+    protected $orderURL;
+    protected $order_id;
+
     /**
      * @return array
      */
@@ -50,8 +58,6 @@ class ShoppingcartPlugin extends Plugin
             $this->enable([
                 'onPageInitialized' => ['onPageInitialized', 0],
                 'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
-                'onShoppingCartPay' => ['onShoppingCartPay', 0],
-                //'onShoppingCartPreparePayment' => ['onShoppingCartPreparePayment', 10],
                 'onShoppingCartReturnOrderPageUrlForAjax' => ['onShoppingCartReturnOrderPageUrlForAjax', 10],
                 'onShoppingCartRedirectToOrderPageUrl' => ['onShoppingCartRedirectToOrderPageUrl', 10]
             ]);
@@ -78,19 +84,6 @@ class ShoppingcartPlugin extends Plugin
             }
         }
     }
-
-    public function onShoppingCartPay($event)
-    {
-        require_once __DIR__ . '/classes/gateway.php';
-
-        $this->gateways['stripe'] = function() {
-            require_once __DIR__ . '/gateways/stripe/gateway.php';
-            return new ShoppingCartStripeGateway($this->grav);
-        };
-
-        $this->gateways['stripe']()->onShoppingCartPay($event);
-    }
-
 
     public function addCheckoutPage()
     {
@@ -156,6 +149,8 @@ class ShoppingcartPlugin extends Plugin
 
     /**
      * Add page template types.
+     *
+     * @param Event $event
      */
     public function onGetPageTemplates(Event $event)
     {
@@ -326,9 +321,7 @@ class ShoppingcartPlugin extends Plugin
                         $key = '.' . $key;
                     }
 
-                    if (is_numeric($value)) {
-                        $value = $value;
-                    } else {
+                    if (!is_numeric($value)) {
                         $value = '"' . $value . '"';
                     }
                     $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ' . $value . '; ' . PHP_EOL;;
@@ -376,11 +369,12 @@ class ShoppingcartPlugin extends Plugin
         require_once __DIR__ . '/classes/controller.php';
         $controller = new ShoppingCartController($this->grav, $task, $post);
         $controller->execute();
-        $controller->redirect();
     }
 
     /**
      * Saves the order and sends the order emails
+     *
+     * @param $event
      */
     public function onShoppingCartSaveOrder($event)
     {
@@ -390,6 +384,8 @@ class ShoppingcartPlugin extends Plugin
 
     /**
      * Saves the order and sends the order emails
+     *
+     * @param $event
      */
     public function onShoppingCartReturnOrderPageUrlForAjax($event)
     {
@@ -401,6 +397,8 @@ class ShoppingcartPlugin extends Plugin
 
     /**
      * Saves the order and sends the order emails
+     *
+     * @param $event
      */
     public function onShoppingCartRedirectToOrderPageUrl($event)
     {
@@ -419,6 +417,10 @@ class ShoppingcartPlugin extends Plugin
 
     /**
      * Saves the order to the filesystem in the user/data/ folder
+     *
+     * @param $order
+     *
+     * @return string
      */
     private function saveOrderToFilesystem($order)
     {
@@ -426,9 +428,6 @@ class ShoppingcartPlugin extends Plugin
         $format = 'Ymd-His-u';
         $ext = '.txt';
         $filename = $prefix . $this->udate($format) . $ext;
-
-        /** @var Twig $twig */
-        $twig = $this->grav['twig'];
 
         $body = Yaml::dump(array(
             'products' => $order->products,

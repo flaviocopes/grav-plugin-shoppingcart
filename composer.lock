@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "017755f5b871b8bc22195bfebe5b41c7",
-    "content-hash": "55807b51ea1a52e640ffffe12209d325",
+    "hash": "30fff1d55503bf533fa2c7a9b0c549b8",
+    "content-hash": "7c35ca7b6f34d0b43be732b4e453c160",
     "packages": [
         {
             "name": "guzzle/guzzle",
@@ -239,63 +239,6 @@
                 "purchase"
             ],
             "time": "2016-01-27 03:04:53"
-        },
-        {
-            "name": "omnipay/stripe",
-            "version": "v2.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/omnipay-stripe.git",
-                "reference": "6c4cef5b5168a58476eef6fa73b7875e15c94b6f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/omnipay-stripe/zipball/6c4cef5b5168a58476eef6fa73b7875e15c94b6f",
-                "reference": "6c4cef5b5168a58476eef6fa73b7875e15c94b6f",
-                "shasum": ""
-            },
-            "require": {
-                "omnipay/common": "~2.0"
-            },
-            "require-dev": {
-                "omnipay/tests": "~2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Omnipay\\Stripe\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Adrian Macneil",
-                    "email": "adrian@adrianmacneil.com"
-                },
-                {
-                    "name": "Omnipay Contributors",
-                    "homepage": "https://github.com/thephpleague/omnipay-stripe/contributors"
-                }
-            ],
-            "description": "Stripe driver for the Omnipay payment processing library",
-            "homepage": "https://github.com/thephpleague/omnipay-stripe",
-            "keywords": [
-                "gateway",
-                "merchant",
-                "omnipay",
-                "pay",
-                "payment",
-                "stripe"
-            ],
-            "time": "2016-01-13 04:00:45"
         },
         {
             "name": "symfony/event-dispatcher",

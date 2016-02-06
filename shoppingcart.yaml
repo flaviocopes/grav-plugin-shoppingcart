@@ -48,16 +48,6 @@ countries: # Set countries where people can buy from, and corresponding taxes
         tax_percentage: '0' # If taxes are not factored in the product price, add them at checkout with this percentage
         allow: true
 
-payment:
-    methods:
-        stripe:
-            name: 'Stripe'
-            description: 'Test description' # The description appearing in the payment popup
-            enabled: true
-            secretKey: '' # Add your own secret key
-            publicKey: '' # Add your own public key
-
-
 checkout_form:
     name: checkout
     fields:

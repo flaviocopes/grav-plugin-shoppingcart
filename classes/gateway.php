@@ -8,6 +8,9 @@ abstract class ShoppingCartGateway
 {
     protected $name = '';
 
+    /** @var Grav $grav */
+    protected $grav;
+
     /**
      * Return the order extracted from the event object
      */
@@ -27,11 +30,10 @@ abstract class ShoppingCartGateway
     }
 
     /**
-     * @param Grav $grav
      */
-    public function __construct(Grav $grav)
+    public function __construct()
     {
-        $this->grav = $grav;
+        $this->grav = Grav::instance();
 
         if ($this->name == '') {
             throw new \RuntimeException('Gateway must provide the $name property');
