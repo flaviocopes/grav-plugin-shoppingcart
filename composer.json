@@ -9,7 +9,6 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
         "omnipay/common": "~2.0",
         "omnipay/stripe": "~2.0"
     }

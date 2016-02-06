@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "87fff9e7d50b2a8ab62da805ad0fbe0f",
-    "content-hash": "621fab05e75fc2be1df651e1028a48b8",
+    "hash": "017755f5b871b8bc22195bfebe5b41c7",
+    "content-hash": "55807b51ea1a52e640ffffe12209d325",
     "packages": [
         {
             "name": "guzzle/guzzle",
@@ -146,16 +146,16 @@
         },
         {
             "name": "omnipay/common",
-            "version": "2.4.0",
+            "version": "v2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/omnipay-common.git",
-                "reference": "8e396e9af39d2b0176e9a05a764a5afce8ad21ef"
+                "reference": "5a618b4083a63b2e1405529d16c8d546a6788921"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/omnipay-common/zipball/8e396e9af39d2b0176e9a05a764a5afce8ad21ef",
-                "reference": "8e396e9af39d2b0176e9a05a764a5afce8ad21ef",
+                "url": "https://api.github.com/repos/thephpleague/omnipay-common/zipball/5a618b4083a63b2e1405529d16c8d546a6788921",
+                "reference": "5a618b4083a63b2e1405529d16c8d546a6788921",
                 "shasum": ""
             },
             "require": {
@@ -174,7 +174,6 @@
                 "gateways": [
                     "AuthorizeNet_AIM",
                     "AuthorizeNet_SIM",
-                    "Buckaroo",
                     "Buckaroo_Ideal",
                     "Buckaroo_PayPal",
                     "CardSave",
@@ -239,7 +238,7 @@
                 "payment",
                 "purchase"
             ],
-            "time": "2015-10-27 19:40:30"
+            "time": "2016-01-27 03:04:53"
         },
         {
             "name": "omnipay/stripe",
@@ -533,8 +532,6 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {
-        "php": ">=5.5.9"
-    },
+    "platform": [],
     "platform-dev": []
 }
