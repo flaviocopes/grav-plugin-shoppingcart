@@ -1,3 +1,13 @@
+# v1.0.0
+## 07-02-2016
+
+1. [](#new)
+    * Separated Stripe to own plugin
+1. [](#new)
+    * Added PayPal Express checkout
+1. [](#new)
+    * Added a new Admin panel to visualize orders
+
 # v0.2.0
 ## 28-12-2015
 
