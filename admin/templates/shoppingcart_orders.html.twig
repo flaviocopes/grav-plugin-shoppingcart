@@ -1,12 +1,4 @@
-{% extends 'partials/base.html.twig' %}
-
-{% if admin.route %}
-    {% set context = admin.page(true) %}
-{% endif %}
-
-{% block titlebar %}
-    <h1><i class="fa fa-fw fa-file-text-o"></i> {{ "PLUGIN_SHOPPINGCART.SHOPPING_CART"|tu }}</h1>
-{% endblock %}
+{% extends 'shoppingcart_base.html.twig' %}
 
 {% block content %}
     <style>
@@ -140,5 +132,3 @@
         <p class="center">Showing <span class="totalRetrieved">{{grav.twig.orders.totalRetrieved}}</span> orders of <span class="totalAvailable">{{grav.twig.orders.totalAvailable}}</span></p>
     </div>
 {% endblock %}
-
-

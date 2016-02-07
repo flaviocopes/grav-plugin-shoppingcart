@@ -1,6 +1,6 @@
 ---
 title: Shopping Cart
-template: shoppingcart_orders
+template: shoppingcart_addons
 
 access:
     admin.shoppingcart: true

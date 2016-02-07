@@ -1,0 +1,31 @@
+{% extends 'partials/base.html.twig' %}
+
+{% if admin.route %}
+    {% set context = admin.page(true) %}
+{% endif %}
+
+{% block titlebar %}
+    <h1><i class="fa fa-fw fa-file-text-o"></i> {{ "PLUGIN_SHOPPINGCART.SHOPPING_CART"|tu }}</h1>
+{% endblock %}
+
+{% block content_top %}
+    <!--<div class="alert notice"></div>-->
+    <ul class="tab-bar">
+        <li {% if uri.basename == 'shoppingcart' %}class="active"{% endif %}>
+            {% if uri.basename == 'shoppingcart' %}<span>{% else %}<a href="{{ base_url_relative }}/shoppingcart">{% endif %}
+            {{ "Orders"|tu }}
+            {% if uri.basename == 'shoppingcart' %}</span>{% else %}</a>{% endif %}
+        </li>
+        <li {% if uri.basename == 'shoppingcart-addons' %}class="active"{% endif %}>
+            {% if uri.basename == 'shoppingcart-addons' %}<span>{% else %}<a href="{{ base_url_relative }}/shoppingcart-addons">{% endif %}
+            Addons
+            {% if uri.basename == 'shoppingcart-addons' %}</span>{% else %}</a>{% endif %}
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+
