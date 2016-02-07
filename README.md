@@ -10,8 +10,6 @@
 
 `Shopping Cart` is a [Grav](http://github.com/getgrav/grav) plugin that adds e-commerce support to Grav. Currenty Stripe is the only payment method supported.
 
-> IMPORTANT!!! This plugin is currently in development as is to be considered an experimental **alpha release**. No backwards compatibility is guaranteed at this time.
-
 # Installation
 
 To install this plugin, just download the zip version of this repository and unzip it under `/your/site/grav/user/plugins`. Then, rename the folder to `shoppingcart`.
@@ -105,18 +103,10 @@ price: 19.99
 Product description
 ```
 
-
-
 # Adding a Checkout Plugin
 
 Currently there are two Checkout plugins: Stripe and Checkout. Get one of the two, or both, install them and configure their options through the Admin Panel.
 
 # Visualizing orders
 
-Orders are saved in the `user/data/shoppingcart` folder. You can view them in the Admin through the Data Manager plugin, or just browse the files from the filesystem: the orders are stored as human-readable YAML files.
-
-# Future
-
-There will be a PRO version with more advanced features such as stock management, digital downloads, product variations, shipping cost calculation etc.
-
-A free beta program will be launched soon.
+Orders are saved in the `user/data/shoppingcart` folder as yaml files. You can view them in the Admin using the Shopping Cart menu.
