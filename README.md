@@ -107,21 +107,9 @@ Product description
 
 
 
-# Configure the shopping cart options
+# Adding a Checkout Plugin
 
-Copy the `user/plugins/shoppingcart/shoppingcart.yaml` file into `user/config/plugins/shoppingcart.yaml` file, and add your own Stripe Test keys (you can find them in your Stripe Dashboard).
-
-E.g.
-
-```
-payment:
-    methods:
-        stripe:
-            secretKey: 'sk_test_4okloV9Jsu3IiBSc42ke2iek'
-            publicKey: 'pk_test_8OfS5r77VXHMXE7N2j3i2j2i'
-```
-
-You can configure pretty much everything there. Add your own shipping methods too.
+Currently there are two Checkout plugins: Stripe and Checkout. Get one of the two, or both, install them and configure their options through the Admin Panel.
 
 # Visualizing orders
 
