@@ -106,7 +106,6 @@
         var existingProduct = existingProducts[0];
 
         if (!existingProduct) {
-            if (product.type === 'digital') product.isDigital = true;
             ShoppingCart.items.push({product: product, quantity: quantity});
         } else {
             existingProduct.quantity = parseInt(existingProduct.quantity) + parseInt(quantity);

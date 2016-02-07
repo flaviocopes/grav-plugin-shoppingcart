@@ -2,7 +2,7 @@
 namespace Grav\Plugin;
 
 use Grav\Common\Plugin;
-use Grav\Common\Grav;
+use Grav\Common\Filesystem\Folder;
 use Grav\Common\Page\Page;
 use Grav\Common\Page\Types;
 use Grav\Common\Twig\Twig;
@@ -18,6 +18,7 @@ class ShoppingcartPlugin extends Plugin
     protected $saveOrderURL;
     protected $orderURL;
     protected $order_id;
+    protected $route = 'shoppingcart';
 
     /**
      * @return array
@@ -25,7 +26,8 @@ class ShoppingcartPlugin extends Plugin
     public static function getSubscribedEvents()
     {
         return [
-            'onPluginsInitialized' => ['onPluginsInitialized', 0],
+            //Add 10 as we want to hook onDataTypeExcludeFromDataManagerPluginHook prior to Data Manager fetching it
+            'onPluginsInitialized' => ['onPluginsInitialized', 10],
             'onGetPageTemplates' => ['onGetPageTemplates', 0],
             'onShoppingCartSaveOrder' => ['onShoppingCartSaveOrder', 0],
         ];
@@ -38,11 +40,6 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/vendor/autoload.php';
 
-        $proEnabled = $this->config->get('plugins.shoppingcart-pro.enabled');
-        if ($proEnabled && $proEnabled !== false) {
-            $this->config->set('plugins.shoppingcart', array_replace_recursive($this->config->get('plugins.shoppingcart'), $this->config->get('plugins.shoppingcart-pro')));
-        }
-
         $this->baseURL = $this->grav['uri']->rootUrl();
         $this->checkoutURL = $this->config->get('plugins.shoppingcart.urls.checkoutURL');
         $this->saveOrderURL = $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
@@ -50,8 +47,31 @@ class ShoppingcartPlugin extends Plugin
 
         if ($this->isAdmin()) {
             // Admin
-            $this->active = false;
-            return;
+
+            /** @var Uri $uri */
+            $uri = $this->grav['uri'];
+
+            //Admin
+            $this->enable([
+                'onTwigTemplatePaths' => ['onTwigAdminTemplatePaths', 0],
+                'onAdminMenu' => ['onAdminMenu', 0],
+                'onDataTypeExcludeFromDataManagerPluginHook' => ['onDataTypeExcludeFromDataManagerPluginHook', 0],
+            ]);
+
+            if (strpos($uri->path(), $this->config->get('plugins.admin.route') . '/' . $this->route) === false) {
+                return;
+            }
+
+            $page = $this->grav['uri']->param('page');
+            $orders = $this->getLastOrders($page);
+
+            if ($page > 0) {
+                echo json_encode($orders);
+                exit();
+            }
+
+            $this->grav['twig']->orders = $orders;
+
         } else {
             // Site
 
@@ -379,7 +399,6 @@ class ShoppingcartPlugin extends Plugin
     public function onShoppingCartSaveOrder($event)
     {
         $this->order_id = $this->saveOrderToFilesystem($event['order']);
-        // $this->_sendEmails($order_id);
     }
 
     /**
@@ -407,14 +426,6 @@ class ShoppingcartPlugin extends Plugin
         $this->grav->redirect($this->orderURL . '/id:' . str_replace('.txt', '', $this->order_id) . '/token:' . $order->token);
     }
 
-    // /**
-    //  * Sends the order emails
-    //  */
-    // private function _sendEmails()
-    // {
-    //    //TODO
-    // }
-
     /**
      * Saves the order to the filesystem in the user/data/ folder
      *
@@ -437,6 +448,7 @@ class ShoppingcartPlugin extends Plugin
             'token' => $order->token,
             'paid' => true,
             'paid_on' => $this->udate($format),
+            'created_on' => $this->udate($format),
             'amount' => $order->amount,
         ));
 
@@ -464,4 +476,79 @@ class ShoppingcartPlugin extends Plugin
 
         return date(preg_replace('`(?<!\\\\)u`', \sprintf('%06d', $milliseconds), $format), $timestamp);
     }
+
+    private function getAllOrders()
+    {
+        $files = [];
+        $path = DATA_DIR . 'shoppingcart';
+
+        if (!file_exists($path)) {
+            Folder::mkdir($path);
+        }
+
+        $list = Folder::all($path);
+
+        // Collect files if modified in the last 7 days
+        foreach ($list as $filename) {
+            $yaml = Yaml::parse(file_get_contents($path . DS . $filename));
+
+            //BC: get order date from filename
+            if (!isset($yaml['created_on'])) {
+                $order_date = str_replace('order-', '', $filename);
+                $order_date = str_replace('.txt', '', $order_date);
+                $yaml['created_on'] = $order_date;
+            }
+
+            $files[] = $yaml;
+        }
+
+        array_reverse($files);
+
+        return $files;
+    }
+
+    private function getLastOrders($page = 0)
+    {
+        $number = 10;
+
+        $files = [];
+        $orders = $this->getAllOrders();
+
+        $totalAvailable = count($orders);
+        $orders = array_slice($orders, $page * $number, $number);
+        $totalRetrieved = count($orders);
+
+        return (object)array(
+            "orders" => $orders,
+            "page" => $page,
+            "totalAvailable" => $totalAvailable,
+            "totalRetrieved" => $totalRetrieved
+        );
+    }
+
+    /**
+     * Add navigation item to the admin plugin
+     */
+    public function onAdminMenu()
+    {
+
+        $this->grav['twig']->plugins_hooked_nav['PLUGIN_SHOPPINGCART.SHOPPING_CART'] = ['route' => $this->route, 'icon' => 'fa-shopping-cart'];
+    }
+
+    /**
+     * Exclude Orders from the Data Manager plugin
+     */
+    public function onDataTypeExcludeFromDataManagerPluginHook()
+    {
+        $this->grav['admin']->dataTypesExcludedFromDataManagerPlugin[] = 'shoppingcart';
+    }
+
+    /**
+     * Add plugin templates path
+     */
+    public function onTwigAdminTemplatePaths()
+    {
+        $this->grav['twig']->twig_paths[] = __DIR__ . '/admin/templates';
+    }
+
 }

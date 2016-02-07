@@ -9,6 +9,7 @@ author:
 homepage: http://gravshoppingcart.com/
 # demo: http://demo.getgrav.org/shop-skeleton
 keywords: shoppingcart, ecommerce, e-commerce, plugin, shop, cart
+readme: https://github.com/flaviocopes/grav-plugin-shoppingcart/blob/develop/README.md
 bugs: https://github.com/flaviocopes/grav-plugin-shoppingcart/issues
 license: MIT
 
