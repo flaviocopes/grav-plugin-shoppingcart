@@ -133,7 +133,7 @@ class ShoppingcartPlugin extends Plugin
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
 
-        $ext = '.txt';
+        $ext = '.yaml';
         $filename = $uri->param('id');
         $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename . $ext);
         $order = Yaml::parse($file->content());
@@ -410,7 +410,7 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/classes/order.php';
         $order = new Order($event['order']);
-        echo $this->grav['base_url'] . $this->orderURL . '/id:' . str_replace('.txt', '', $this->order_id) . '/token:' . $order->token;
+        echo $this->grav['base_url'] . $this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
         exit();
     }
 
@@ -423,7 +423,7 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/classes/order.php';
         $order = new Order($event['order']);
-        $this->grav->redirect($this->orderURL . '/id:' . str_replace('.txt', '', $this->order_id) . '/token:' . $order->token);
+        $this->grav->redirect($this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token);
     }
 
     /**
@@ -437,7 +437,7 @@ class ShoppingcartPlugin extends Plugin
     {
         $prefix = 'order-';
         $format = 'Ymd-His-u';
-        $ext = '.txt';
+        $ext = '.yaml';
         $filename = $prefix . $this->udate($format) . $ext;
 
         $body = Yaml::dump(array(
@@ -495,7 +495,7 @@ class ShoppingcartPlugin extends Plugin
             //BC: get order date from filename
             if (!isset($yaml['created_on'])) {
                 $order_date = str_replace('order-', '', $filename);
-                $order_date = str_replace('.txt', '', $order_date);
+                $order_date = str_replace('.yaml', '', $order_date);
                 $yaml['created_on'] = $order_date;
             }
 
