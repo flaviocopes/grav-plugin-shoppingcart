@@ -1,5 +1,5 @@
 # v1.0.0
-## 07-02-2016
+## 16-02-2016
 
 1. [](#new)
     * Separated Stripe to own plugin
@@ -7,6 +7,8 @@
     * Added PayPal Express checkout
 1. [](#new)
     * Added a new Admin panel to visualize orders
+1. [](#improved)
+    * Stores orders as YAML instead of .txt files
 
 # v0.2.0
 ## 28-12-2015
