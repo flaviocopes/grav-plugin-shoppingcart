@@ -7,7 +7,7 @@
     <h3><a href="{{ page.url }}">{{ page.header.title }}</a></h3>
     <div class="shoppingcart-thumb">
         {% if shoppingcart_image %}
-            <a href="{{ page.url }}">{{ shoppingcart_image.cropResize(200,200).html('page.header.title','shoppingcart-thumb-image') }}</a>
+            <a href="{{ page.url }}">{{ shoppingcart_image.cropResize(200,200).html(page.header.title,'shoppingcart-thumb-image') }}</a>
         {% else %}
             <br><br><br>
         {% endif %}
