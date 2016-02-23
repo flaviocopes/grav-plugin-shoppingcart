@@ -16,13 +16,45 @@ license: MIT
 form:
   validation: loose
   fields:
-    enabled:
-      type: toggle
-      label: PLUGIN_ADMIN.PLUGIN_STATUS
-      highlight: 1
-      default: 0
-      options:
-        1: PLUGIN_ADMIN.ENABLED
-        0: PLUGIN_ADMIN.DISABLED
-      validate:
-        type: bool
+  
+    plugin:
+      type: section
+      underline: true
+      fields:
+  
+        enabled:
+          type: toggle
+          label: PLUGIN_ADMIN.PLUGIN_STATUS
+          highlight: 1
+          default: 0
+          options:
+            1: PLUGIN_ADMIN.ENABLED
+            0: PLUGIN_ADMIN.DISABLED
+          validate:
+            type: bool
+
+    settings:
+      type: section
+      title: Settings
+      underline: true
+      fields:
+
+        currency:
+          type: text
+          size: x-small
+          label: Currency symbol
+          default: $
+          validate:
+            min: 1
+            max: 6
+
+        placement:
+          type: toggle
+          label: Currency placement
+          #highlight: 0
+          default: 0
+          options:
+            0: Before
+            1: After
+          validate:
+            type: bool
