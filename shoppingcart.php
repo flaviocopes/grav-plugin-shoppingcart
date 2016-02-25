@@ -310,7 +310,7 @@ class ShoppingcartPlugin extends Plugin
         ];
 
         foreach($strings as $string) {
-            $translations .= 'PLUGIN_SHOPPINGCART.translations.' . $string .' = "' . $this->grav['language']->translate(['PLUGIN_SHOPPINGCART.' . $string]) . '"; ' . PHP_EOL;;
+            $translations .= 'PLUGIN_SHOPPINGCART.translations.' . $string .' = "' . $this->grav['language']->translate(['PLUGIN_SHOPPINGCART.' . $string]) . '"; ' . PHP_EOL;
         }
 
         $assets->addInlineJs($translations);
@@ -321,7 +321,7 @@ class ShoppingcartPlugin extends Plugin
         $settings = $this->config->get('plugins.shoppingcart');
 
         $settings_js = 'if (!window.PLUGIN_SHOPPINGCART) { window.PLUGIN_SHOPPINGCART = {}; } ' . PHP_EOL . 'window.PLUGIN_SHOPPINGCART.settings = {};' . PHP_EOL;
-        $settings_js .= "PLUGIN_SHOPPINGCART.settings.baseURL = '$this->baseURL';" . PHP_EOL;;
+        $settings_js .= "PLUGIN_SHOPPINGCART.settings.baseURL = '$this->baseURL';" . PHP_EOL;
 
         $settings_js .= $this->recurse_settings('', $settings);
         $assets->addInlineJs($settings_js);
@@ -344,7 +344,7 @@ class ShoppingcartPlugin extends Plugin
                     if (!is_numeric($value)) {
                         $value = '"' . $value . '"';
                     }
-                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ' . $value . '; ' . PHP_EOL;;
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ' . $value . '; ' . PHP_EOL;
                 }
 
             } else {
@@ -353,7 +353,7 @@ class ShoppingcartPlugin extends Plugin
                 } else {
                     $key = '.' . $key;
                 }
-                $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;;
+                $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;
                 $output .= $this->recurse_settings($base . $key, $value);
             }
         }
