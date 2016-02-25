@@ -11,7 +11,11 @@
                 <br><br><br>
             {% endif %}
             <span class="shoppingcart-price">
-            ${{ page.header.price }}
+	    {% if config.plugins.shoppingcart.ui.currencySymbolPosition == 'after' %}
+        	{{ page.header.price }}{{ config.plugins.shoppingcart.general.currency }}
+            {% else %}
+        	{{ config.plugins.shoppingcart.general.currency }}{{ page.header.price }}
+            {% endif %}
             </span>
         </div>
         <p>
