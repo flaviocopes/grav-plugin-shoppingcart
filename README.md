@@ -8,7 +8,7 @@
 
 ![Screenshot](assets/screenshot2.jpg)
 
-`Shopping Cart` is a [Grav](http://github.com/getgrav/grav) plugin that adds e-commerce support to Grav. Currenty Stripe is the only payment method supported.
+`Shopping Cart` is a [Grav](http://github.com/getgrav/grav) plugin that adds e-commerce support to Grav. Currenty Stripe and PayPal are the only payment methods supported.
 
 # Installation
 
@@ -105,7 +105,7 @@ Product description
 
 # Adding a Checkout Plugin
 
-Currently there are two Checkout plugins: Stripe and Checkout. Get one of the two, or both, install them and configure their options through the Admin Panel.
+Currently there are two Checkout plugins: Stripe and PayPal. Get one of the two, or both, install them and configure their options through the Admin Panel.
 
 # Visualizing orders
 
