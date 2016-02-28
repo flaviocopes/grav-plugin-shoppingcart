@@ -1,3 +1,11 @@
+# v1.0.1
+## 28-02-2016
+
+1. [](#bugfix)
+    * Fix the image title
+    * Fixed double `;`
+    * Fix currency symbol and positioning
+
 # v1.0.0
 ## 16-02-2016
 
