@@ -1,3 +1,9 @@
+# v1.0.2
+## 01-03-2016
+
+1. [](#bugfix)
+    * Move Stripe checkout JS to Stripe plugin
+
 # v1.0.1
 ## 28-02-2016
 
