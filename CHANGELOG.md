@@ -1,3 +1,9 @@
+# v1.0.3
+## 02-03-2016
+
+1. [](#bugfix)
+    * Correctly show currency symbol instead of currency code
+
 # v1.0.2
 ## 01-03-2016
 
