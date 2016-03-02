@@ -13,11 +13,7 @@
         {% endif %}
 
         <span class="shoppingcart-price">
-        {% if config.plugins.shoppingcart.ui.currencySymbolPosition == 'after' %}
-            {{ page.header.price }}{{ config.plugins.shoppingcart.general.currency }}
-        {% else %}
-            {{ config.plugins.shoppingcart.general.currency }}{{ page.header.price }}
-        {% endif %}
+            {% include 'partials/shoppingcart_price.html.twig' with { price: page.header.price } %}
         </span>
     </div>
     <div class="shoppingcart-details">

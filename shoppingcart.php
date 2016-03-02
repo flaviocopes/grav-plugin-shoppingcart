@@ -11,6 +11,10 @@ use RocketTheme\Toolbox\Event\Event;
 use RocketTheme\Toolbox\File\File;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class ShoppingcartPlugin
+ * @package Grav\Plugin
+ */
 class ShoppingcartPlugin extends Plugin
 {
     protected $baseURL;
@@ -19,6 +23,9 @@ class ShoppingcartPlugin extends Plugin
     protected $orderURL;
     protected $order_id;
     protected $route = 'shoppingcart';
+
+    /** @var ShoppingCart */
+    protected $shoppingcart;
 
     /**
      * @return array
@@ -154,6 +161,10 @@ class ShoppingcartPlugin extends Plugin
         $twig->twig_vars['currency'] = $this->config->get('plugins.shoppingcart.general.currency');
     }
 
+    /**
+     * @param $url
+     * @param $filename
+     */
     protected function addPage($url, $filename)
     {
         $pages = $this->grav['pages'];
@@ -207,6 +218,10 @@ class ShoppingcartPlugin extends Plugin
                 $page->header()->shoppingcart = $defaults;
             }
         }
+
+        // Create form.
+        require_once(__DIR__ . '/classes/shoppingcart.php');
+        $this->shoppingcart = new ShoppingCart($page);
 
         $this->enable([
             'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
@@ -327,6 +342,12 @@ class ShoppingcartPlugin extends Plugin
         $assets->addInlineJs($settings_js);
     }
 
+    /**
+     * @param $base
+     * @param $settings
+     *
+     * @return string
+     */
     protected function recurse_settings($base, $settings)
     {
         $output = '';
@@ -377,6 +398,8 @@ class ShoppingcartPlugin extends Plugin
         if ($this->config->get('plugins.shoppingcart.ui.useOwnCSS')) {
             $this->grav['assets']->add('plugin://shoppingcart/css/shoppingcart.css');
         }
+
+        $this->grav['twig']->twig_vars['shoppingcart'] = $this->shoppingcart;
     }
 
     public function shoppingCartController()
@@ -510,8 +533,6 @@ class ShoppingcartPlugin extends Plugin
     private function getLastOrders($page = 0)
     {
         $number = 10;
-
-        $files = [];
         $orders = $this->getAllOrders();
 
         $totalAvailable = count($orders);
@@ -531,7 +552,6 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onAdminMenu()
     {
-
         $this->grav['twig']->plugins_hooked_nav['PLUGIN_SHOPPINGCART.SHOPPING_CART'] = ['route' => $this->route, 'icon' => 'fa-shopping-cart'];
     }
 
