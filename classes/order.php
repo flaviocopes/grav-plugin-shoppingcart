@@ -3,10 +3,20 @@ namespace Grav\Plugin;
 
 use Grav\Common\Data\Data;
 
+/**
+ * @property string gateway
+ * @property string token
+ */
 class Order
 {
     protected $data;
 
+    /**
+     * Order constructor.
+     *
+     * @param      $order
+     * @param null $type
+     */
     public function __construct($order, $type = null) {
         $this->data = new Data();
 
@@ -30,10 +40,20 @@ class Order
         return $this->data;
     }
 
+    /**
+     * @param $key
+     *
+     * @return mixed
+     */
     public function __get($key) {
         return $this->data->get($key);
     }
 
+    /**
+     * @param $key
+     *
+     * @return bool
+     */
     public function __isset($key) {
         return isset($this->data->$key);
     }

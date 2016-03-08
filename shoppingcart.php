@@ -463,7 +463,7 @@ class ShoppingcartPlugin extends Plugin
         $ext = '.yaml';
         $filename = $prefix . $this->udate($format) . $ext;
 
-        $body = Yaml::dump(array(
+        $body = Yaml::dump([
             'products' => $order->products,
             'address' => $order->address,
             'shipping' => $order->shipping,
@@ -473,7 +473,7 @@ class ShoppingcartPlugin extends Plugin
             'paid_on' => $this->udate($format),
             'created_on' => $this->udate($format),
             'amount' => $order->amount,
-        ));
+        ]);
 
         $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename);
         $file->save($body);
@@ -500,6 +500,11 @@ class ShoppingcartPlugin extends Plugin
         return date(preg_replace('`(?<!\\\\)u`', \sprintf('%06d', $milliseconds), $format), $timestamp);
     }
 
+    /**
+     * Get all the orders
+     *
+     * @return array
+     */
     private function getAllOrders()
     {
         $files = [];
@@ -530,6 +535,13 @@ class ShoppingcartPlugin extends Plugin
         return $files;
     }
 
+    /**
+     * Get the last orders, paginated ten per page
+     *
+     * @param int $page The page to return
+     *
+     * @return object
+     */
     private function getLastOrders($page = 0)
     {
         $number = 10;
@@ -539,12 +551,12 @@ class ShoppingcartPlugin extends Plugin
         $orders = array_slice($orders, $page * $number, $number);
         $totalRetrieved = count($orders);
 
-        return (object)array(
+        return (object)[
             "orders" => $orders,
             "page" => $page,
             "totalAvailable" => $totalAvailable,
             "totalRetrieved" => $totalRetrieved
-        );
+        ];
     }
 
     /**

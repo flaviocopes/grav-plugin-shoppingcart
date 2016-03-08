@@ -1,10 +1,19 @@
 <?php
 namespace Grav\Plugin;
 
+/**
+ * Class ShoppingCart
+ * @package Grav\Plugin
+ */
 class ShoppingCart
 {
+    /**
+     * @param $currencyCode
+     *
+     * @return mixed
+     */
     public static function getSymbolOfCurrencyCode($currencyCode) {
-        $currencies = array(
+        $currencies = [
             "AED" => "\u062f.\u0625;",
             "AFN" => "Afs",
             "ALL" => "L",
@@ -160,7 +169,7 @@ class ShoppingCart
             "ZAR" => "R",
             "ZMK" => "ZK",
             "ZWR" => "Z$"
-        );
+        ];
 
         return json_decode('"' . $currencies[$currencyCode] . '"'); //Because JSON directly supports the \uxxxx syntax
     }

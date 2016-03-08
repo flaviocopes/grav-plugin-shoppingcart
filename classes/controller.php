@@ -1,14 +1,14 @@
 <?php
 namespace Grav\Plugin;
 
-use Grav\Common\File\CompiledYamlFile;
 use Grav\Common\Grav;
-use Grav\Common\User\User;
-use Grav\Common\Page\Page;
-use Symfony\Component\Yaml\Yaml;
 use RocketTheme\Toolbox\Event\Event;
-use RocketTheme\Toolbox\File\File;
+use RocketTheme\Toolbox\Session\Message;
 
+/**
+ * Class ShoppingCartController
+ * @package Grav\Plugin
+ */
 class ShoppingCartController
 {
     /**
@@ -49,7 +49,7 @@ class ShoppingCartController
         }
 
         try {
-            $success = call_user_func(array($this, $method));
+            $success = call_user_func([$this, $method]);
         } catch (\RuntimeException $e) {
             $this->setMessage($e->getMessage());
         }

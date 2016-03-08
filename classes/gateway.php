@@ -4,6 +4,10 @@ namespace Grav\Plugin;
 use Grav\Common\Grav;
 use RocketTheme\Toolbox\Event\Event;
 
+/**
+ * Class ShoppingCartGateway
+ * @package Grav\Plugin
+ */
 abstract class ShoppingCartGateway
 {
     protected $name = '';
@@ -13,6 +17,10 @@ abstract class ShoppingCartGateway
 
     /**
      * Return the order extracted from the event object
+     *
+     * @param Event $event
+     *
+     * @return Order
      */
     public function getOrderFromEvent(Event $event) {
         require_once __DIR__ . '/order.php';
@@ -21,6 +29,10 @@ abstract class ShoppingCartGateway
 
     /**
      * Returns true if the called gateway is the current one
+     *
+     * @param $gateway
+     *
+     * @return bool
      */
     protected function isCurrentGateway($gateway) {
         if ($gateway != $this->name) {
@@ -41,5 +53,10 @@ abstract class ShoppingCartGateway
 
     }
 
+    /**
+     * @param Event $event
+     *
+     * @return mixed
+     */
     abstract public function onShoppingCartPay(Event $event);
 }
