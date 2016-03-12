@@ -1,3 +1,6 @@
+if (typeof window == 'undefined') window = {};
+if (typeof window.ShoppingCart == 'undefined') window.ShoppingCart = {};
+
 (function(ShoppingCart) {
 
     /***********************************************************/
@@ -502,3 +505,5 @@
     ];
 
 })(window.ShoppingCart);
+
+exports.window = window;
