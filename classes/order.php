@@ -4,6 +4,8 @@ namespace Grav\Plugin;
 use Grav\Common\Data\Data;
 
 /**
+ * @property string amount
+ * @property string currency
  * @property string gateway
  * @property string token
  */
