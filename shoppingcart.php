@@ -367,13 +367,16 @@ class ShoppingcartPlugin extends Plugin
                 }
 
             } else {
-                if (is_numeric($key)) {
-                    $key = '[' . $key . ']';
-                } else {
-                    $key = '.' . $key;
+                if ($key !== 'checkout_form') {
+                    if (is_numeric($key)) {
+                        $key = '[' . $key . ']';
+                    } else {
+                        $key = '.' . $key;
+                    }
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;
+
+                    $output .= $this->recurse_settings($base . $key, $value);
                 }
-                $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;
-                $output .= $this->recurse_settings($base . $key, $value);
             }
         }
 
