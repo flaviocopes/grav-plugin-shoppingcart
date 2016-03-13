@@ -1,0 +1,21 @@
+form:
+  fields:
+    tabs:
+      fields:
+        content:
+          type: tab
+
+          fields:
+
+            product:
+              type: section
+              title: Product
+              underline: true
+
+              fields:
+                header.price:
+                  type: text
+                  label: Price
+                  default: '10'
+                  validate:
+                    type: int

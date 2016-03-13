@@ -1,10 +1,11 @@
 <?php
 namespace Grav\Plugin;
 
-use Grav\Common\Plugin;
+use Grav\Common\Data;
 use Grav\Common\Filesystem\Folder;
 use Grav\Common\Page\Page;
 use Grav\Common\Page\Types;
+use Grav\Common\Plugin;
 use Grav\Common\Twig\Twig;
 use Grav\Common\Uri;
 use RocketTheme\Toolbox\Event\Event;
@@ -37,6 +38,7 @@ class ShoppingcartPlugin extends Plugin
             'onPluginsInitialized' => ['onPluginsInitialized', 10],
             'onGetPageTemplates' => ['onGetPageTemplates', 0],
             'onShoppingCartSaveOrder' => ['onShoppingCartSaveOrder', 0],
+            'onBlueprintCreated' => ['onBlueprintCreated', 0]
         ];
     }
 
@@ -583,4 +585,26 @@ class ShoppingcartPlugin extends Plugin
         $this->grav['twig']->twig_paths[] = __DIR__ . '/admin/templates';
     }
 
+    /**
+     *
+     * Extend page blueprints with configuration options.
+     * @param Event $event
+     *
+     * @todo only extend `product` pages
+     */
+    public function onBlueprintCreated(Event $event)
+    {
+        static $inEvent = false;
+
+        /** @var Data\Blueprint $blueprint */
+        $blueprint = $event['blueprint'];
+
+        if (!$inEvent &&  $blueprint->get('form.fields.tabs')) {
+            $inEvent = true;
+            $blueprints = new Data\Blueprints(__DIR__ . '/blueprints/');
+            $extends = $blueprints->get('shoppingcart');
+            $blueprint->extend($extends, true);
+            $inEvent = false;
+        }
+    }
 }
