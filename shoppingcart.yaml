@@ -1,52 +1,41 @@
 enabled: true
-
-test_mode: true
-
 general:
-    currency: 'USD' # The shop currency
-    defaultCountry: 'US' # Default country to be shown during Checkout
-    productTaxes: 'excluded'
-
+  currency: USD
+  defaultCountry: US
+  productTaxes: excluded
 shipping:
-    methods:
-        -
-            name: Favorite countries
-            allowedCountries: ['IT', 'EN', 'US']
-            price: 10
-        -
-            name: All other countries
-            allowedCountries: ['*']
-            price: 20
-        -
-            name: 'Ordinary shipping'
-            price: 10
-            allowedCountries: ['*']
-
+  methods:
+    -
+      name: 'Favorite countries'
+      allowedCountries:
+        - IT
+        - EN
+        - US
+      price: '10'
+    -
+      name: 'All other countries'
+      allowedCountries:
+        - '*'
+      price: '20'
 urls:
-    checkoutURL: /checkout # The checkout page URL. Change if conflicting with another route
-    saveOrderURL: /save_order # The save order page URL. Change if conflicting with another route
-    orderURL: /order # The order visualization page URL. Change if conflicting with another route
-
+  checkoutURL: /checkout
+  saveOrderURL: /save_order
+  orderURL: /order
 ui:
-    currencySymbolPosition: 'after' # Show currency `before` of `after` the price
-    useOwnCSS: true # Add our own CSS. Disable if you're using your own
-
+  currencySymbolPosition: before
+  useOwnCSS: true
 cart:
-    allowEditingQuantityFromCart: true # Enable to allow editing a product quantity from the cart
-    maximumTotalQuantityValue: # Set if you want a global limit to the ordered products
-    addShippingAndTaxesCostToTotal: true #
-
-countries: # Set countries where people can buy from, and corresponding taxes
-    -
-        readableName: 'United States'
-        name: 'US'
-        tax_percentage: '10' # If taxes are not factored in the product price, add them at checkout with this percentage
-        allow: true
-    -
-        readableName: 'All unlisted countries'
-        name: '*' # `*` identifies all countries
-        tax_percentage: '0' # If taxes are not factored in the product price, add them at checkout with this percentage
-        allow: true
+  allowEditingQuantityFromCart: true
+  addShippingAndTaxesCostToTotal: true
+  maximumTotalQuantityValue:
+countries:
+  -
+    name: US
+    allow: '1'
+    tax_percentage: '10'
+  -
+    name: '*'
+    allow: '1'
 
 checkout_form:
     name: checkout

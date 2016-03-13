@@ -16,13 +16,244 @@ license: MIT
 form:
   validation: loose
   fields:
-    enabled:
-      type: toggle
-      label: PLUGIN_ADMIN.PLUGIN_STATUS
-      highlight: 1
-      default: 0
-      options:
-        1: PLUGIN_ADMIN.ENABLED
-        0: PLUGIN_ADMIN.DISABLED
-      validate:
-        type: bool
+
+    tabs:
+      type: tabs
+      active: 1
+
+      fields:
+        -
+          type: tab
+          title: General
+
+          fields:
+
+            enabled:
+              label: PLUGIN_ADMIN.PLUGIN_STATUS
+              type: toggle
+              highlight: 1
+              default: 0
+              options:
+                1: PLUGIN_ADMIN.ENABLED
+                0: PLUGIN_ADMIN.DISABLED
+              validate:
+                type: bool
+
+            section_basic:
+              type: section
+              title: Basic Shop Configuration
+              underline: true
+
+              fields:
+
+                general.currency:
+                  label: Currency
+                  type: select
+                  help: The shop currency
+                  '@data-options': '\Grav\Plugin\ShoppingcartPlugin::currencies'
+                  default: 'USD'
+                  validate:
+                    type: string
+
+                general.defaultCountry:
+                  label: Default Country
+                  type: select
+                  help: Default country to be shown during Checkout
+                  '@data-options': '\Grav\Plugin\ShoppingcartPlugin::countries'
+                  default: 'US'
+                  validate:
+                    type: string
+
+                general.productTaxes:
+                  label: Product taxes
+                  type: toggle
+                  help: Taxes included in the price, or must be calculated?
+                  options:
+                    included: Included
+                    excluded: Excluded
+                  highlight: included
+                  default: included
+                  validate:
+                    type: string
+
+        -
+          type: tab
+          title: User Interface
+
+          fields:
+
+            ui.currencySymbolPosition:
+              label: Currenty Symbol Position
+              help: Show currency `before` of `after` the price
+              type: toggle
+              highlight: before
+              default: before
+              options:
+                before: Before
+                after: After
+              validate:
+                type: string
+
+
+            ui.useOwnCSS:
+              label: Use plugin's CSS
+              help: Add Shopping Cart plugin own CSS. Disable if you're adding your CSS
+              type: toggle
+              highlight: 1
+              default: 1
+              options:
+                1: PLUGIN_ADMIN.ENABLED
+                0: PLUGIN_ADMIN.DISABLED
+              validate:
+                type: bool
+
+        -
+          type: tab
+          title: Countries
+
+          fields:
+            countries:
+              type: list
+              label: Countries settings
+              help: Set countries where people can buy from, and corresponding taxes. Set specific countries as disabled.
+
+              fields:
+
+                .name:
+                  label: Country
+                  type: select
+                  classes: fancy
+                  '@data-options': '\Grav\Plugin\ShoppingcartPlugin::shippingCountries'
+                  validate:
+                    type: commalist
+
+                .allow:
+                  label: Allow
+                  type: toggle
+                  highlight: 1
+                  default: 1
+                  options:
+                    1: PLUGIN_ADMIN.ENABLED
+                    0: PLUGIN_ADMIN.DISABLED
+                  validate:
+                    type: bool
+
+                .tax_percentage:
+                  label: Tax percentage
+                  type: text
+                  help: The tax percentage for this country
+                  validate:
+                      type: int
+
+        -
+          type: tab
+          title: Cart
+
+          fields:
+
+            cart.allowEditingQuantityFromCart:
+              label: Allow editing quantity from cart
+              help: Enable to allow editing a product quantity from the cart
+              type: toggle
+              highlight: 1
+              default: 0
+              options:
+                1: PLUGIN_ADMIN.ENABLED
+                0: PLUGIN_ADMIN.DISABLED
+              validate:
+                type: bool
+
+            cart.maximumTotalQuantityValue:
+              label: Maximum total quantity value
+              help: Set if you want a global limit to the ordered products
+              type: text
+              default: ''
+              validate:
+                type: int
+
+            cart.addShippingAndTaxesCostToTotal:
+              label: Add shipping and taxes cost to total
+              type: toggle
+              highlight: 1
+              default: 0
+              options:
+                1: PLUGIN_ADMIN.ENABLED
+                0: PLUGIN_ADMIN.DISABLED
+              validate:
+                type: bool
+
+        -
+          type: tab
+          title: Shipping
+
+          fields:
+
+            shipping:
+              type: section
+              title: Shipping
+              underline: true
+
+              fields:
+                shipping.methods:
+                  type: list
+                  label: Shipping Methods available
+
+                  fields:
+
+                    .name:
+                      label: Name
+                      help: The label for this shipping option, to be shown to the user
+                      type: text
+
+                    .allowedCountries:
+                      label: Allowed Countries
+                      type: select
+                      classes: fancy
+                      multiple: true
+                      '@data-options': '\Grav\Plugin\ShoppingcartPlugin::shippingCountries'
+                      validate:
+                        type: commalist
+
+                    .price:
+                      label: Price
+                      type: text
+                      help: The price of this shipping option
+                      validate:
+                          type: int
+
+        -
+          type: tab
+          title: Advanced
+
+          fields:
+
+            -
+              type: section
+              title: URLs
+              underline: true
+
+              fields:
+
+                urls.checkoutURL:
+                  label: Checkout URL
+                  type: text
+                  help: The checkout page URL. Change if conflicting with another route
+                  default: '/checkout'
+                  validate:
+                    type: string
+
+                urls.saveOrderURL:
+                  label: Save Order URL
+                  type: text
+                  help: The save order page URL. Change if conflicting with another route
+                  default: '/save_order'
+                  validate:
+                    type: string
+
+                urls.orderURL:
+                  label: Visualize Order URL
+                  type: text
+                  help: The order visualization page URL. Change if conflicting with another route
+                  default: '/order'
+                  validate:
+                    type: string

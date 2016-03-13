@@ -1,3 +1,11 @@
+# v1.1.0
+## xx-03-2016
+
+1. [](#new)
+    * Configure the plugin options via the Admin interface
+1. [](#improved)
+    * Changed structure of the Twig files: `shoppingcart` has been removed in favor of `shoppingcart_categories`, `shoppingcart_section` is now `shoppingcart_categories`, `shoppingcart_category` is now `shoppingcart_products`. Please rename your markdown pages accordingly.
+
 # v1.0.3
 ## 02-03-2016
 
@@ -23,9 +31,7 @@
 
 1. [](#new)
     * Separated Stripe to own plugin
-1. [](#new)
     * Added PayPal Express checkout
-1. [](#new)
     * Added a new Admin panel to visualize orders
 1. [](#improved)
     * Stores orders as YAML instead of .txt files
@@ -35,9 +41,7 @@
 
 1. [](#new)
     * Use the Form plugin to render and validate the checkout form. Dropped custom validation
-1. [](#new)
     * Use Omnipay to handle the payment
-1. [](#new)
     * Added base ShoppingCartGateway and Order classes
 
 # v0.1.5
@@ -57,7 +61,6 @@
 
 1. [](#improved)
     * Improved code
-1. [](#improved)
     * Added cart to all pages
 1. [](#feature)
     * Quantity chooser
@@ -69,7 +72,6 @@
     * Fix loading jQuery
 1. [](#improved)
     * Improve readme
-1. [](#improved)
     * When image is not present, avoid overlap of price and add button
 
 # v0.1.1
