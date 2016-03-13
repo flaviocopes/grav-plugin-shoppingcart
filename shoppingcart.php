@@ -111,7 +111,7 @@ class ShoppingcartPlugin extends Plugin
     public function addCheckoutPage()
     {
         $url = $this->checkoutURL;
-        $filename = 'shoppingcart_checkout.md';
+        $filename = 'checkout.md';
         $this->addPage($url, $filename);
     }
 
@@ -130,7 +130,7 @@ class ShoppingcartPlugin extends Plugin
     public function addOrderPage()
     {
         $url = $this->orderURL;
-        $filename = 'shoppingcart_order.md';
+        $filename = 'order.md';
         $this->addPage($url, $filename);
 
         /** @var Uri $uri */
