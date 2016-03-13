@@ -1,3 +1,9 @@
+# v1.0.4
+## 13-03-2016
+
+1. [](#bugfix)
+    * Correctly remove private settings from the frontend
+
 # v1.0.3
 ## 02-03-2016
 

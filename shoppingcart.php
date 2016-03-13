@@ -354,8 +354,8 @@ class ShoppingcartPlugin extends Plugin
 
         foreach($settings as $key => $value) {
             if (!is_array($value)) {
-                //Avoid putting the secretKey in the frontend available settings
-                if ($key !== '["secretKey"]') {
+                //Avoid adding private settings to the frontend
+                if (!in_array($key, ['secretKey'])) {
                     if (is_numeric($key)) {
                         $key = '[' . $key . ']';
                     } else {
