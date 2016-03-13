@@ -506,4 +506,7 @@ if (typeof window.ShoppingCart == 'undefined') window.ShoppingCart = {};
 
 })(window.ShoppingCart);
 
-exports.window = window;
+if (typeof exports !== 'undefined') {
+    exports.window = window;
+}
+
