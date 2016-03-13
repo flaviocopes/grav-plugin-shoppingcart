@@ -1,4 +1,4 @@
-{% extends 'partials/shoppingcart_base.html.twig' %}
+{% extends 'partials/shoppingcart_core_base.html.twig' %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'partials/shoppingcart_cart.html.twig' %}
+    {% include 'partials/shoppingcart_core_cart.html.twig' %}
 
     <script>
     (function() {

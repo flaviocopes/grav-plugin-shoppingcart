@@ -1,0 +1,10 @@
+{% extends 'partials/shoppingcart_core_base.html.twig' %}
+
+{% block content %}
+
+    {{ parent() }}
+
+    <div class="content-wrapper">
+        {% include 'partials/shoppingcart_core_detail_item.html.twig' %}
+    </div>
+{% endblock %}

@@ -1,6 +1,6 @@
 {% set shoppingcart_image = page.media.images|first %}
 
-{% include 'partials/shoppingcart_cart.html.twig' %}
+{% include 'partials/shoppingcart_core_cart.html.twig' %}
 
 <div id="shoppingcart-detail" class="block-group">
     <div class="shoppingcart-info block">
@@ -11,13 +11,16 @@
                 <br><br><br>
             {% endif %}
             <span class="shoppingcart-price">
-                {% include 'partials/shoppingcart_price.html.twig' with { price: page.header.price } %}
+                {% include 'partials/shoppingcart_core_price.html.twig' with { price: page.header.price } %}
             </span>
         </div>
         <p>
             <div class="shoppingcart-quantity-chooser">
                 <label>Quantity:</label> <input type="text" class="small" id="js__shoppingcart__quantity" placeholder="1" value="1" />
             </div>
+
+            {{ shoppingcart_output_page_product_before_add_to_cart }}
+
             <a href="#"
                 class="button js__shoppingcart__button-add-to-cart"
                 data-item-id="{{ page.header.product_id }}"
