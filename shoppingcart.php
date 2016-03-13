@@ -54,12 +54,10 @@ class ShoppingcartPlugin extends Plugin
         $this->saveOrderURL = $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
         $this->orderURL =  $this->config->get('plugins.shoppingcart.urls.orderURL');
 
+        /** @var Uri $uri */
+        $uri = $this->grav['uri'];
+
         if ($this->isAdmin()) {
-            // Admin
-
-            /** @var Uri $uri */
-            $uri = $this->grav['uri'];
-
             //Admin
             $this->enable([
                 'onTwigTemplatePaths' => ['onTwigAdminTemplatePaths', 0],
@@ -83,16 +81,12 @@ class ShoppingcartPlugin extends Plugin
 
         } else {
             // Site
-
             $this->enable([
                 'onPageInitialized' => ['onPageInitialized', 0],
                 'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
                 'onShoppingCartReturnOrderPageUrlForAjax' => ['onShoppingCartReturnOrderPageUrlForAjax', 10],
                 'onShoppingCartRedirectToOrderPageUrl' => ['onShoppingCartRedirectToOrderPageUrl', 10]
             ]);
-
-            /** @var Uri $uri */
-            $uri = $this->grav['uri'];
 
             if ($this->checkoutURL && $this->checkoutURL == $uri->path()) {
                 $this->enable([
@@ -197,21 +191,21 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onPageInitialized()
     {
-        $defaults = (array) $this->config->get('plugins.shoppingcart');
-
         /** @var Page $page */
         $page = $this->grav['page'];
 
         $template = $page->template();
 
-        if (!in_array($template, ['shoppingcart',
-                                  'shoppingcart_category',
-                                  'shoppingcart_payment',
-                                  'shoppingcart_detail',
-                                  'shoppingcart_checkout',
-                                  'shoppingcart_order'])) {
+        if (!in_array($template, ['categories',
+                                  'products',
+                                  'payment',
+                                  'product',
+                                  'checkout',
+                                  'order'])) {
             return;
         }
+
+        $defaults = (array) $this->config->get('plugins.shoppingcart');
 
         if ($page->header() != null) {
             if (isset($page->header()->shoppingcart)) {
@@ -221,7 +215,7 @@ class ShoppingcartPlugin extends Plugin
             }
         }
 
-        // Create form.
+        // Create ShoppingCart.
         require_once(__DIR__ . '/classes/shoppingcart.php');
         $this->shoppingcart = new ShoppingCart($page);
 
