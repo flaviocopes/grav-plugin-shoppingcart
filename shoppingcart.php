@@ -336,6 +336,8 @@ class ShoppingcartPlugin extends Plugin
 
         $settings_js .= $this->recurse_settings('', $settings);
         $assets->addInlineJs($settings_js);
+
+        $this->grav->fireEvent('onShoppingCartOutputPageProductBeforeAddToCart', new Event());
     }
 
     /**
