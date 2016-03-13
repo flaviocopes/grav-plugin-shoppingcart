@@ -367,10 +367,6 @@ class ShoppingcartPlugin extends Plugin
                 }
 
             } else {
-                if ($key == 'checkout_form') {
-                    continue;
-                }
-
                 if (is_numeric($key)) {
                     $key = '[' . $key . ']';
                 } else {
