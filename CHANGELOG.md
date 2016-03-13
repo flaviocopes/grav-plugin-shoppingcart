@@ -1,3 +1,9 @@
+# v1.0.5
+## 13-03-2016
+
+1. [](#bugfix)
+    * Fix JS settings bug introduced in 1.0.4 affecting checkout
+
 # v1.0.4
 ## 13-03-2016
 
