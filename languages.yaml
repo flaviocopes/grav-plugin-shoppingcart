@@ -122,28 +122,28 @@ fr:
     CHECKOUT_CHOOSE_SHIPPING_METHOD_DESC: Veuillez choisir la façon dont vous souhaitez que vos produits soient livrés.
     CHECKOUT_CHOOSE_PAYMENT_METHOD: Choisissez un mode de paiement
     CHECKOUT_CHOOSE_PAYMENT_METHOD_DESC: Veuillez choisir une méthode de paiement.
-    CHECKOUT_PAYMENT_SECURE_NOTE: All transactions are secure and encrypted, and we never store your credit card information. To learn more, please view our privacy policy.
+    CHECKOUT_PAYMENT_SECURE_NOTE: Toutes les transactions sont sécurisées et cryptées et nous ne stockons pas vos informations de carte de crédit. Pour en savoir plus, veuillez consulter notre politique de confidentialité.
     CHECKOUT_BUTTON_BACK: Retour
-    CHECKOUT_BUTTON_PAY: Go on and pay
-    PRICE_DO_NOT_INCLUDE_TAXES: Prices do not include taxes. Taxes are calculated upon checkout once you selected the shipping country.
-    ORDER_SUCCESSFUL_PAGE_TITLE: Order successful
-    ITEMS_PURCHASED: Items purchased:
-    ORDER_SUCCESSFUL_CONFIRMATION_TEXT: Thanks for your order! The order will be processed and you'll get a notification when it's shipped to you.
-    ORDER_PAGE_WRONG_TOKEN_MESSAGE: You're not allowed to see this page. Are you sure the address is correct?
-    LOADING_WORD_BEFORE_ORDER_CONFIRMATION_PAGE: Loading..
-    DOWNLOAD: Download
-    SHOPPING_CART: Shopping cart
-    YOU_ARE_PURCHASING_THESE_ITEMS: You're purchasing these items:
-    ITEM: Item
-    QUANTITY: Quantity
+    CHECKOUT_BUTTON_PAY: Allons-y et payons
+    PRICE_DO_NOT_INCLUDE_TAXES: Les prix ne comprennent pas les taxes. Les taxes sont calculées au moment du réglement, une fois que vous aurez sélectionné le pays d'expédition.
+    ORDER_SUCCESSFUL_PAGE_TITLE: Commande passée avec succès
+    ITEMS_PURCHASED: Articles achetés :
+    ORDER_SUCCESSFUL_CONFIRMATION_TEXT: Merci pour votre commande ! La commande sera traitée et vous recevrez une notification lors de son envoi.
+    ORDER_PAGE_WRONG_TOKEN_MESSAGE: Vous n'êtes pas autorisé à voir cette page. Êtes-vous sûr que l'adresse est correcte ?
+    LOADING_WORD_BEFORE_ORDER_CONFIRMATION_PAGE: Traitement...
+    DOWNLOAD: Télécharger
+    SHOPPING_CART: Panier
+    YOU_ARE_PURCHASING_THESE_ITEMS: Vous êtes sur le point d'acheter ces articles :
+    ITEM: Article
+    QUANTITY: Quantité
     TOTAL: Total
-    REMOVE: Remove
-    UPDATE_QUANTITIES: Update quantities
-    CHECKOUT: Checkout
-    INCLUDING_SHIPPING: Including shipping
-    ORDER_NOT_PAID_YET: We're processing the payment. If you're coming from PayPal, refresh this page in a few seconds, or contact us if this page shows up again.
-    ORDER_CANCELLED: Order cancelled
-    YOU_CANCELLED_THE_ORDER: You cancelled the order
+    REMOVE: Retirer
+    UPDATE_QUANTITIES: Mettre à jour les quantités
+    CHECKOUT: Passer la commande
+    INCLUDING_SHIPPING: Livraison incluse
+    ORDER_NOT_PAID_YET: Nous procédons au paiement. Si vous utilisez PayPal, veuillez rafraîchir cette page dans quelques secondes ou nous contacter si cette page s'affiche à nouveau.
+    ORDER_CANCELLED: Commande annulée
+    YOU_CANCELLED_THE_ORDER: Vous avez annulé la commande
     VALUE_NOT_ACCEPTABLE: Value of the quantity field not acceptable
     QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE: Quantity exceeds the maximum allowed value
     CHECKOUT_PAYMENT_METHOD: "## Payment Method"
@@ -151,8 +151,8 @@ fr:
     THANK_YOU: Thank you for your order
     OFFLINE_ORDER_TEXT: We'll get in touch soon to confirm the order and payment.
     CHOOSE_AN_OPTION: Choose an option
-    EDIT_CART: Edit cart
-    QUANTITY_SHORT: Qty
+    EDIT_CART: Modifier le panier
+    QUANTITY_SHORT: Qté
     NO_ITEMS_IN_CART: No items added to the shopping cart
     PRODUCT_ADDED_TO_CART: Product added to cart
     PRODUCTS_BOUGHT: Products bought
