@@ -280,16 +280,14 @@ form:
                   validate:
                     type: string
 
-                .validate.required:
-                  label: Required
-                  type: toggle
-                  highlight: 1
-                  default: 1
-                  options:
-                    1: PLUGIN_ADMIN.YES
-                    0: PLUGIN_ADMIN.NO
-                  validate:
-                    type: bool
+                .validate:
+                  toggleable: true
+                  type: array
+                  label: Validate
+                  help:
+                  placeholder_key: value
+                  placeholder_value: label
+
 
                 .name:
                   toggleable: true
