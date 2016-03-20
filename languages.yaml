@@ -76,6 +76,7 @@ en:
     MANAGE_ORDERS: Manage orders
     ORDERS: Orders
     ORDER_DETAILS: Order Details
+    THANKS_FOR_YOUR_ORDER: Thanks for your order
     
 fr:
   PLUGIN_SHOPPINGCART:

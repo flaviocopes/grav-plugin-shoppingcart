@@ -4,12 +4,9 @@
 
     {% if uri.param('token') == order_token %}
 
-        <h1>Thanks for your order!</h1>
+        <h1>{{ "PLUGIN_SHOPPINGCART.THANKS_FOR_YOUR_ORDER"|t }}</h1>
 
-        <!-- <p>ORDER ID: {{ uri.param('id') }}</p>
-        <p>ORDER Token: {{ uri.param('token') }}</p> -->
-
-        <h3>Products ordered</h3>
+        <h3>{{ "PLUGIN_SHOPPINGCART.PRODUCTS_BOUGHT"|t }}</h3>
 
         {% for product_ordered in order_products %}
             <li>
@@ -18,11 +15,11 @@
         {% endfor %}
 
 
-        <h3>Total paid</h3>
+        <h3>{{ "PLUGIN_SHOPPINGCART.TOTAL_PAID"|t }}</h3>
 
         {{ order_amount }} {{ currency }}
 
-        <h3>Ship to</h3>
+        <h3>{{ "PLUGIN_SHOPPINGCART.ORDER_DETAILS"|t }}</h3>
 
         {{ order_address.firstname }} {{ order_address.lastname }}<br>
         {{ order_address.address1 }}<br>
