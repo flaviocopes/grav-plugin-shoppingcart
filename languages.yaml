@@ -155,3 +155,82 @@ fr:
     MANAGE_ORDERS: Gestion des commandes
     ORDERS: Commandes
     ORDER_DETAILS: Détails de la commande
+
+it:
+  PLUGIN_SHOPPINGCART:
+    DETAILS: Dettagli
+    PRICE: Prezzo
+    INCLUDING_TAXES: Tasse incluse
+    EXCLUDING_TAXES: Tasse escluse
+    ADD_TO_CART: Aggiungi al carrello
+    DESCRIPTION: Descrizione
+    NO_PRODUCTS_FOUND: Nessun prodotto trovato
+    CHECKOUT_PAGE_TITLE: Checkout
+    CHECKOUT_HEADLINE_YOUR_PERSONAL_DETAILS: "## I tuoi dati personali"
+    CHECKOUT_FIRST_NAME: Nome
+    CHECKOUT_LAST_NAME: Cognome
+    CHECKOUT_EMAIL: E-mail
+    CHECKOUT_PHONE: Telefono
+    CHECKOUT_HEADLINE_YOUR_ADDRESS: "## Il tuo indirizzo"
+    CHECKOUT_ADDRESS_1: Indirizzo 1
+    CHECKOUT_ADDRESS_2: Indirizzo 2
+    CHECKOUT_CITY: Città
+    CHECKOUT_ZIP: CAP
+    CHECKOUT_COUNTRY: Stato
+    CHECKOUT_STATE: Stato
+    CHECKOUT_PROVINCE: Provincia
+    CHECKOUT_CHOOSE_SHIPPING_METHOD: Scegli metodo di spedizione
+    CHECKOUT_CHOOSE_SHIPPING_METHOD_DESC: Seleziona come desideri che i prodotti vengano spediti
+    CHECKOUT_CHOOSE_PAYMENT_METHOD: Scegli metodo di pagamento
+    CHECKOUT_CHOOSE_PAYMENT_METHOD_DESC: Seleziona un metodo di pagamento
+    CHECKOUT_PAYMENT_SECURE_NOTE: Tutte le transazioni sono sicure e criptate, e le informazioni riguardanti la carta di credito non vengono memorizzate. Per saperne di più, consulta la nostra privacy policy.
+    CHECKOUT_BUTTON_BACK: Indietro
+    CHECKOUT_BUTTON_PAY: Prosegui al pagamento
+    PRICE_DO_NOT_INCLUDE_TAXES: I prezzi non includono le tasse. Le tasse sono calcolate al checkout una volta scelto il paese di spedizione.
+    ORDER_SUCCESSFUL_PAGE_TITLE: Ordine eseguito con successo
+    ITEMS_PURCHASED: Proditti acquistati:
+    ORDER_SUCCESSFUL_CONFIRMATION_TEXT: Grazie per l'ordine! L'ordine verrà processato e riceverai una notifica quando verrà spedito.
+    ORDER_PAGE_WRONG_TOKEN_MESSAGE: Non sei autorizzato a visualizzare la pagina. Sicuro l'indirizzo sia corretto?
+    LOADING_WORD_BEFORE_ORDER_CONFIRMATION_PAGE: Carico..
+    DOWNLOAD: Scarica
+    SHOPPING_CART: Carrello
+    YOU_ARE_PURCHASING_THESE_ITEMS: Stai acquistando questi prodotti:
+    ITEM: Prodotto
+    QUANTITY: Quantità
+    TOTAL: Totale
+    REMOVE: Rimuovi
+    UPDATE_QUANTITIES: Aggiorna quantità
+    CHECKOUT: Checkout
+    INCLUDING_SHIPPING: Inclusa spedizione
+    ORDER_CANCELLED: Ordine cancellato
+    YOU_CANCELLED_THE_ORDER: Hai cancellato l'ordine
+    VALUE_NOT_ACCEPTABLE: Valore del campo quantità non valido
+    QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE: La quantità eccede il valore massimo consentito
+    CHECKOUT_PAYMENT_METHOD: "## Medodo di pagamento"
+    CHECKOUT_SHIPPING_METHOD: "## Metodo di spedizione"
+    THANK_YOU: Grazie per il tuo ordine
+    CHOOSE_AN_OPTION: Scegli un opzione
+    EDIT_CART: Modifica il carrello
+    QUANTITY_SHORT: Qtà
+    NO_ITEMS_IN_CART: Nessun prodotto presente nel carrello
+    PRODUCT_ADDED_TO_CART: Prodotto aggiungo al carrello
+    PRODUCTS_BOUGHT: Prodotti acquistati
+    SEE_THE_ORDER_DETAILS: Visualizza i dettagli dell'ordine
+    TERMS_AND_CONDITIONS: "Accetta i <a href='#'>termini e le condizioni</a>"
+    SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY: Siamo spiacenti, non possiamo spedire al tuo indirizzo
+    PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Per favore compila tutti i campi richiesti
+    READ_MORE: Leggi di più
+    MINIMUM_TO_PLACE_AN_ORDER: Minimo per inviare l'ordine:
+    PAYPAL: PayPal
+    CREDITCARD: Carta di credito
+    SHIPPING: Spedizione
+    TAXES: Tasse
+    SUBTOTAL: Subtotale
+    CONTINUE_SHOPPING: Continua lo shopping
+    TOTAL_PAID: Totale pagato
+    ORDER_ID: ID ordine
+    ORDER_DATE: Data ordine
+    NO_ORDERS_FOUND: Nessun ordine trovato
+    MANAGE_ORDERS: Gestisci ordini
+    ORDERS: Ordini
+    ORDER_DETAILS: Dettagli ordine
