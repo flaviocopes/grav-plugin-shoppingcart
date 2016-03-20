@@ -144,44 +144,44 @@ fr:
     ORDER_NOT_PAID_YET: Nous procédons au paiement. Si vous utilisez PayPal, veuillez rafraîchir cette page dans quelques secondes ou nous contacter si cette page s'affiche à nouveau.
     ORDER_CANCELLED: Commande annulée
     YOU_CANCELLED_THE_ORDER: Vous avez annulé la commande
-    VALUE_NOT_ACCEPTABLE: Value of the quantity field not acceptable
-    QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE: Quantity exceeds the maximum allowed value
-    CHECKOUT_PAYMENT_METHOD: "## Payment Method"
-    CHECKOUT_SHIPPING_METHOD: "## Shipping Method"
-    THANK_YOU: Thank you for your order
-    OFFLINE_ORDER_TEXT: We'll get in touch soon to confirm the order and payment.
-    CHOOSE_AN_OPTION: Choose an option
+    VALUE_NOT_ACCEPTABLE: Valeur du champ de quantité non acceptable
+    QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE: La quantité dépasse la valeur maximale autorisée
+    CHECKOUT_PAYMENT_METHOD: "## Méthode de paiement"
+    CHECKOUT_SHIPPING_METHOD: "## Méthode de livraison"
+    THANK_YOU: Merci pour votre commande
+    OFFLINE_ORDER_TEXT: Nous reprendrons rapidement contact avec vous pour confirmer la commande et le paiement.
+    CHOOSE_AN_OPTION: Choisir une option
     EDIT_CART: Modifier le panier
     QUANTITY_SHORT: Qté
-    NO_ITEMS_IN_CART: No items added to the shopping cart
-    PRODUCT_ADDED_TO_CART: Product added to cart
-    PRODUCTS_BOUGHT: Products bought
-    SEE_THE_ORDER_DETAILS: See the order details
-    MESSAGE_FROM_THE_CLIENT: Message from the client
-    TERMS_AND_CONDITIONS: "Accept the <a href='#'>terms and conditions</a>"
-    SORRY_THE_EMAIL_IS_NOT_VALID: Sorry, the email is not valid
-    SORRY_THE_EMAIL_IS_NOT_VALID_DID_YOU_MEAN: Sorry, email not valid! Did you mean
-    SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY: Sorry, we cannot ship to your country
-    PLEASE_FILL_PAYMENT_INFORMATION_TEXT_AREA: Please fill the payment information text area
-    PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Please fill all the required fields
-    READ_MORE: Read more
-    MINIMUM_TO_PLACE_AN_ORDER: Minimum to place an order:
-    OUT_OF_STOCK: Out of stock
+    NO_ITEMS_IN_CART: Aucun article ajouté au panier
+    PRODUCT_ADDED_TO_CART: Produit ajouté au panier
+    PRODUCTS_BOUGHT: Produits achetés
+    SEE_THE_ORDER_DETAILS: Voir les détails de la commande
+    MESSAGE_FROM_THE_CLIENT: Message du client
+    TERMS_AND_CONDITIONS: "Accepter les <a href='#'>Conditions Générales de Vente</a>"
+    SORRY_THE_EMAIL_IS_NOT_VALID: Désolé, l'e-mail est pas valide
+    SORRY_THE_EMAIL_IS_NOT_VALID_DID_YOU_MEAN: Désolé, l'e-mail est pas valide ! Vous voulliez dire
+    SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY: Désolé, la livraison est impossible pour votre pays
+    PLEASE_FILL_PAYMENT_INFORMATION_TEXT_AREA: Veuillez renseigner les informations dans la zone de texte de paiement
+    PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Veuillez renseigner l'ensemble des champs obligatoires
+    READ_MORE: Lire la suite
+    MINIMUM_TO_PLACE_AN_ORDER: Minimum pour passer une commande :
+    OUT_OF_STOCK: Rupture de stock
     PAYPAL: PayPal
-    CREDITCARD: Credit card
-    ITEMS_LEFT: %s items left
+    CREDITCARD: Carte de crédit
+    ITEMS_LEFT: Il reste %s articles
     SUBCATEGORIES_HEADING:
-    HAVE_A_DISCOUNT_CODE: Have a discount code?
-    TOTAL_AFTER_DISCOUNT: Total after discount
-    SHIPPING: Shipping
+    HAVE_A_DISCOUNT_CODE: Vous disposez d'un code de réduction ?
+    TOTAL_AFTER_DISCOUNT: Total après la réduction
+    SHIPPING: Livraison
     TAXES: Taxes
-    SUBTOTAL: Subtotal
-    CONTINUE_SHOPPING: Continue shopping
-    DOWNLOAD_EXPIRED: Download expired
-    TOTAL_PAID: Total Paid
-    ORDER_ID: Order ID
-    ORDER_DATE: Order Date
-    NO_ORDERS_FOUND: No orders found
-    MANAGE_ORDERS: Manage orders
-    ORDERS: Orders
-    ORDER_DETAILS: Order Details
+    SUBTOTAL: Sous-total
+    CONTINUE_SHOPPING: Continuer les achats
+    DOWNLOAD_EXPIRED: Téléchargement expiré
+    TOTAL_PAID: Total payé
+    ORDER_ID: ID de commande
+    ORDER_DATE: Date de la commande
+    NO_ORDERS_FOUND: Aucune commande trouvée
+    MANAGE_ORDERS: Gestion des commandes
+    ORDERS: Commandes
+    ORDER_DETAILS: Détails de la commande
