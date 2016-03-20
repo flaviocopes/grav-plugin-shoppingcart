@@ -1,6 +1,7 @@
 <?php
 namespace Grav\Plugin;
 
+use Grav\Common\Grav;
 use Grav\Common\Data;
 use Grav\Common\Filesystem\Folder;
 use Grav\Common\Page\Page;
@@ -43,12 +44,33 @@ class ShoppingcartPlugin extends Plugin
     }
 
     /**
+     * Get the base URL of the site, including the language if enabled.
+     *
+     * @todo use Grav::Uri own method once merged
+     *
+     * @return string
+     */
+    public function baseIncludingLanguage()
+    {
+        $grav = Grav::instance();
+
+        // Link processing should prepend language
+        $language = $grav['language'];
+        $language_append = '';
+        if ($language->enabled()) {
+            $language_append = $language->getLanguageURLPrefix();
+        }
+
+        $base = $grav['base_url_relative'];
+        return rtrim($base . $grav['pages']->base(), '/') . $language_append;
+    }
+
+    /**
      * Enable search only if url matches to the configuration.
      */
     public function onPluginsInitialized()
     {
         require_once __DIR__ . '/vendor/autoload.php';
-
         $this->baseURL = $this->grav['uri']->rootUrl();
         $this->checkoutURL = $this->config->get('plugins.shoppingcart.urls.checkoutURL');
         $this->saveOrderURL = $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
@@ -434,7 +456,7 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/classes/order.php';
         $order = new Order($event['order']);
-        echo $this->grav['base_url'] . $this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+        echo $this->baseIncludingLanguage() . $this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
         exit();
     }
 
