@@ -303,6 +303,12 @@ form:
                   help:
                   type: text
 
+                .help:
+                  toggleable: true
+                  label: Help
+                  help:
+                  type: text
+
                 .classes:
                   toggleable: true
                   label: Classes
