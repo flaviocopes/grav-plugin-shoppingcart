@@ -76,6 +76,76 @@ form:
                   validate:
                     type: string
 
+            section_cart:
+              type: section
+              title: Cart Configuration
+              underline: true
+
+              fields:
+                cart.allowEditingQuantityFromCart:
+                  label: Allow editing quantity from cart
+                  help: Enable to allow editing a product quantity from the cart
+                  type: toggle
+                  highlight: 1
+                  default: 0
+                  options:
+                    1: PLUGIN_ADMIN.ENABLED
+                    0: PLUGIN_ADMIN.DISABLED
+                  validate:
+                    type: bool
+
+                cart.maximumTotalQuantityValue:
+                  label: Maximum total quantity value
+                  help: Set if you want a global limit to the ordered products
+                  type: text
+                  default: ''
+                  validate:
+                    type: int
+
+                cart.addShippingAndTaxesCostToTotal:
+                  label: Add shipping and taxes cost to total
+                  type: toggle
+                  highlight: 1
+                  default: 0
+                  options:
+                    1: PLUGIN_ADMIN.ENABLED
+                    0: PLUGIN_ADMIN.DISABLED
+                  validate:
+                    type: bool
+
+            section_urls:
+              type: section
+              title: URLs Configuration
+              underline: true
+
+              fields:
+
+                urls.checkoutURL:
+                  label: Checkout URL
+                  type: text
+                  help: The checkout page URL. Change if conflicting with another route
+                  default: '/checkout'
+                  validate:
+                    type: string
+
+                urls.saveOrderURL:
+                  label: Save Order URL
+                  type: text
+                  help: The save order page URL. Change if conflicting with another route
+                  default: '/save_order'
+                  validate:
+                    type: string
+
+                urls.orderURL:
+                  label: Visualize Order URL
+                  type: text
+                  help: The order visualization page URL. Change if conflicting with another route
+                  default: '/order'
+                  validate:
+                    type: string
+
+
+
         -
           type: tab
           title: User Interface
@@ -147,43 +217,6 @@ form:
 
         -
           type: tab
-          title: Cart
-
-          fields:
-
-            cart.allowEditingQuantityFromCart:
-              label: Allow editing quantity from cart
-              help: Enable to allow editing a product quantity from the cart
-              type: toggle
-              highlight: 1
-              default: 0
-              options:
-                1: PLUGIN_ADMIN.ENABLED
-                0: PLUGIN_ADMIN.DISABLED
-              validate:
-                type: bool
-
-            cart.maximumTotalQuantityValue:
-              label: Maximum total quantity value
-              help: Set if you want a global limit to the ordered products
-              type: text
-              default: ''
-              validate:
-                type: int
-
-            cart.addShippingAndTaxesCostToTotal:
-              label: Add shipping and taxes cost to total
-              type: toggle
-              highlight: 1
-              default: 0
-              options:
-                1: PLUGIN_ADMIN.ENABLED
-                0: PLUGIN_ADMIN.DISABLED
-              validate:
-                type: bool
-
-        -
-          type: tab
           title: Shipping
 
           fields:
@@ -223,37 +256,87 @@ form:
 
         -
           type: tab
-          title: Advanced
+          title: Checkout Form
 
           fields:
-
-            -
-              type: section
-              title: URLs
-              underline: true
+            checkout_form.fields:
+              type: list
+              label: Checkout Form Fields
 
               fields:
 
-                urls.checkoutURL:
-                  label: Checkout URL
-                  type: text
-                  help: The checkout page URL. Change if conflicting with another route
-                  default: '/checkout'
+                .type:
+                  label: Type
+                  help:
+                  type: select
+                  default: text
+                  options:
+                    text: text
+                    display: display
+                    select: select
+                    checkbox: checkbox
+                    email: email
+                    toggle: toggle
                   validate:
                     type: string
 
-                urls.saveOrderURL:
-                  label: Save Order URL
-                  type: text
-                  help: The save order page URL. Change if conflicting with another route
-                  default: '/save_order'
+                .validate.required:
+                  label: Required
+                  type: toggle
+                  highlight: 1
+                  default: 1
+                  options:
+                    1: PLUGIN_ADMIN.YES
+                    0: PLUGIN_ADMIN.NO
                   validate:
-                    type: string
+                    type: bool
 
-                urls.orderURL:
-                  label: Visualize Order URL
+                .name:
+                  toggleable: true
+                  label: Name
+                  help:
                   type: text
-                  help: The order visualization page URL. Change if conflicting with another route
-                  default: '/order'
-                  validate:
-                    type: string
+
+                .label:
+                  toggleable: true
+                  label: Label
+                  help:
+                  type: text
+
+                .classes:
+                  toggleable: true
+                  label: Classes
+                  help:
+                  type: text
+
+                .id:
+                  toggleable: true
+                  label: Id
+                  help:
+                  type: text
+
+                .outerclasses:
+                  toggleable: true
+                  label: Outer classes
+                  help:
+                  type: text
+
+                .content:
+                  toggleable: true
+                  label: Content
+                  help:
+                  type: text
+
+                .markdown:
+                  toggleable: true
+                  label: Content includes Markdown?
+                  help:
+                  type: text
+
+                .options:
+                  toggleable: true
+                  type: array
+                  label: Options
+                  help:
+                  placeholder_key: value
+                  placeholder_value: label
