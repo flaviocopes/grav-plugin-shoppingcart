@@ -74,18 +74,18 @@ checkout_form:
             markdown: true
 
         -
-            name: telephone
-            type: text
-            label: PLUGIN_SHOPPINGCART.CHECKOUT_ADDRESS_1
-            classes: js__billing__address1
-            validate:
-                required: true
-
-        -
             name: address
             type: text
-            label: PLUGIN_SHOPPINGCART.CHECKOUT_ADDRESS_2
+            label: PLUGIN_SHOPPINGCART.CHECKOUT_ADDRESS
             classes: js__billing__address2
+
+        -
+            name: telephone
+            type: text
+            label: PLUGIN_SHOPPINGCART.CHECKOUT_PHONE
+            classes: js__billing__telephone
+            validate:
+                required: true
 
         -
             name: city

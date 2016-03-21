@@ -14,8 +14,7 @@ en:
     CHECKOUT_EMAIL: Email Address
     CHECKOUT_PHONE: Telephone
     CHECKOUT_HEADLINE_YOUR_ADDRESS: "## Your Address"
-    CHECKOUT_ADDRESS_1: Address 1
-    CHECKOUT_ADDRESS_2: Address 2
+    CHECKOUT_ADDRESS: Address
     CHECKOUT_CITY: City
     CHECKOUT_ZIP: ZIP
     CHECKOUT_COUNTRY: Country
@@ -94,8 +93,7 @@ fr:
     CHECKOUT_EMAIL: Email Adresse
     CHECKOUT_PHONE: Téléphone
     CHECKOUT_HEADLINE_YOUR_ADDRESS: "## Votre adresse"
-    CHECKOUT_ADDRESS_1: Adresse 1
-    CHECKOUT_ADDRESS_2: Adresse 2
+    CHECKOUT_ADDRESS: Adresse
     CHECKOUT_CITY: Ville
     CHECKOUT_ZIP: Code postal
     CHECKOUT_COUNTRY: Pays
@@ -173,8 +171,7 @@ it:
     CHECKOUT_EMAIL: E-mail
     CHECKOUT_PHONE: Telefono
     CHECKOUT_HEADLINE_YOUR_ADDRESS: "## Il tuo indirizzo"
-    CHECKOUT_ADDRESS_1: Indirizzo 1
-    CHECKOUT_ADDRESS_2: Indirizzo 2
+    CHECKOUT_ADDRESS: Indirizzo
     CHECKOUT_CITY: Città
     CHECKOUT_ZIP: CAP
     CHECKOUT_COUNTRY: Stato
