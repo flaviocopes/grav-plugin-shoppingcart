@@ -77,7 +77,7 @@ checkout_form:
             name: address
             type: text
             label: PLUGIN_SHOPPINGCART.CHECKOUT_ADDRESS
-            classes: js__billing__address2
+            classes: js__billing__address
             validate:
                 required: true
 
