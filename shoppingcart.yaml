@@ -78,6 +78,8 @@ checkout_form:
             type: text
             label: PLUGIN_SHOPPINGCART.CHECKOUT_ADDRESS
             classes: js__billing__address2
+            validate:
+                required: true
 
         -
             name: telephone
