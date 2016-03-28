@@ -1,18 +1,5 @@
 (function(ShoppingCart) {
 
-    ShoppingCart.fillCheckoutFormWithDummyData = function fillCheckoutFormWithDummyData() {
-        jQuery('.js__billing__firstname').val('test');
-        jQuery('.js__billing__lastname').val('test');
-        jQuery('.js__billing__email').val('copesc@gmail.com');
-        jQuery('.js__billing__telephone').val('test');
-        jQuery('.js__billing__address1').val('400 Avenue des Chèvrefeuilles');
-        jQuery('.js__billing__city').val('test');
-        jQuery('.js__billing__zip').val('test');
-        jQuery('.js__billing__postalcode').val('test');
-        jQuery('.js__billing__province').val('test');
-        jQuery('.js__checkout__button__proceed-to-payment').click()
-    };
-
     ShoppingCart.processCheckoutFormSubmission = function processCheckoutFormSubmission() {
         var that = this;
 
