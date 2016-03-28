@@ -200,12 +200,12 @@
 
             if (country) {
                 if (country.isAllowed) {
-                    tax_percentage = parseInt(country.tax_percentage);
+                    tax_percentage = parseInt(country.tax_percentage) || 0;
                     if (country.name === 'US') {
                         if (ShoppingCart.settings.us_states) {
                             var state = jQuery(ShoppingCart.settings.us_states).filter(function(index, item) { if (ShoppingCart.shippingAddress.state == item.name) return true; }).toArray()[0];
                             if (state) {
-                                tax_percentage = state.tax_percentage;
+                                tax_percentage = state.tax_percentage || 0;
                             }
                         }
                     }
