@@ -130,8 +130,6 @@
             shippingMethods[index] = ShoppingCart.settings.shipping.methods[index];
         }
 
-        var select = document.getElementById('js__shipping__method');
-
         var methodIsAllowedInCountry = function methodIsAllowedInCountry(method, country) {
             for (index in method.allowedCountries) {
                 if (method.allowedCountries[index] == country) return true;
@@ -172,26 +170,29 @@
             jQuery('.checkout-choose-shipping-block .form-select-wrapper').html(shippingMethods[0].name + ' - ' + priceBlock);
             jQuery('.checkout-choose-shipping-block').show();
         } else {
+            var select = document.getElementById('js__shipping__method');
 
-            //Calculate shipping methods for the shipping country
-            select.options.length = 0;
+            if (select) {
+                //Calculate shipping methods for the shipping country
+                select.options.length = 0;
 
-            ShoppingCart.generateShippingPrice();
+                ShoppingCart.generateShippingPrice();
 
-            for (index in shippingMethods) {
-                if (shippingMethods.hasOwnProperty(index)) {
-                    method = shippingMethods[index];
-                    if (methodIsAllowedInCountry(method, ShoppingCart.shippingAddress.country) &&
-                            ifIsGenericThereIsNoCountrySpecificMethod(method, ShoppingCart.shippingAddress.country) &&
-                            orderWeightIsAllowedForThisMethod(method) &&
-                            orderPriceIsAllowedForThisMethod(method)) {
+                for (index in shippingMethods) {
+                    if (shippingMethods.hasOwnProperty(index)) {
+                        method = shippingMethods[index];
+                        if (methodIsAllowedInCountry(method, ShoppingCart.shippingAddress.country) &&
+                                ifIsGenericThereIsNoCountrySpecificMethod(method, ShoppingCart.shippingAddress.country) &&
+                                orderWeightIsAllowedForThisMethod(method) &&
+                                orderPriceIsAllowedForThisMethod(method)) {
 
-                        var priceBlock = method.price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
-                        if (ShoppingCart.settings.ui.currencySymbolPosition === 'before') {
-                            priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + shippingMethods[index].price;
+                            var priceBlock = method.price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
+                            if (ShoppingCart.settings.ui.currencySymbolPosition === 'before') {
+                                priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + shippingMethods[index].price;
+                            }
+
+                            select.options[select.options.length] = new Option(method.name + ' - ' + priceBlock, method.name);
                         }
-
-                        select.options[select.options.length] = new Option(method.name + ' - ' + priceBlock, method.name);
                     }
                 }
             }
@@ -212,8 +213,6 @@
             paymentMethods[index] = ShoppingCart.settings.payment.methods[index];
         }
 
-        var select = document.getElementById('js__payment__method');
-
         var paymentMethodsCount = 0;
         for (index in paymentMethods) {
             if (paymentMethods.hasOwnProperty(index)) {
@@ -221,13 +220,17 @@
             }
         }
 
-        select.options.length = 0;
+        var select = document.getElementById('js__payment__method');
 
-        for (index in paymentMethods) {
-            if (paymentMethods.hasOwnProperty(index)) {
-                method = paymentMethods[index];
+        if (select) {
+            select.options.length = 0;
 
-                select.options[select.options.length] = new Option(method.name, index);
+            for (index in paymentMethods) {
+                if (paymentMethods.hasOwnProperty(index)) {
+                    method = paymentMethods[index];
+
+                    select.options[select.options.length] = new Option(method.name, index);
+                }
             }
         }
 
@@ -253,16 +256,20 @@
 
         var countries = ShoppingCart.getCountries();
         var select = document.getElementById('js__billing__country');
-        for (index in countries) {
-            if (ShoppingCart.countryCanBuy(countries[index].code)) {
-                select.options[select.options.length] = new Option(countries[index].name, countries[index].code);
+        if (select) {
+            for (index in countries) {
+                if (ShoppingCart.countryCanBuy(countries[index].code)) {
+                    select.options[select.options.length] = new Option(countries[index].name, countries[index].code);
+                }
             }
         }
 
         var states = ShoppingCart.getUSAStates();
         select = document.getElementById('js__billing__state');
-        for (var i = 0; i < states.length; i++) {
-            select.options[select.options.length] = new Option(states[i].name, states[i].code);
+        if (select) {
+            for (var i = 0; i < states.length; i++) {
+                select.options[select.options.length] = new Option(states[i].name, states[i].code);
+            }
         }
 
         var _stateChanged = function _stateChanged() {
