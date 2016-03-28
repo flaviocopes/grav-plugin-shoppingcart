@@ -25,7 +25,6 @@
 
             var url = '';
             var token = randomToken(10);
-            var paymentMethod = 'stripe';
             var shippingMethod = {};
 
             //Determine shipping method
@@ -48,7 +47,6 @@
 
             //Store in localstorage
             storejs.set('grav-shoppingcart-shipping-method', shippingMethod);
-            storejs.set('grav-shoppingcart-payment-method', { method: paymentMethod });
             storejs.set('grav-shoppingcart-order-token', { token: token });
 
             //Calculate the order price
