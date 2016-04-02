@@ -329,8 +329,6 @@ class ShoppingcartPlugin extends Plugin
             'CREDITCARD',
             'ITEMS_LEFT',
             'SUBCATEGORIES_HEADING',
-            'HAVE_A_DISCOUNT_CODE',
-            'TOTAL_AFTER_DISCOUNT',
             'SHIPPING',
             'TAXES',
             'SUBTOTAL',

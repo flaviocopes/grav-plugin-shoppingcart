@@ -69,12 +69,6 @@
             orderPrice = parseFloat(parseFloat(orderPrice) + parseFloat(ShoppingCart.shippingPrice)).toFixed(2);
             ShoppingCart.totalOrderPrice = orderPrice;
 
-            //////////////////////////////////////////////////////////
-            //Remove coupon discount from the total amount
-            //////////////////////////////////////////////////////////
-            if (!ShoppingCart.amountOfDiscount) ShoppingCart.amountOfDiscount = 0;
-            ShoppingCart.totalOrderPrice = parseFloat(parseFloat(parseFloat(ShoppingCart.totalOrderPrice) - parseFloat(ShoppingCart.amountOfDiscount)).toFixed(2)).toFixed(2);
-
             jQuery(that).attr('disabled', 'disabled');
             jQuery(document).trigger('proceedToPayment', ShoppingCart);
         };
