@@ -534,7 +534,7 @@ class ShoppingcartPlugin extends Plugin
      */
     private function getAllOrders()
     {
-        $files = [];
+        $orders = [];
         $path = DATA_DIR . 'shoppingcart';
 
         if (!file_exists($path)) {
@@ -554,12 +554,12 @@ class ShoppingcartPlugin extends Plugin
                 $yaml['created_on'] = $order_date;
             }
 
-            $files[] = $yaml;
+            $orders[] = $yaml;
         }
 
-        array_reverse($files);
+        $orders = array_reverse($orders);
 
-        return $files;
+        return $orders;
     }
 
     /**
