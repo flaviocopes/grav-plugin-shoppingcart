@@ -8,59 +8,6 @@
         }
     </style>
 
-    <script>
-        $(function() {
-            var currentPage = 0;
-            var totalRetrieved = 10;
-            var markup = '';
-
-            $(document).on('click tap', '.js__load-more', function(event) {
-               $.getJSON(window.location + '/page:' + (currentPage + 1))
-                .success(function(response) {
-                    currentPage = parseInt(response.page);
-
-
-                    response.orders.forEach(function(order) {
-                        markup = '<tr>' +
-                                '<td class="author">' + order.address.firstname + ' ' + order.address.lastname + '</td>' +
-                                '<td class="products">';
-
-                        order.products.forEach(function(product) {
-                            markup += product.quantity + ' ' + product.product.title + ' (' + product.product.price + ')<br>';
-                        });
-
-                        markup += '<td class="amount">' + order.amount + '</td>' +
-                                '<td class="date">' + order.paid_on.slice(0, 4) + '/' + order.paid_on.slice(4, 6) + '/' + order.paid_on.slice(6, 8) + '</td>' +
-                                '<td class="details">' +
-                                    order.address.address1 + ' ' +
-                                    order.address.address2 + '<br>' +
-                                    order.address.zip + ' ' +
-                                    order.address.city + '<br>' +
-                                    order.address.state + ' ' +
-                                    order.address.province + '<br>' +
-                                    order.address.country +
-                                '</td>' +
-                            '</tr>';
-
-                        $('.js__orders-container').append(markup);
-                    });
-
-                    totalRetrieved += response.totalRetrieved;
-
-                    $('.totalRetrieved').html(totalRetrieved);
-                    $('.totalAvailable').html(response.totalAvailable);
-
-                    if (totalRetrieved == response.totalAvailable) {
-                        $('.js__load-more').hide();
-                    }
-                })
-                .error(function() {
-                    alert('Unexpected error');
-                });
-            });
-        });
-    </script>
-
     <h1>Addons</h1>
     <p>List of the available ShoppingCart Plugin Addons</p>
 
