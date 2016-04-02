@@ -173,7 +173,7 @@
 
                             var priceBlock = method.price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
                             if (ShoppingCart.settings.ui.currencySymbolPosition === 'before') {
-                                priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + shippingMethods[index].price;
+                                priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + method.price;
                             }
 
                             select.options[select.options.length] = new Option(method.name + ' - ' + priceBlock, method.name);
