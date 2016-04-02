@@ -13,7 +13,7 @@ shipping:
         - US
       price: '10'
     -
-      name: 'All other countries'
+      name: 'All countries'
       allowedCountries:
         - '*'
       price: '20'
