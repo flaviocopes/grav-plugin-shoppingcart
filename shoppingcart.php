@@ -39,7 +39,8 @@ class ShoppingcartPlugin extends Plugin
             'onPluginsInitialized' => ['onPluginsInitialized', 10],
             'onGetPageTemplates' => ['onGetPageTemplates', 0],
             'onShoppingCartSaveOrder' => ['onShoppingCartSaveOrder', 0],
-            'onBlueprintCreated' => ['onBlueprintCreated', 0]
+            'onBlueprintCreated' => ['onBlueprintCreated', 0],
+            'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
         ];
     }
 
@@ -237,14 +238,6 @@ class ShoppingcartPlugin extends Plugin
             }
         }
 
-        // Create ShoppingCart.
-        require_once(__DIR__ . '/classes/shoppingcart.php');
-        $this->shoppingcart = new ShoppingCart($page);
-
-        $this->enable([
-            'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
-        ]);
-
         /**
          * Add translations needed in JavaScript code
          */
@@ -419,6 +412,10 @@ class ShoppingcartPlugin extends Plugin
         if ($this->config->get('plugins.shoppingcart.ui.use_own_css')) {
             $this->grav['assets']->add('plugin://shoppingcart/css/shoppingcart.css');
         }
+
+        // Create ShoppingCart.
+        require_once(__DIR__ . '/classes/shoppingcart.php');
+        $this->shoppingcart = new ShoppingCart();
 
         $this->grav['twig']->twig_vars['shoppingcart'] = $this->shoppingcart;
     }

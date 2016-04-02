@@ -1,4 +1,5 @@
 {% extends 'shoppingcart_base.html.twig' %}
+{% set currencySymbol = shoppingcart.getSymbolOfCurrencyCode(config.plugins.shoppingcart.general.currency) %}
 
 {% block content %}
     <style>
@@ -20,19 +21,20 @@
             <tbody class="js__orders-container">
                 <tr class="h">
                     <th class="date">Date</th>
-                    <th class="products">Products</th>
                     <th class="amount">Amount</th>
                     <th class="details">Details</th>
+                    <th class="products">Products</th>
                 </tr>
                 {% for order in grav.twig.orders.orders %}
                     <tr>
                         <td class="date">{{order.created_on|slice(0, 4)}}/{{order.created_on|slice(4, 2)}}/{{order.created_on|slice(6, 2)}}</td>
-                        <td class="products">
-                            {% for product in order.products %}
-                                <strong>Item</strong>: {{product.product.title}} - <strong>Quantity</strong>: {{product.quantity}} - <strong>Price</strong>: {{product.product.price}}<br>
-                            {% endfor %}
+                        <td class="amount">
+                            {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
+                                {{ order.amount }}{{ currencySymbol }}
+                            {% else %}
+                                {{ currencySymbol }}{{ order.amount }}
+                            {% endif %}
                         </td>
-                        <td class="amount">{{order.amount}}</td>
                         <td class="details">
                             {% for index, item in (order.data ?: [])|merge(order.address ?: []) %}
                                 {% for field in config.plugins.shoppingcart.checkout_form.fields %}
@@ -41,6 +43,21 @@
                                     {% endif %}
                                 {% endfor %}
                                 {{ item }}
+                                <br>
+                            {% endfor %}
+                        </td>
+                        <td class="products">
+                            {% for product in order.products %}
+                                <strong>Item</strong>: {{product.product.title}} -
+                                <strong>Quantity</strong>: {{product.quantity}} -
+                                <strong>Price</strong>:
+
+                                {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
+                                    {{ product.product.price }}{{ currencySymbol }}
+                                {% else %}
+                                    {{ currencySymbol }}{{ product.product.price }}
+                                {% endif %}
+
                                 <br>
                             {% endfor %}
                         </td>
