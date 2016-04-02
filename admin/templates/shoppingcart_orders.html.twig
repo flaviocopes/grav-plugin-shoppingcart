@@ -93,30 +93,30 @@
         <table>
             <tbody class="js__orders-container">
                 <tr class="h">
-                    <th class="author">Purchaser</th>
-                    <th class="products">Bought</th>
-                    <th class="amount">Amount</th>
                     <th class="date">Date</th>
-                    <th class="details">Address</th>
+                    <th class="products">Products</th>
+                    <th class="amount">Amount</th>
+                    <th class="details">Details</th>
                 </tr>
                 {% for order in grav.twig.orders.orders %}
                     <tr>
-                        <td class="author">{{order.address.firstname ~ ' ' ~ order.address.lastname}}</td>
+                        <td class="date">{{order.created_on|slice(0, 4)}}/{{order.created_on|slice(4, 2)}}/{{order.created_on|slice(6, 2)}}</td>
                         <td class="products">
                             {% for product in order.products %}
-                                {{product.quantity}} {{product.product.title}} ({{product.product.price}})<br>
+                                <strong>Item</strong>: {{product.product.title}} - <strong>Quantity</strong>: {{product.quantity}} - <strong>Price</strong>: {{product.product.price}}<br>
                             {% endfor %}
                         </td>
                         <td class="amount">{{order.amount}}</td>
-                        <td class="date">{{order.paid_on|slice(0, 4)}}/{{order.paid_on|slice(4, 2)}}/{{order.paid_on|slice(6, 2)}}</td>
                         <td class="details">
-                            {{order.address.address1}}
-                            {{order.address.address2}}<br>
-                            {{order.address.zip}}
-                            {{order.address.city}}<br>
-                            {{order.address.state}}
-                            {{order.address.province}}<br>
-                            {{order.address.country}}
+                            {% for index, item in (order.data ?: [])|merge(order.address ?: []) %}
+                                {% for field in config.plugins.shoppingcart.checkout_form.fields %}
+                                    {% if field.name == index %}
+                                        <strong>{{ field.label|t|e }}</strong>:
+                                    {% endif %}
+                                {% endfor %}
+                                {{ item }}
+                                <br>
+                            {% endfor %}
                         </td>
                     </tr>
                 {% endfor %}
