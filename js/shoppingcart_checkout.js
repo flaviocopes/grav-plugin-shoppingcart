@@ -88,7 +88,15 @@
         });
 
         var customProcessingOfCheckoutForm = function customProcessingOfCheckoutForm() {
-            if (data.country != 'US') {
+            if (data.country === 'US') {
+                if (data.hasOwnProperty("province")) {
+                    delete data.province;
+                }
+            } else {
+                if (data.hasOwnProperty("state")) {
+                    delete data.state;
+                }
+
                 if (!data.province) {
                     alert(window.PLUGIN_SHOPPINGCART.translations.PLEASE_FILL_ALL_THE_REQUIRED_FIELDS);
                     return;
