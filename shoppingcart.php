@@ -91,14 +91,8 @@ class ShoppingcartPlugin extends Plugin
                 return;
             }
 
-            $page = $this->grav['uri']->param('page');
+            $page = $this->grav['uri']->param('page') ?: 1;
             $orders = $this->getLastOrders($page);
-
-            if ($page > 0) {
-                echo json_encode($orders);
-                exit();
-            }
-
             $this->grav['twig']->orders = $orders;
 
         } else {
@@ -569,13 +563,13 @@ class ShoppingcartPlugin extends Plugin
      *
      * @return object
      */
-    private function getLastOrders($page = 0)
+    private function getLastOrders($page = 1)
     {
         $number = 10;
         $orders = $this->getAllOrders();
 
         $totalAvailable = count($orders);
-        $orders = array_slice($orders, $page * $number, $number);
+        $orders = array_slice($orders, ($page - 1) * $number, $number);
         $totalRetrieved = count($orders);
 
         return (object)[
