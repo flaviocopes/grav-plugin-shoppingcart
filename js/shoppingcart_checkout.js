@@ -74,17 +74,16 @@
         };
 
         var address = {
-            firstname: jQuery('.js__billing__firstname').val(),
-            lastname: jQuery('.js__billing__lastname').val(),
-            email: jQuery('.js__billing__email').val(),
-            telephone: jQuery('.js__billing__telephone').val(),
-            address1: jQuery('.js__billing__address').val(),
-            address2: '',
-            city: jQuery('.js__billing__city').val(),
-            zip: jQuery('.js__billing__zip').val(),
-            country: jQuery('.js__billing__country').val(),
-            state: jQuery('.js__billing__state').val(),
-            province: jQuery('.js__billing__province').val()
+            firstname:  jQuery('.js__billing__firstname').val(),
+            lastname:   jQuery('.js__billing__lastname').val(),
+            email:      jQuery('.js__billing__email').val(),
+            telephone:  jQuery('.js__billing__telephone').val(),
+            address:    jQuery('.js__billing__address').val(),
+            city:       jQuery('.js__billing__city').val(),
+            zip:        jQuery('.js__billing__zip').val(),
+            country:    jQuery('.js__billing__country').val(),
+            state:      jQuery('.js__billing__state').val(),
+            province:   jQuery('.js__billing__province').val()
         };
 
         if (address.country != 'US' && !address.province) {
