@@ -37,13 +37,18 @@
                         </td>
                         <td class="details">
                             {% for index, item in (order.data ?: [])|merge(order.address ?: []) %}
+                                {% set the_field = '' %}
                                 {% for field in config.plugins.shoppingcart.checkout_form.fields %}
                                     {% if field.name == index %}
-                                        <strong>{{ field.label|t|e }}</strong>:
+                                        {% set the_field = field %}
                                     {% endif %}
                                 {% endfor %}
-                                {{ item }}
-                                <br>
+
+                                {% if not the_field.ignore %}
+                                    <strong>{{ the_field.label|t|e }}</strong>:
+                                    {{ item|e }}
+                                    <br>
+                                {% endif %}
                             {% endfor %}
                         </td>
                         <td class="products">
