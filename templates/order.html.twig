@@ -21,7 +21,13 @@
 
         <h3>{{ "PLUGIN_SHOPPINGCART.ORDER_DETAILS"|t }}</h3>
 
-        {% for item in order_data %}
+        {% for index, item in order_data %}
+            {% for field in config.plugins.shoppingcart.checkout_form.fields %}
+                {% if field.name == index %}
+                    <strong>{{ field.label|t|e }}</strong>:
+                {% endif %}
+            {% endfor %}
+
             {{ item }} <br>
         {% endfor %}
 
