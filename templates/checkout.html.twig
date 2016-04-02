@@ -16,4 +16,11 @@
         {% set form = config.plugins.shoppingcart.checkout_form %}
         {% include 'forms/default/form.html.twig' %}
     </div>
+
+    <script>
+        (function() {
+            ShoppingCart.checkout_form_fields = {{ json_encode(config.plugins.shoppingcart.checkout_form.fields) }};
+        }());
+    </script>
+
 {% endblock %}

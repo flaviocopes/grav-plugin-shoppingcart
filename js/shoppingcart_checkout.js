@@ -8,91 +8,99 @@
         /********************************************************/
         var _goOnWithCheckout = function _goOnWithCheckout() {
 
-            var randomToken = function randomToken(length) {
-                var upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                var lower = 'abcdefghijklmnopqrstuvwxyz';
-                var number = '0123456789';
-                var token = '', i;
-                var seed = upper + lower + number;
-                length = length || 13;
+            var processRandomToken = function processRandomToken() {
+                var randomToken = function randomToken(length) {
+                    var upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    var lower = 'abcdefghijklmnopqrstuvwxyz';
+                    var number = '0123456789';
+                    var token = '', i;
+                    var seed = upper + lower + number;
+                    length = length || 13;
 
-                for (i = 0; i < length; i++) {
-                    token += seed[Math.floor(Math.random() * (seed.length - 1))];
-                }
+                    for (i = 0; i < length; i++) {
+                        token += seed[Math.floor(Math.random() * (seed.length - 1))];
+                    }
 
-                return token;
+                    return token;
+                };
+
+                storejs.set('grav-shoppingcart-order-token', { token: randomToken(10) });
             };
 
-            var url = '';
-            var token = randomToken(10);
-            var shippingMethod = {};
-
-            //Determine shipping method
-            if (ShoppingCart.settings.shipping.methods.length === 0) {
-                shippingMethod = {
+            var processShippingMethod = function processShippingMethod() {
+                var shippingMethod = {
                     method: '',
                     cost: 0
                 };
-            } else if (ShoppingCart.settings.shipping.methods.length === 1) {
-                shippingMethod = {
-                    method: ShoppingCart.settings.shipping.methods[0].name,
-                    cost: ShoppingCart.settings.shipping.methods[0].price
-                };
-            } else {
-                shippingMethod = {
-                    method: jQuery('.js__shipping__method').val(),
-                    cost: ShoppingCart.shippingPrice
-                };
-            }
 
-            //Store in localstorage
-            storejs.set('grav-shoppingcart-shipping-method', shippingMethod);
-            storejs.set('grav-shoppingcart-order-token', { token: token });
-
-            //Calculate the order price
-            var orderPrice = ShoppingCart.totalOrderPriceIncludingTaxes;
-            if (!orderPrice) {
-                orderPrice = 0;
-                var i = 0;
-                var cart = ShoppingCart.items;
-
-                while (i < cart.length) {
-                    orderPrice += cart[i].product.price * cart[i].quantity;
-                    i++;
+                if (ShoppingCart.settings.shipping.methods.length === 1) {
+                    shippingMethod = {
+                        method: ShoppingCart.settings.shipping.methods[0].name,
+                        cost: ShoppingCart.settings.shipping.methods[0].price
+                    };
+                } else {
+                    shippingMethod = {
+                        method: jQuery('.js__shipping__method').val(),
+                        cost: ShoppingCart.shippingPrice
+                    };
                 }
-            }
 
-            //////////////////////////////////////////////////////////
-            //Add shipping costs to the order price
-            //////////////////////////////////////////////////////////
-            ShoppingCart.generateShippingPrice();
-            orderPrice = parseFloat(parseFloat(orderPrice) + parseFloat(ShoppingCart.shippingPrice)).toFixed(2);
-            ShoppingCart.totalOrderPrice = orderPrice;
+                //Store in localstorage
+                storejs.set('grav-shoppingcart-shipping-method', shippingMethod);
+            };
+
+            var calculateTotalOrderPrice = function calculateTotalOrderPrice () {
+                //Calculate the order price
+                var orderPrice = ShoppingCart.totalOrderPriceIncludingTaxes;
+                if (!orderPrice) {
+                    orderPrice = 0;
+                    var i = 0;
+                    var cart = ShoppingCart.items;
+
+                    while (i < cart.length) {
+                        orderPrice += cart[i].product.price * cart[i].quantity;
+                        i++;
+                    }
+                }
+
+                //////////////////////////////////////////////////////////
+                //Add shipping costs to the order price
+                //////////////////////////////////////////////////////////
+                ShoppingCart.generateShippingPrice();
+                orderPrice = parseFloat(parseFloat(orderPrice) + parseFloat(ShoppingCart.shippingPrice)).toFixed(2);
+                ShoppingCart.totalOrderPrice = orderPrice;
+            };
+
+            processRandomToken();
+            processShippingMethod();
+            calculateTotalOrderPrice ();
 
             jQuery(that).attr('disabled', 'disabled');
             jQuery(document).trigger('proceedToPayment', ShoppingCart);
         };
 
-        var address = {
-            firstname:  jQuery('.js__billing__firstname').val(),
-            lastname:   jQuery('.js__billing__lastname').val(),
-            email:      jQuery('.js__billing__email').val(),
-            telephone:  jQuery('.js__billing__telephone').val(),
-            address:    jQuery('.js__billing__address').val(),
-            city:       jQuery('.js__billing__city').val(),
-            zip:        jQuery('.js__billing__zip').val(),
-            country:    jQuery('.js__billing__country').val(),
-            state:      jQuery('.js__billing__state').val(),
-            province:   jQuery('.js__billing__province').val()
+        var data = {};
+
+        ShoppingCart.checkout_form_fields.forEach(function(checkout_form_field) {
+            if (typeof checkout_form_field.name !== 'undefined') {
+                data[checkout_form_field.name] = jQuery(checkout_form_field.classes).val();
+            }
+        });
+
+        var customProcessingOfCheckoutForm = function customProcessingOfCheckoutForm() {
+            if (data.country != 'US') {
+                if (!data.province) {
+                    alert(window.PLUGIN_SHOPPINGCART.translations.PLEASE_FILL_ALL_THE_REQUIRED_FIELDS);
+                    return;
+                }
+            }
         };
+        
+        customProcessingOfCheckoutForm();
+        
 
-        if (address.country != 'US' && !address.province) {
-            alert(window.PLUGIN_SHOPPINGCART.translations.PLEASE_FILL_ALL_THE_REQUIRED_FIELDS);
-            return;
-        }
-
-        ShoppingCart.shippingAddress = address;
-        storejs.set('grav-shoppingcart-person-address', address); //Store address info in cookie
+        ShoppingCart.checkout_form_data = data;
+        storejs.set('grav-shoppingcart-checkout-form-data', data); //Store data info in cookie
 
         ShoppingCart.gateway = jQuery('.js__payment__method').val();
 
@@ -109,9 +117,9 @@
         }
 
         var methodIsAllowedInCountry = function methodIsAllowedInCountry(method, country) {
-            for (index in method.allowedCountries) {
-                if (method.allowedCountries[index] == country) return true;
-                if (method.allowedCountries[index] == '*') return true;
+            for (index in method.allowed_countries) {
+                if (method.allowed_countries[index] == country) return true;
+                if (method.allowed_countries[index] == '*') return true;
             }
             return false;
         };
@@ -141,7 +149,7 @@
         } else if (shippingMethods.length === 1) {
 
             var priceBlock = shippingMethods[0].price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
-            if (ShoppingCart.settings.ui.currencySymbolPosition === 'before') {
+            if (ShoppingCart.settings.ui.currency_symbol_position === 'before') {
                 priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + shippingMethods[0].price;
             }
 
@@ -159,13 +167,13 @@
                 for (index in shippingMethods) {
                     if (shippingMethods.hasOwnProperty(index)) {
                         method = shippingMethods[index];
-                        if (methodIsAllowedInCountry(method, ShoppingCart.shippingAddress.country) &&
-                                ifIsGenericThereIsNoCountrySpecificMethod(method, ShoppingCart.shippingAddress.country) &&
+                        if (methodIsAllowedInCountry(method, ShoppingCart.checkout_form_data.country) &&
+                                ifIsGenericThereIsNoCountrySpecificMethod(method, ShoppingCart.checkout_form_data.country) &&
                                 orderWeightIsAllowedForThisMethod(method) &&
                                 orderPriceIsAllowedForThisMethod(method)) {
 
                             var priceBlock = method.price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
-                            if (ShoppingCart.settings.ui.currencySymbolPosition === 'before') {
+                            if (ShoppingCart.settings.ui.currency_symbol_position === 'before') {
                                 priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + method.price;
                             }
 
@@ -250,14 +258,14 @@
             }
         }
 
-        var _stateChanged = function _stateChanged() {
+        var stateChanged = function stateChanged() {
             //Calculate immediately the shipping address, so it's used for taxes
-            if (!ShoppingCart.shippingAddress) {
-                ShoppingCart.shippingAddress = {
+            if (!ShoppingCart.checkout_form_data) {
+                ShoppingCart.checkout_form_data = {
                     state: jQuery('.js__billing__state').val(),
                 };
             } else {
-                ShoppingCart.shippingAddress.state = jQuery('.js__billing__state').val();
+                ShoppingCart.checkout_form_data.state = jQuery('.js__billing__state').val();
             }
             ShoppingCart.calculateTotalPriceIncludingTaxes();
             ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
@@ -269,14 +277,14 @@
         /* country, and when the user changes the country.
         /* Used to calculate the default shipping price too.
         /***********************************************************/
-        var _countryChanged = function _countryChanged() {
+        var countryChanged = function countryChanged() {
             //Calculate immediately the shipping price, so it's shown in the cart
-            if (!ShoppingCart.shippingAddress) {
-                ShoppingCart.shippingAddress = {
+            if (!ShoppingCart.checkout_form_data) {
+                ShoppingCart.checkout_form_data = {
                     country: jQuery('.js__billing__country').val(),
                 };
             } else {
-                ShoppingCart.shippingAddress.country = jQuery('.js__billing__country').val();
+                ShoppingCart.checkout_form_data.country = jQuery('.js__billing__country').val();
             }
 
             ShoppingCart.populateShippingOptions();
@@ -295,24 +303,24 @@
             ShoppingCart.renderCart();
         };
 
-        jQuery("#js__billing__country").val(ShoppingCart.settings.general.defaultCountry || 'US');
-        _countryChanged();
+        jQuery("#js__billing__country").val(ShoppingCart.settings.general.default_country || 'US');
+        countryChanged();
 
         ShoppingCart.populatePaymentOptions();
 
-        if ((ShoppingCart.settings.general.defaultCountry || 'US') === 'US') {
+        if ((ShoppingCart.settings.general.default_country || 'US') === 'US') {
             jQuery('.js__billing__state__control').show();
-            _stateChanged();
+            stateChanged();
         } else {
             jQuery('.js__billing__province__control').show();
         }
 
         jQuery(document).delegate('.js__billing__country', 'change', function() {
-            _countryChanged();
+            countryChanged();
         });
 
         jQuery(document).delegate('.js__billing__state', 'change', function() {
-            _stateChanged();
+            stateChanged();
         });
 
     };

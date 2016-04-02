@@ -1,33 +1,33 @@
 enabled: true
 general:
   currency: USD
-  defaultCountry: US
-  productTaxes: excluded
+  default_country: US
+  product_taxes: excluded
 shipping:
   methods:
     -
       name: 'Favorite countries'
-      allowedCountries:
+      allowed_countries:
         - IT
         - EN
         - US
       price: '10'
     -
       name: 'All countries'
-      allowedCountries:
+      allowed_countries:
         - '*'
       price: '20'
 urls:
-  checkoutURL: /checkout
-  saveOrderURL: /save_order
-  orderURL: /order
+  checkout_url: /checkout
+  save_order_url: /save_order
+  order_url: /order
 ui:
-  currencySymbolPosition: before
-  useOwnCSS: true
+  currency_symbol_position: before
+  use_own_css: true
 cart:
-  allowEditingQuantityFromCart: true
-  addShippingAndTaxesCostToTotal: true
-  maximumTotalQuantityValue:
+  allow_editing_quantity_from_cart: true
+  add_shipping_and_taxes_cost_to_total: true
+  maximum_total_quantity_value:
 countries:
   -
     name: US

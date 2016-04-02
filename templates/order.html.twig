@@ -21,12 +21,9 @@
 
         <h3>{{ "PLUGIN_SHOPPINGCART.ORDER_DETAILS"|t }}</h3>
 
-        {{ order_address.firstname }} {{ order_address.lastname }}<br>
-        {{ order_address.address1 }}<br>
-        {{ order_address.address2 }}<br>
-        {{ order_address.zip }} {{ order_address.city }}<br>
-        {{ order_address.country }}<br>
-        {{ order_address.email }} {{ order_address.telephone }}<br>
+        {% for item in order_data %}
+            {{ item }} <br>
+        {% endfor %}
 
     {% endif %}
 

@@ -107,8 +107,8 @@
             return;
         }
 
-        if (ShoppingCart.settings.cart.maximumTotalQuantityValue && (parseInt(new_quantity) > ShoppingCart.settings.cart.maximumTotalQuantityValue)) {
-            alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximumTotalQuantityValue);
+        if (ShoppingCart.settings.cart.maximum_total_quantity_value && (parseInt(new_quantity) > ShoppingCart.settings.cart.maximum_total_quantity_value)) {
+            alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximum_total_quantity_value);
             jQuery(this).val(ShoppingCart.items[element_id].quantity);
             return;
         }

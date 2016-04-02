@@ -1,6 +1,6 @@
 (function(ShoppingCart) {
     ShoppingCart.items = [];
-    ShoppingCart.shippingAddress = {};
+    ShoppingCart.checkout_form_data = {};
     ShoppingCart.currentPageIsProduct = false;
     ShoppingCart.currentPageIsProducts = false;
 
@@ -32,7 +32,7 @@
         for (index in ShoppingCart.settings.shipping.methods) {
             item = ShoppingCart.settings.shipping.methods[index];
             if (typeof item !== 'undefined') {
-                if (!item.allowedCountries) item.allowedCountries = [];
+                if (!item.allowed_countries) item.allowed_countries = [];
                 ShoppingCart.settings.shipping.methods[index] = item;
             }
         }
@@ -72,13 +72,13 @@
                 return;
             }
 
-            if (typeof ShoppingCart.settings.cart.maximumTotalQuantityValue !== undefined && ShoppingCart.settings.cart.maximumTotalQuantityValue > 0 && parseInt(ShoppingCart.items[i].quantity) > ShoppingCart.settings.cart.maximumTotalQuantityValue) {
-                alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximumTotalQuantityValue);
+            if (typeof ShoppingCart.settings.cart.maximum_total_quantity_value !== undefined && ShoppingCart.settings.cart.maximum_total_quantity_value > 0 && parseInt(ShoppingCart.items[i].quantity) > ShoppingCart.settings.cart.maximum_total_quantity_value) {
+                alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximum_total_quantity_value);
                 return;
             }
         }
 
-        window.location.href = PLUGIN_SHOPPINGCART.settings.baseURL + PLUGIN_SHOPPINGCART.settings.urls.checkoutURL;
+        window.location.href = PLUGIN_SHOPPINGCART.settings.baseURL + PLUGIN_SHOPPINGCART.settings.urls.checkout_url;
     };
 
     /***********************************************************/
@@ -134,7 +134,7 @@
             if (ShoppingCart.settings != null) {
                 clearInterval(interval);
                 if (!ShoppingCart.settings.general.storeClientInformation) {
-                    storejs.remove('grav-shoppingcart-person-address');
+                    storejs.remove('grav-shoppingcart-checkout-form-data');
                 }
             }
         }, 50);
@@ -186,7 +186,7 @@
             //calculate country taxes
             var country;
             for (index in ShoppingCart.settings.countries) {
-                if (ShoppingCart.shippingAddress.country == ShoppingCart.settings.countries[index].name) {
+                if (ShoppingCart.checkout_form_data.country == ShoppingCart.settings.countries[index].name) {
                     country = ShoppingCart.settings.countries[index];
                 }
             }
@@ -203,7 +203,7 @@
                     tax_percentage = parseInt(country.tax_percentage) || 0;
                     if (country.name === 'US') {
                         if (ShoppingCart.settings.us_states) {
-                            var state = jQuery(ShoppingCart.settings.us_states).filter(function(index, item) { if (ShoppingCart.shippingAddress.state == item.name) return true; }).toArray()[0];
+                            var state = jQuery(ShoppingCart.settings.us_states).filter(function(index, item) { if (ShoppingCart.checkout_form_data.state == item.name) return true; }).toArray()[0];
                             if (state) {
                                 tax_percentage = state.tax_percentage || 0;
                             }
@@ -337,7 +337,7 @@
     /* Check if the setting to include taxes in product prices is disabled
     /***********************************************************/
     ShoppingCart.productPriceDoesNotIncludeTaxes = function productPriceDoesNotIncludeTaxes() {
-        return ShoppingCart.settings.general.productTaxes !== 'included';
+        return ShoppingCart.settings.general.product_taxes !== 'included';
     };
 
     /***********************************************************/
@@ -352,7 +352,7 @@
     /* #todo #stub
     /***********************************************************/
     ShoppingCart.showCurrencyBeforePrice = function showCurrencyBeforePrice() {
-        return ShoppingCart.settings.ui.currencySymbolPosition === 'before';
+        return ShoppingCart.settings.ui.currency_symbol_position === 'before';
     };
 
     /***********************************************************/
@@ -475,7 +475,7 @@
             /* Quantity
             /***********************************************************/
             row += '<td class="cart-product-quantity">';
-            if (ShoppingCart.settings.cart.allowEditingQuantityFromCart) {
+            if (ShoppingCart.settings.cart.allow_editing_quantity_from_cart) {
                 if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
                     row += '<input value="' + item.quantity + '" class="input-mini js__shoppingcart__quantity-box-cart" data-id="' + i + '" />';
                 } else {
@@ -489,7 +489,7 @@
             /* Total
             /***********************************************************/
 
-            if (ShoppingCart.settings.ui.currencySymbolPosition === 'after') {
+            if (ShoppingCart.settings.ui.currency_symbol_position === 'after') {
                 row += '<td class="cart-product-total">' + parseFloat(ShoppingCart.cartSubtotalPrice(item)).toFixed(2) + '<span class="currency"> ' + currencySymbol + '</span>' + '</td>';
             } else {
                 row += '<td class="cart-product-total">' + '<span class="currency">' + currencySymbol + '</span> ' + parseFloat(ShoppingCart.cartSubtotalPrice(item)).toFixed(2) + '</td>';
@@ -576,11 +576,11 @@
 
                 row += '<tr class="cart-taxes-calculated">';
 
-                if (ShoppingCart.shippingAddress.country) {
+                if (ShoppingCart.checkout_form_data.country) {
                     //row += '<td><strong>' + window.PLUGIN_SHOPPINGCART.translations.INCLUDING_TAXES + '</strong></td>';
 
                     row += '<td><strong>';
-                    if (ShoppingCart.settings.cart.addShippingAndTaxesCostToTotal) {
+                    if (ShoppingCart.settings.cart.add_shipping_and_taxes_cost_to_total) {
                         row += window.PLUGIN_SHOPPINGCART.translations.INCLUDING_TAXES;
                     } else {
                         row += window.PLUGIN_SHOPPINGCART.translations.TAXES;
@@ -596,7 +596,7 @@
                         row += ShoppingCart.currentCurrencySymbol();
                         row += ' ';
 
-                        if (ShoppingCart.settings.cart.addShippingAndTaxesCostToTotal) {
+                        if (ShoppingCart.settings.cart.add_shipping_and_taxes_cost_to_total) {
                             row += ShoppingCart.calculateTotalPriceIncludingTaxes();
                         } else {
                             row += ShoppingCart.taxesApplied;
@@ -604,7 +604,7 @@
 
                     } else {
 
-                        if (ShoppingCart.settings.cart.addShippingAndTaxesCostToTotal) {
+                        if (ShoppingCart.settings.cart.add_shipping_and_taxes_cost_to_total) {
                             row += ShoppingCart.calculateTotalPriceIncludingTaxes();
                         } else {
                             row += ShoppingCart.taxesApplied;
@@ -635,7 +635,7 @@
 
                 row += '<td><strong>';
 
-                if (ShoppingCart.settings.cart.addShippingAndTaxesCostToTotal) {
+                if (ShoppingCart.settings.cart.add_shipping_and_taxes_cost_to_total) {
                     row += window.PLUGIN_SHOPPINGCART.translations.INCLUDING_SHIPPING;
                 } else {
                     row += window.PLUGIN_SHOPPINGCART.translations.SHIPPING;
@@ -652,7 +652,7 @@
                     row += ShoppingCart.currentCurrencySymbol();
                     row += ' ';
 
-                    if (ShoppingCart.settings.cart.addShippingAndTaxesCostToTotal) {
+                    if (ShoppingCart.settings.cart.add_shipping_and_taxes_cost_to_total) {
                         row += ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
                     } else {
                         row += ShoppingCart.shippingPrice;
@@ -660,7 +660,7 @@
 
                 } else {
 
-                    if (ShoppingCart.settings.cart.addShippingAndTaxesCostToTotal) {
+                    if (ShoppingCart.settings.cart.add_shipping_and_taxes_cost_to_total) {
                         row += ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
                     } else {
                         row += ShoppingCart.shippingPrice;

@@ -20,9 +20,9 @@ use Symfony\Component\Yaml\Yaml;
 class ShoppingcartPlugin extends Plugin
 {
     protected $baseURL;
-    protected $checkoutURL;
-    protected $saveOrderURL;
-    protected $orderURL;
+    protected $checkout_url;
+    protected $save_order_url;
+    protected $order_url;
     protected $order_id;
     protected $route = 'shoppingcart';
 
@@ -72,9 +72,9 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/vendor/autoload.php';
         $this->baseURL = $this->grav['uri']->rootUrl();
-        $this->checkoutURL = $this->config->get('plugins.shoppingcart.urls.checkoutURL');
-        $this->saveOrderURL = $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
-        $this->orderURL =  $this->config->get('plugins.shoppingcart.urls.orderURL');
+        $this->checkout_url = $this->config->get('plugins.shoppingcart.urls.checkout_url');
+        $this->save_order_url = $this->config->get('plugins.shoppingcart.urls.save_order_url');
+        $this->order_url =  $this->config->get('plugins.shoppingcart.urls.order_url');
 
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
@@ -110,19 +110,19 @@ class ShoppingcartPlugin extends Plugin
                 'onShoppingCartRedirectToOrderPageUrl' => ['onShoppingCartRedirectToOrderPageUrl', 10]
             ]);
 
-            if ($this->checkoutURL && $this->checkoutURL == $uri->path()) {
+            if ($this->checkout_url && $this->checkout_url == $uri->path()) {
                 $this->enable([
                     'onPagesInitialized' => ['addCheckoutPage', 0]
                 ]);
             }
 
-            if ($this->saveOrderURL && $this->saveOrderURL == $uri->path()) {
+            if ($this->save_order_url && $this->save_order_url == $uri->path()) {
                 $this->enable([
                     'onPagesInitialized' => ['saveOrder', 0]
                 ]);
             }
 
-            if ($this->orderURL && $this->orderURL == $uri->path()) {
+            if ($this->order_url && $this->order_url == $uri->path()) {
                 $this->enable([
                     'onPagesInitialized' => ['addOrderPage', 0]
                 ]);
@@ -132,7 +132,7 @@ class ShoppingcartPlugin extends Plugin
 
     public function addCheckoutPage()
     {
-        $url = $this->checkoutURL;
+        $url = $this->checkout_url;
         $filename = 'checkout.md';
         $this->addPage($url, $filename);
     }
@@ -151,7 +151,7 @@ class ShoppingcartPlugin extends Plugin
 
     public function addOrderPage()
     {
-        $url = $this->orderURL;
+        $url = $this->order_url;
         $filename = 'order.md';
         $this->addPage($url, $filename);
 
@@ -172,7 +172,13 @@ class ShoppingcartPlugin extends Plugin
         $twig = $this->grav['twig'];
 
         $twig->twig_vars['order_products'] = $order['products'];
-        $twig->twig_vars['order_address'] = $order['address'];
+
+        if (isset($order['data'])) {
+            $twig->twig_vars['order_data'] = $order['data'];
+        } else { // BC with ShoppingCart 1.0
+            $twig->twig_vars['order_data'] = $order['address'];
+        }
+
         $twig->twig_vars['order_amount'] = $order['amount'];
         $twig->twig_vars['order_token'] = $order['token'];
         $twig->twig_vars['order_paid'] = $order['paid'];
@@ -416,7 +422,7 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onTwigSiteVariables()
     {
-        if ($this->config->get('plugins.shoppingcart.ui.useOwnCSS')) {
+        if ($this->config->get('plugins.shoppingcart.ui.use_own_css')) {
             $this->grav['assets']->add('plugin://shoppingcart/css/shoppingcart.css');
         }
 
@@ -454,7 +460,7 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/classes/order.php';
         $order = new Order($event['order']);
-        echo $this->baseIncludingLanguage() . $this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+        echo $this->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
         exit();
     }
 
@@ -467,7 +473,7 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/classes/order.php';
         $order = new Order($event['order']);
-        $this->grav->redirect($this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token);
+        $this->grav->redirect($this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token);
     }
 
     /**
