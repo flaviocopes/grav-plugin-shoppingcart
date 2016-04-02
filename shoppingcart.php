@@ -136,7 +136,7 @@ class ShoppingcartPlugin extends Plugin
     {
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
-        $task = $uri->query('task');
+        $task = !empty($_POST['task']) ? $_POST['task'] : $uri->param('task');
         $post = !empty($_POST) ? $_POST : [];
 
         require_once __DIR__ . '/classes/controller.php';
@@ -483,7 +483,7 @@ class ShoppingcartPlugin extends Plugin
 
         $body = Yaml::dump([
             'products' => $order->products,
-            'address' => $order->address,
+            'data' => $order->data,
             'shipping' => $order->shipping,
             'payment' => $order->payment,
             'token' => $order->token,

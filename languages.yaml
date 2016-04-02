@@ -76,6 +76,7 @@ en:
     ORDERS: Orders
     ORDER_DETAILS: Order Details
     THANKS_FOR_YOUR_ORDER: Thanks for your order
+    PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Please fill all the required fields
     
 fr:
   PLUGIN_SHOPPINGCART:
@@ -154,6 +155,7 @@ fr:
     MANAGE_ORDERS: Gestion des commandes
     ORDERS: Commandes
     ORDER_DETAILS: Détails de la commande
+    PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Veuillez renseigner l'ensemble des champs obligatoires
 
 it:
   PLUGIN_SHOPPINGCART:
@@ -216,7 +218,6 @@ it:
     SEE_THE_ORDER_DETAILS: Visualizza i dettagli dell'ordine
     TERMS_AND_CONDITIONS: "Accetta i <a href='#'>termini e le condizioni</a>"
     SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY: Siamo spiacenti, non possiamo spedire al tuo indirizzo
-    PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Per favore compila tutti i campi richiesti
     READ_MORE: Leggi di più
     MINIMUM_TO_PLACE_AN_ORDER: Minimo per inviare l'ordine:
     PAYPAL: PayPal
@@ -232,3 +233,4 @@ it:
     MANAGE_ORDERS: Gestisci ordini
     ORDERS: Ordini
     ORDER_DETAILS: Dettagli ordine
+    PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Per favore compila tutti i campi richiesti

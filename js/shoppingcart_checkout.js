@@ -83,7 +83,7 @@
 
         ShoppingCart.checkout_form_fields.forEach(function(checkout_form_field) {
             if (typeof checkout_form_field.name !== 'undefined') {
-                data[checkout_form_field.name] = jQuery(checkout_form_field.classes).val();
+                data[checkout_form_field.name] = jQuery('form[name=checkout] [name=' + checkout_form_field.name + ']').val();
             }
         });
 
@@ -99,13 +99,15 @@
 
                 if (!data.province) {
                     alert(window.PLUGIN_SHOPPINGCART.translations.PLEASE_FILL_ALL_THE_REQUIRED_FIELDS);
-                    return;
+                    return false;
                 }
             }
         };
         
-        customProcessingOfCheckoutForm();
-        
+        var return_value = customProcessingOfCheckoutForm();
+        if (return_value === false) {
+            return;
+        }
 
         ShoppingCart.checkout_form_data = data;
         storejs.set('grav-shoppingcart-checkout-form-data', data); //Store data info in cookie

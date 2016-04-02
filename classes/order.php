@@ -24,7 +24,7 @@ class Order
 
         if (is_array($order)) {
             if (isset($order['products'])) $this->data->set('products', $order['products']);
-            if (isset($order['address'])) $this->data->set('address', $order['address']);
+            if (isset($order['data'])) $this->data->set('data', $order['data']);
             if (isset($order['shipping'])) $this->data->set('shipping', $order['shipping']);
             if (isset($order['payment'])) $this->data->set('payment', $order['payment']);
             if (isset($order['amount'])) $this->data->set('amount', $order['amount']);
