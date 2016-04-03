@@ -2,91 +2,25 @@
 
     ShoppingCart.processCheckoutFormSubmission = function processCheckoutFormSubmission() {
         var that = this;
-
-        /********************************************************/
-        /* Function called if I later can go on with the checkout
-        /********************************************************/
-        var _goOnWithCheckout = function _goOnWithCheckout() {
-
-            var processRandomToken = function processRandomToken() {
-                var randomToken = function randomToken(length) {
-                    var upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                    var lower = 'abcdefghijklmnopqrstuvwxyz';
-                    var number = '0123456789';
-                    var token = '', i;
-                    var seed = upper + lower + number;
-                    length = length || 13;
-
-                    for (i = 0; i < length; i++) {
-                        token += seed[Math.floor(Math.random() * (seed.length - 1))];
-                    }
-
-                    return token;
-                };
-
-                storejs.set('grav-shoppingcart-order-token', { token: randomToken(10) });
-            };
-
-            var processShippingMethod = function processShippingMethod() {
-                var shippingMethod = {
-                    method: '',
-                    cost: 0
-                };
-
-                if (ShoppingCart.settings.shipping.methods.length === 1) {
-                    shippingMethod = {
-                        method: ShoppingCart.settings.shipping.methods[0].name,
-                        cost: ShoppingCart.settings.shipping.methods[0].price
-                    };
-                } else {
-                    shippingMethod = {
-                        method: jQuery('.js__shipping__method').val(),
-                        cost: ShoppingCart.shippingPrice
-                    };
-                }
-
-                //Store in localstorage
-                storejs.set('grav-shoppingcart-shipping-method', shippingMethod);
-            };
-
-            var calculateTotalOrderPrice = function calculateTotalOrderPrice () {
-                //Calculate the order price
-                var orderPrice = ShoppingCart.totalOrderPriceIncludingTaxes;
-                if (!orderPrice) {
-                    orderPrice = 0;
-                    var i = 0;
-                    var cart = ShoppingCart.items;
-
-                    while (i < cart.length) {
-                        orderPrice += cart[i].product.price * cart[i].quantity;
-                        i++;
-                    }
-                }
-
-                //////////////////////////////////////////////////////////
-                //Add shipping costs to the order price
-                //////////////////////////////////////////////////////////
-                ShoppingCart.generateShippingPrice();
-                orderPrice = parseFloat(parseFloat(orderPrice) + parseFloat(ShoppingCart.shippingPrice)).toFixed(2);
-                ShoppingCart.totalOrderPrice = orderPrice;
-            };
-
-            processRandomToken();
-            processShippingMethod();
-            calculateTotalOrderPrice ();
-
-            jQuery(that).attr('disabled', 'disabled');
-            jQuery(document).trigger('proceedToPayment', ShoppingCart);
-        };
-
         var data = {};
 
-        ShoppingCart.checkout_form_fields.forEach(function(checkout_form_field) {
-            if (typeof checkout_form_field.name !== 'undefined') {
-                data[checkout_form_field.name] = jQuery('form[name=checkout] [name=' + checkout_form_field.name + ']').val();
-            }
-        });
+        /********************************************************/
+        /* Fill the data object with values from the checkout form
+        /********************************************************/
+        var fillDataObjectWithValuesFromCheckoutForm = function fillDataObjectWithValuesFromCheckoutForm() {
+            ShoppingCart.checkout_form_fields.forEach(function(checkout_form_field) {
+                if (typeof checkout_form_field.name !== 'undefined') {
+                    data[checkout_form_field.name] = jQuery('form[name=checkout] [name=' + checkout_form_field.name + ']').val();
+                }
+            });
+        };
 
+        fillDataObjectWithValuesFromCheckoutForm();
+
+        /********************************************************/
+        /* Do some processing / validation on the checkout form values
+        /* Return false if I cannot go on, so the outer function can be stopped
+        /********************************************************/
         var customProcessingOfCheckoutForm = function customProcessingOfCheckoutForm() {
             if (data.country === 'US') {
                 if (data.hasOwnProperty("province")) {
@@ -109,16 +43,110 @@
             return;
         }
 
+        /********************************************************/
+        /* Fill `ShoppingCart.checkout_form_data` with the checkout form data
+        /* Fill storejs.get('grav-shoppingcart-checkout-form-data') with the checkout form data
+        /* Fill `ShoppingCart.gateway` with the gateway name
+        /********************************************************/
         ShoppingCart.checkout_form_data = data;
         storejs.set('grav-shoppingcart-checkout-form-data', data); //Store data info in cookie
-
         ShoppingCart.gateway = jQuery('.js__payment__method').val();
+
+        /********************************************************/
+        /* - Generates the order random token
+        /* - Processes the shipping method
+        /* - Calculates the total order price including shipment
+        /* - Calls the jQuery event `proceedToPayment`
+        /********************************************************/
+        var _goOnWithCheckout = function _goOnWithCheckout() {
+
+            /***********************************************************/
+            /* Create a random token and store it in
+             /* storejs.get('grav-shoppingcart-order-token')
+             /***********************************************************/
+            var generateRandomToken = function generateRandomToken () {
+                var randomToken = function randomToken(length) {
+                    var upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    var lower = 'abcdefghijklmnopqrstuvwxyz';
+                    var number = '0123456789';
+                    var token = '', i;
+                    var seed = upper + lower + number;
+                    length = length || 13;
+
+                    for (i = 0; i < length; i++) {
+                        token += seed[Math.floor(Math.random() * (seed.length - 1))];
+                    }
+
+                    return token;
+                };
+
+                storejs.set('grav-shoppingcart-order-token', { token: randomToken(10) });
+            };
+
+            /***********************************************************/
+            /* Check the shipping method and add it to
+             /* storejs.get('grav-shoppingcart-shipping-method')
+             /***********************************************************/
+            var processShippingMethod = function processShippingMethod() {
+                var shippingMethod = {
+                    method: '',
+                    cost: 0
+                };
+
+                if (ShoppingCart.settings.shipping.methods.length === 1) {
+                    shippingMethod = {
+                        method: ShoppingCart.settings.shipping.methods[0].name,
+                        cost: ShoppingCart.settings.shipping.methods[0].price
+                    };
+                } else {
+                    shippingMethod = {
+                        method: jQuery('.js__shipping__method').val(),
+                        cost: ShoppingCart.shippingPrice
+                    };
+                }
+
+                //Store in localstorage
+                storejs.set('grav-shoppingcart-shipping-method', shippingMethod);
+            };
+
+            /***********************************************************/
+            /* Calculate the total order price and store it in ShoppingCart.totalOrderPrice
+             /***********************************************************/
+            var calculateTotalOrderPrice = function calculateTotalOrderPrice () {
+                //Calculate the order price
+                var orderPrice = ShoppingCart.totalOrderPriceIncludingTaxes;
+                if (!orderPrice) {
+                    orderPrice = 0;
+                    var i = 0;
+                    var cart = ShoppingCart.items;
+
+                    while (i < cart.length) {
+                        orderPrice += cart[i].product.price * cart[i].quantity;
+                        i++;
+                    }
+                }
+
+                /***********************************************************/
+                /* Add shipping costs to the order price
+                 /***********************************************************/
+                ShoppingCart.generateShippingPrice();
+                orderPrice = parseFloat(parseFloat(orderPrice) + parseFloat(ShoppingCart.shippingPrice)).toFixed(2);
+                ShoppingCart.totalOrderPrice = orderPrice;
+            };
+
+            generateRandomToken ();
+            processShippingMethod();
+            calculateTotalOrderPrice ();
+
+            jQuery(that).attr('disabled', 'disabled');
+            jQuery(document).trigger('proceedToPayment', ShoppingCart);
+        };
 
         _goOnWithCheckout();
     };
 
     /***********************************************************/
-    /* Get the shipping options based on the settings
+    /* Get the allowed shipping options based on the settings
     /***********************************************************/
     ShoppingCart.populateShippingOptions = function populateShippingOptions() {
         var shippingMethods = [];

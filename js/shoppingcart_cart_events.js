@@ -93,6 +93,7 @@
 
     /***********************************************************/
     /* Handle change the quantity box in the cart
+    /* #event
     /***********************************************************/
     jQuery(document).on('keyup', '.js__shoppingcart__quantity-box-cart', function() {
         var element_id = jQuery(this).data('id');
