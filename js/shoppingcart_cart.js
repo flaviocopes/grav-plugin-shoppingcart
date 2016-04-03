@@ -506,7 +506,6 @@
             rows_html += row;
         }
 
-
         /***********************************************************/
         /* Additional lines after products
         /***********************************************************/
@@ -531,7 +530,6 @@
 
         row += '</td>';
 
-
         /***********************************************************/
         /* Checkout / or not yet reached minimum order level
         /***********************************************************/
@@ -544,7 +542,6 @@
         });
 
         if (atLeastAProductIsAdded) {
-
             if (ShoppingCart.orderAmountIsGreaterThenMinimum()) {
                 if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
                     row += '<td><button class="btn btn-success js__shoppingcart__proceed-to-checkout">' + window.PLUGIN_SHOPPINGCART.translations.CHECKOUT + '</button></td>';
@@ -563,9 +560,7 @@
                 }
                 row += '</td>';
             }
-
         }
-
 
         if (ShoppingCart.currentPageIsCheckout) {
 
@@ -592,7 +587,6 @@
                     row += '<td>';
 
                     if (ShoppingCart.showCurrencyBeforePrice()) {
-
                         row += ShoppingCart.currentCurrencySymbol();
                         row += ' ';
 
@@ -601,9 +595,7 @@
                         } else {
                             row += ShoppingCart.taxesApplied;
                         }
-
                     } else {
-
                         if (ShoppingCart.settings.cart.add_shipping_and_taxes_cost_to_total) {
                             row += ShoppingCart.calculateTotalPriceIncludingTaxes();
                         } else {
@@ -612,7 +604,6 @@
 
                         row += ' ';
                         row += ShoppingCart.currentCurrencySymbol();
-
                     }
 
                     row += '</td>';
@@ -648,7 +639,6 @@
                 row += '<td>';
 
                 if (ShoppingCart.showCurrencyBeforePrice()) {
-
                     row += ShoppingCart.currentCurrencySymbol();
                     row += ' ';
 
@@ -657,9 +647,7 @@
                     } else {
                         row += ShoppingCart.shippingPrice;
                     }
-
                 } else {
-
                     if (ShoppingCart.settings.cart.add_shipping_and_taxes_cost_to_total) {
                         row += ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
                     } else {
@@ -668,7 +656,6 @@
 
                     row += ' ';
                     row += ShoppingCart.currentCurrencySymbol();
-
                 }
 
                 row += '</td>';
@@ -685,7 +672,6 @@
                 row += '<td><strong>' + window.PLUGIN_SHOPPINGCART.translations.TOTAL + '</strong></td>';
                 row += '<td></td>';
                 row += '<td></td>';
-
                 row += '<td>';
 
                 if (ShoppingCart.showCurrencyBeforePrice()) {
@@ -695,8 +681,6 @@
                 }
 
                 row += '</td>';
-
-
                 row += '</tr>';
             }
         }
