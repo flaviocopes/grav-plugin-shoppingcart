@@ -13,6 +13,8 @@ class ShoppingCart
      * @return mixed
      */
     public static function getSymbolOfCurrencyCode($currencyCode) {
+        $currencyCode = strtoupper($currencyCode);
+
         $currencies = [
             "AED" => "\u062f.\u0625;",
             "AFN" => "Afs",
