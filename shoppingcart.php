@@ -619,17 +619,13 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onBlueprintCreated(Event $event)
     {
-        static $inEvent = false;
-
         /** @var Data\Blueprint $blueprint */
         $blueprint = $event['blueprint'];
 
-        if (!$inEvent &&  $blueprint->get('form.fields.tabs')) {
-            $inEvent = true;
+        if ($blueprint->get('form/fields/tabs', null, '/')) {
             $blueprints = new Data\Blueprints(__DIR__ . '/blueprints/');
             $extends = $blueprints->get('shoppingcart');
             $blueprint->extend($extends, true);
-            $inEvent = false;
         }
     }
 
