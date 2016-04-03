@@ -36,11 +36,11 @@ class ShoppingcartPlugin extends Plugin
     {
         return [
             //Add 10 as we want to hook onDataTypeExcludeFromDataManagerPluginHook prior to Data Manager fetching it
-            'onPluginsInitialized' => ['onPluginsInitialized', 10],
-            'onGetPageTemplates' => ['onGetPageTemplates', 0],
-            'onShoppingCartSaveOrder' => ['onShoppingCartSaveOrder', 0],
-            'onBlueprintCreated' => ['onBlueprintCreated', 0],
-            'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
+            'onPluginsInitialized'      => ['onPluginsInitialized', 10],
+            'onGetPageTemplates'        => ['onGetPageTemplates', 0],
+            'onShoppingCartSaveOrder'   => ['onShoppingCartSaveOrder', 0],
+            'onBlueprintCreated'        => ['onBlueprintCreated', 0],
+            'onTwigSiteVariables'       => ['onTwigSiteVariables', 0]
         ];
     }
 
@@ -72,10 +72,11 @@ class ShoppingcartPlugin extends Plugin
     public function onPluginsInitialized()
     {
         require_once __DIR__ . '/vendor/autoload.php';
-        $this->baseURL = $this->grav['uri']->rootUrl();
-        $this->checkout_url = $this->config->get('plugins.shoppingcart.urls.checkout_url');
+
+        $this->baseURL =        $this->grav['uri']->rootUrl();
+        $this->checkout_url =   $this->config->get('plugins.shoppingcart.urls.checkout_url');
         $this->save_order_url = $this->config->get('plugins.shoppingcart.urls.save_order_url');
-        $this->order_url =  $this->config->get('plugins.shoppingcart.urls.order_url');
+        $this->order_url =      $this->config->get('plugins.shoppingcart.urls.order_url');
 
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
@@ -99,10 +100,11 @@ class ShoppingcartPlugin extends Plugin
         } else {
             // Site
             $this->enable([
-                'onPageInitialized' => ['onPageInitialized', 0],
-                'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
-                'onShoppingCartReturnOrderPageUrlForAjax' => ['onShoppingCartReturnOrderPageUrlForAjax', 10],
-                'onShoppingCartRedirectToOrderPageUrl' => ['onShoppingCartRedirectToOrderPageUrl', 10]
+                'onPageInitialized'                         => ['onPageInitialized', 0],
+                'onTwigTemplatePaths'                       => ['onTwigTemplatePaths', 0],
+                'onShoppingCartReturnOrderPageUrlForAjax'   => ['onShoppingCartReturnOrderPageUrlForAjax', 10],
+                'onShoppingCartRedirectToOrderPageUrl'      => ['onShoppingCartRedirectToOrderPageUrl', 10],
+                'onAssetsInitialized'                       => ['onAssetsInitialized', 0]
             ]);
 
             if ($this->checkout_url && $this->checkout_url == $uri->path()) {
@@ -405,13 +407,20 @@ class ShoppingcartPlugin extends Plugin
     }
 
     /**
-     * Set needed variables to display cart.
+     * Add assets to the frontend
      */
-    public function onTwigSiteVariables()
+    public function onAssetsInitialized()
     {
         if ($this->config->get('plugins.shoppingcart.ui.use_own_css')) {
             $this->grav['assets']->add('plugin://shoppingcart/css/shoppingcart.css');
         }
+    }
+
+    /**
+     * Set needed variables to display cart.
+     */
+    public function onTwigSiteVariables()
+    {
 
         // Create ShoppingCart.
         require_once(__DIR__ . '/classes/shoppingcart.php');
