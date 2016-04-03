@@ -19,3 +19,10 @@ form:
                   default: '10'
                   validate:
                     type: int
+
+                header.default_photo:
+                  toggleable: true
+                  type: pagemediaselect
+                  label: Default Photo
+                  help: Used as the main product image
+
