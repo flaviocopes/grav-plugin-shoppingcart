@@ -1,2 +1,18 @@
+# OS Generated
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+*.swp
 .sass-cache
 .DS_STORE
+
+# phpstorm
+.idea/*
+user/config/security.yaml
+
+# tests
+tests/_output/*
+tests/_support/_generated/*
+tests/cache/*
+tests/error.log
