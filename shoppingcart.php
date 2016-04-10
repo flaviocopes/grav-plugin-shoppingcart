@@ -238,24 +238,18 @@ class ShoppingcartPlugin extends Plugin
         /** @var Page $page */
         $page = $this->grav['page'];
 
-        $template = $page->template();
-
-        if (!in_array($template, ['categories',
-                                  'products',
-                                  'payment',
-                                  'product',
-                                  'checkout',
-                                  'order'])) {
-            return;
+        if (!$this->config->get('plugins.shoppingcart.general.load_js_globally')) {
+            if (!in_array($page->template(), $this->getOwnPageTypes())) {
+                return;
+            }
         }
 
-        $defaults = (array) $this->config->get('plugins.shoppingcart');
-
         if ($page->header() != null) {
+            $settings = (array) $this->config->get('plugins.shoppingcart');
             if (isset($page->header()->shoppingcart)) {
-                $page->header()->shoppingcart = array_merge($defaults, $page->header()->shoppingcart);
+                $page->header()->shoppingcart = array_merge($settings, $page->header()->shoppingcart);
             } else {
-                $page->header()->shoppingcart = $defaults;
+                $page->header()->shoppingcart = $settings;
             }
         }
 
