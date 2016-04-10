@@ -39,6 +39,18 @@ form:
               validate:
                 type: bool
 
+            load_js_globally:
+              label: Load Cart JavaScript globally
+              help: Enable if you want the cart to appear on pages different than the shop pages
+              type: toggle
+              highlight: 1
+              default: 0
+              options:
+                1: PLUGIN_ADMIN.YES
+                0: PLUGIN_ADMIN.NO
+              validate:
+                type: bool
+
             section_basic:
               type: section
               title: Basic Shop Configuration

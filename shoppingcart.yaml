@@ -3,6 +3,7 @@ general:
   currency: USD
   default_country: US
   product_taxes: excluded
+  load_js_globally: true
 shipping:
   methods:
     -
