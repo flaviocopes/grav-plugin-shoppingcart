@@ -18,6 +18,22 @@
     });
 
     /***********************************************************/
+    /* The country selector changed
+    /* #event
+    /***********************************************************/
+    jQuery(document).on('change', '.js__billing__country', function() {
+        ShoppingCart.countryChanged();
+    });
+
+    /***********************************************************/
+    /* The state selector changed
+    /* #event
+    /***********************************************************/
+    jQuery(document).on('change', '.js__billing__state', function() {
+        ShoppingCart.stateChanged();
+    });
+
+    /***********************************************************/
     /* Initialize the checkout at page load
     /* #event
     /***********************************************************/

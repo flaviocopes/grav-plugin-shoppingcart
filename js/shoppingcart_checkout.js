@@ -37,7 +37,7 @@
                 }
             }
         };
-        
+
         var return_value = customProcessingOfCheckoutForm();
         if (return_value === false) {
             return;
@@ -265,6 +265,54 @@
     };
 
     /***********************************************************/
+    /* Called when the state checkout option changes
+    /***********************************************************/
+    ShoppingCart.stateChanged = function stateChanged() {
+        //Calculate immediately the shipping address, so it's used for taxes
+        if (!ShoppingCart.checkout_form_data) {
+            ShoppingCart.checkout_form_data = {
+                state: jQuery('.js__billing__state').val(),
+            };
+        } else {
+            ShoppingCart.checkout_form_data.state = jQuery('.js__billing__state').val();
+        }
+        ShoppingCart.calculateTotalPriceIncludingTaxes();
+        ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
+        ShoppingCart.renderCart();
+    };
+
+    /***********************************************************/
+    /* Called when first populating the country field with the default
+    /* country, and when the user changes the country.
+    /* Used to calculate the default shipping price too.
+    /***********************************************************/
+    ShoppingCart.countryChanged = function countryChanged() {
+        //Calculate immediately the shipping price, so it's shown in the cart
+        if (!ShoppingCart.checkout_form_data) {
+            ShoppingCart.checkout_form_data = {
+                country: jQuery('.js__billing__country').val(),
+            };
+        } else {
+            ShoppingCart.checkout_form_data.country = jQuery('.js__billing__country').val();
+        }
+
+        ShoppingCart.populateShippingOptions();
+
+        ShoppingCart.generateShippingPrice();
+
+        if (jQuery('.js__billing__country').val() === 'US') {
+            jQuery('.js__billing__state__control').show();
+            jQuery('.js__billing__province__control').hide();
+        } else {
+            jQuery('.js__billing__state__control').hide();
+            jQuery('.js__billing__province__control').show();
+        }
+        ShoppingCart.calculateTotalPriceIncludingTaxes();
+        ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
+        ShoppingCart.renderCart();
+    };
+
+    /***********************************************************/
     /* Setup the checkout page
     /***********************************************************/
     ShoppingCart.setupCheckout = function setupCheckout() {
@@ -273,10 +321,9 @@
             jQuery('.js__checkout__block').show();
             return;
         }
+        //I have items in the cart, I can go on
 
         jQuery('.js__checkout__block').show();
-
-        //I have items in the cart, I can go on
 
         var countries = ShoppingCart.getCountries();
         var select = document.getElementById('js__billing__country');
@@ -296,71 +343,17 @@
             }
         }
 
-        var stateChanged = function stateChanged() {
-            //Calculate immediately the shipping address, so it's used for taxes
-            if (!ShoppingCart.checkout_form_data) {
-                ShoppingCart.checkout_form_data = {
-                    state: jQuery('.js__billing__state').val(),
-                };
-            } else {
-                ShoppingCart.checkout_form_data.state = jQuery('.js__billing__state').val();
-            }
-            ShoppingCart.calculateTotalPriceIncludingTaxes();
-            ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
-            ShoppingCart.renderCart();
-        };
-
-        /***********************************************************/
-        /* Called when first populating the country field with the default
-        /* country, and when the user changes the country.
-        /* Used to calculate the default shipping price too.
-        /***********************************************************/
-        var countryChanged = function countryChanged() {
-            //Calculate immediately the shipping price, so it's shown in the cart
-            if (!ShoppingCart.checkout_form_data) {
-                ShoppingCart.checkout_form_data = {
-                    country: jQuery('.js__billing__country').val(),
-                };
-            } else {
-                ShoppingCart.checkout_form_data.country = jQuery('.js__billing__country').val();
-            }
-
-            ShoppingCart.populateShippingOptions();
-
-            ShoppingCart.generateShippingPrice();
-
-            if (jQuery('.js__billing__country').val() === 'US') {
-                jQuery('.js__billing__state__control').show();
-                jQuery('.js__billing__province__control').hide();
-            } else {
-                jQuery('.js__billing__state__control').hide();
-                jQuery('.js__billing__province__control').show();
-            }
-            ShoppingCart.calculateTotalPriceIncludingTaxes();
-            ShoppingCart.calculateTotalPriceIncludingTaxesAndShipping();
-            ShoppingCart.renderCart();
-        };
-
         jQuery("#js__billing__country").val(ShoppingCart.settings.general.default_country || 'US');
-        countryChanged();
+        ShoppingCart.countryChanged();
 
         ShoppingCart.populatePaymentOptions();
 
         if ((ShoppingCart.settings.general.default_country || 'US') === 'US') {
             jQuery('.js__billing__state__control').show();
-            stateChanged();
+            ShoppingCart.stateChanged();
         } else {
             jQuery('.js__billing__province__control').show();
         }
-
-        jQuery(document).delegate('.js__billing__country', 'change', function() {
-            countryChanged();
-        });
-
-        jQuery(document).delegate('.js__billing__state', 'change', function() {
-            stateChanged();
-        });
-
     };
 
 })(window.ShoppingCart);
