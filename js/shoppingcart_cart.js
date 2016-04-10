@@ -256,11 +256,12 @@
     };
 
     /***********************************************************/
-    /* Determine the type of the current page
+    /* Determine if the current page is a product / products / cart page
     /***********************************************************/
-    ShoppingCart.currentPageIsProductOrProductsOrCart = function currentPageIsProductOrProductsOrCart() {
+    ShoppingCart.currentPageIsProductOrProductsOrCartOrExternal = function currentPageIsProductOrProductsOrCartOrExternal() {
         return (ShoppingCart.currentPageIsProduct === true ||
                         ShoppingCart.currentPageIsProducts === true ||
+                        ShoppingCart.currentPageIsExternal === true ||
                         ShoppingCart.currentPageIsCart === true);
     };
 
@@ -434,7 +435,7 @@
         row += '<th class="cart-product-quantity">' + window.PLUGIN_SHOPPINGCART.translations.QUANTITY + '</th>';
         row += '<th class="cart-product-total">' + window.PLUGIN_SHOPPINGCART.translations.TOTAL + '</th>';
 
-        if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
+        if (ShoppingCart.currentPageIsProductOrProductsOrCartOrExternal()) {
             row += '<th class="cart-product-remove-button">';
             row += window.PLUGIN_SHOPPINGCART.translations.REMOVE;
             row += '</th>';
@@ -476,7 +477,7 @@
             /***********************************************************/
             row += '<td class="cart-product-quantity">';
             if (ShoppingCart.settings.cart.allow_editing_quantity_from_cart) {
-                if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
+                if (ShoppingCart.currentPageIsProductOrProductsOrCartOrExternal()) {
                     row += '<input value="' + item.quantity + '" class="input-mini js__shoppingcart__quantity-box-cart" data-id="' + i + '" />';
                 } else {
                     row += item.quantity;
@@ -495,7 +496,7 @@
                 row += '<td class="cart-product-total">' + '<span class="currency">' + currencySymbol + '</span> ' + parseFloat(ShoppingCart.cartSubtotalPrice(item)).toFixed(2) + '</td>';
             }
 
-            if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
+            if (ShoppingCart.currentPageIsProductOrProductsOrCartOrExternal()) {
                 row += '<td class="cart-product-remove-button">';
                 row += '<a class="btn btn-small js__shoppingcart__remove-from-cart" data-id="' + i + '">' + window.PLUGIN_SHOPPINGCART.translations.REMOVE + '</a>';
                 row += '</td>';
@@ -543,10 +544,7 @@
 
         if (atLeastAProductIsAdded) {
             if (ShoppingCart.orderAmountIsGreaterThenMinimum()) {
-                if (ShoppingCart.currentPageIsProductOrProductsOrCart()) {
-                    row += '<td><button class="btn btn-success js__shoppingcart__proceed-to-checkout">' + window.PLUGIN_SHOPPINGCART.translations.CHECKOUT + '</button></td>';
-                }
-                if (ShoppingCart.currentPageIsOrderCancelled) {
+                if (ShoppingCart.currentPageIsProductOrProductsOrCartOrExternal() || ShoppingCart.currentPageIsOrderCancelled) {
                     row += '<td><button class="btn btn-success js__shoppingcart__proceed-to-checkout">' + window.PLUGIN_SHOPPINGCART.translations.CHECKOUT + '</button></td>';
                 }
             } else {
