@@ -212,25 +212,6 @@ class ShoppingcartPlugin extends Plugin
     }
 
     /**
-     * Get an array containing the ShoppingCart own page types
-     * Useful to determine if the current page is own or another one
-     *
-     * @return array
-     */
-    public function getOwnPageTypes()
-    {
-        return [
-            'categories',
-            'products',
-            'payment',
-            'product',
-            'checkout',
-            'order'
-        ];
-
-    }
-
-    /**
      * Initialize configuration
      */
     public function onPageInitialized()
@@ -239,7 +220,7 @@ class ShoppingcartPlugin extends Plugin
         $page = $this->grav['page'];
 
         if (!$this->config->get('plugins.shoppingcart.general.load_js_globally')) {
-            if (!in_array($page->template(), $this->getOwnPageTypes())) {
+            if (!in_array($page->template(), $this->shoppingcart->getOwnPageTypes())) {
                 return;
             }
         }
@@ -378,7 +359,7 @@ class ShoppingcartPlugin extends Plugin
         $page = $this->grav['page'];
 
         if (!$this->config->get('plugins.shoppingcart.general.load_js_globally')) {
-            if (!in_array($page->template(), $this->getOwnPageTypes())) {
+            if (!in_array($page->template(), $this->shoppingcart->getOwnPageTypes())) {
                 return;
             }
         }

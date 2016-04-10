@@ -9,5 +9,7 @@
     }());
     </script>
 
-    {% include 'partials/shoppingcart_core_cart.html.twig' %}
+    {% if page.template not in shoppingcart.getOwnPageTypes %}
+        {% include 'partials/shoppingcart_core_cart.html.twig' %}
+    {% endif %}
 {% endif %}
