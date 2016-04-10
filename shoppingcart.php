@@ -365,7 +365,29 @@ class ShoppingcartPlugin extends Plugin
         $settings_js .= $this->recurse_settings('', $settings);
         $assets->addInlineJs($settings_js);
 
+        $this->addCartJavascript();
+
         $this->grav->fireEvent('onShoppingCartOutputPageProductBeforeAddToCart', new Event());
+    }
+
+    /**
+     * Adds the cart javascript
+     */
+    private function addCartJavascript() {
+        /** @var Page $page */
+        $page = $this->grav['page'];
+
+        if (!$this->config->get('plugins.shoppingcart.general.load_js_globally')) {
+            if (!in_array($page->template(), $this->getOwnPageTypes())) {
+                return;
+            }
+        }
+
+        $this->grav['assets']->add('plugin://shoppingcart/js/lib/store.min.js');
+        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart.js');
+        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart_lib.js');
+        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart_cart.js');
+        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart_cart_events.js');
     }
 
     /**
