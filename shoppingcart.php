@@ -212,6 +212,25 @@ class ShoppingcartPlugin extends Plugin
     }
 
     /**
+     * Get an array containing the ShoppingCart own page types
+     * Useful to determine if the current page is own or another one
+     *
+     * @return array
+     */
+    public function getOwnPageTypes()
+    {
+        return [
+            'categories',
+            'products',
+            'payment',
+            'product',
+            'checkout',
+            'order'
+        ];
+
+    }
+
+    /**
      * Initialize configuration
      */
     public function onPageInitialized()
