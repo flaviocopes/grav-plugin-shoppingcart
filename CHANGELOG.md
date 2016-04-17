@@ -1,5 +1,5 @@
-# v1.1.0
-## xx-03-2016
+# v2.0.0
+## xx-05-2016
 
 1. [](#new)
     * Configure the plugin options via the Admin interface
