@@ -438,12 +438,18 @@ class ShoppingcartPlugin extends Plugin
     /**
      * Saves the order and sends the order emails
      *
+     * @event onShoppingCartAfterSaveOrder triggered after the order is saved
+     *
      * @param $event
      */
     public function onShoppingCartSaveOrder($event)
     {
         $order = $event['order'];
         $this->order_id = $this->saveOrderToFilesystem($order);
+        $this->grav->fireEvent('onShoppingCartAfterSaveOrder', new Event([
+            'order'    => $order,
+            'order_id' => $this->order_id
+        ]));
     }
 
     /**
