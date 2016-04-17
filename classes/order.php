@@ -4,6 +4,9 @@ namespace Grav\Plugin\ShoppingCart;
 use Grav\Common\Data\Data;
 
 /**
+ * Class Gateway
+ * @package Grav\Plugin\ShoppingCart
+ *
  * @property string amount
  * @property string currency
  * @property string gateway

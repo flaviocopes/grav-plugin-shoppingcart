@@ -23,10 +23,11 @@ class ShoppingCart
             'checkout',
             'order'
         ];
-
     }
 
     /**
+     * Returns the symbol of the passed currency code
+     *
      * @param $currencyCode
      *
      * @return mixed
