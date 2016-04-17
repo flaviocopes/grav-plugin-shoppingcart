@@ -36,11 +36,11 @@ class ShoppingcartPlugin extends Plugin
     {
         return [
             //Add 10 as we want to hook onDataTypeExcludeFromDataManagerPluginHook prior to Data Manager fetching it
-            'onPluginsInitialized'      => ['onPluginsInitialized', 10],
-            'onGetPageTemplates'        => ['onGetPageTemplates', 0],
-            'onShoppingCartSaveOrder'   => ['onShoppingCartSaveOrder', 0],
-            'onBlueprintCreated'        => ['onBlueprintCreated', 0],
-            'onTwigSiteVariables'       => ['onTwigSiteVariables', 0]
+            'onPluginsInitialized'    => ['onPluginsInitialized', 10],
+            'onGetPageTemplates'      => ['onGetPageTemplates', 0],
+            'onShoppingCartSaveOrder' => ['onShoppingCartSaveOrder', 0],
+            'onBlueprintCreated'      => ['onBlueprintCreated', 0],
+            'onTwigSiteVariables'     => ['onTwigSiteVariables', 0]
         ];
     }
 
@@ -51,10 +51,10 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/vendor/autoload.php';
 
-        $this->baseURL =        $this->grav['uri']->rootUrl();
-        $this->checkout_url =   $this->config->get('plugins.shoppingcart.urls.checkout_url');
+        $this->baseURL = $this->grav['uri']->rootUrl();
+        $this->checkout_url = $this->config->get('plugins.shoppingcart.urls.checkout_url');
         $this->save_order_url = $this->config->get('plugins.shoppingcart.urls.save_order_url');
-        $this->order_url =      $this->config->get('plugins.shoppingcart.urls.order_url');
+        $this->order_url = $this->config->get('plugins.shoppingcart.urls.order_url');
 
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
@@ -62,8 +62,8 @@ class ShoppingcartPlugin extends Plugin
         if ($this->isAdmin()) {
             //Admin
             $this->enable([
-                'onTwigTemplatePaths' => ['onTwigAdminTemplatePaths', 0],
-                'onAdminMenu' => ['onAdminMenu', 0],
+                'onTwigTemplatePaths'                        => ['onTwigAdminTemplatePaths', 0],
+                'onAdminMenu'                                => ['onAdminMenu', 0],
                 'onDataTypeExcludeFromDataManagerPluginHook' => ['onDataTypeExcludeFromDataManagerPluginHook', 0],
             ]);
 
@@ -78,11 +78,11 @@ class ShoppingcartPlugin extends Plugin
         } else {
             // Site
             $this->enable([
-                'onPageInitialized'                         => ['onPageInitialized', 0],
-                'onTwigTemplatePaths'                       => ['onTwigTemplatePaths', 0],
-                'onShoppingCartReturnOrderPageUrlForAjax'   => ['onShoppingCartReturnOrderPageUrlForAjax', 10],
-                'onShoppingCartRedirectToOrderPageUrl'      => ['onShoppingCartRedirectToOrderPageUrl', 10],
-                'onAssetsInitialized'                       => ['onAssetsInitialized', 0]
+                'onPageInitialized'                       => ['onPageInitialized', 0],
+                'onTwigTemplatePaths'                     => ['onTwigTemplatePaths', 0],
+                'onShoppingCartReturnOrderPageUrlForAjax' => ['onShoppingCartReturnOrderPageUrlForAjax', 10],
+                'onShoppingCartRedirectToOrderPageUrl'    => ['onShoppingCartRedirectToOrderPageUrl', 10],
+                'onAssetsInitialized'                     => ['onAssetsInitialized', 0]
             ]);
 
             if ($this->checkout_url && $this->checkout_url == $uri->path()) {
@@ -204,7 +204,7 @@ class ShoppingcartPlugin extends Plugin
         }
 
         if ($page->header() != null) {
-            $settings = (array) $this->config->get('plugins.shoppingcart');
+            $settings = (array)$this->config->get('plugins.shoppingcart');
             if (isset($page->header()->shoppingcart)) {
                 $page->header()->shoppingcart = array_merge($settings, $page->header()->shoppingcart);
             } else {
@@ -307,8 +307,8 @@ class ShoppingcartPlugin extends Plugin
             'NO_ORDERS_FOUND',
         ];
 
-        foreach($strings as $string) {
-            $translations .= 'PLUGIN_SHOPPINGCART.translations.' . $string .' = "' . $this->grav['language']->translate(['PLUGIN_SHOPPINGCART.' . $string]) . '"; ' . PHP_EOL;
+        foreach ($strings as $string) {
+            $translations .= 'PLUGIN_SHOPPINGCART.translations.' . $string . ' = "' . $this->grav['language']->translate(['PLUGIN_SHOPPINGCART.' . $string]) . '"; ' . PHP_EOL;
         }
 
         $assets->addInlineJs($translations);
@@ -332,7 +332,8 @@ class ShoppingcartPlugin extends Plugin
     /**
      * Adds the cart javascript
      */
-    private function addCartJavascript() {
+    private function addCartJavascript()
+    {
         /** @var Page $page */
         $page = $this->grav['page'];
 
@@ -359,7 +360,7 @@ class ShoppingcartPlugin extends Plugin
     {
         $output = '';
 
-        foreach($settings as $key => $value) {
+        foreach ($settings as $key => $value) {
             if (!is_array($value)) {
                 //Avoid adding private settings to the frontend
                 if ($key !== 'secretKey') {
@@ -372,7 +373,7 @@ class ShoppingcartPlugin extends Plugin
                     if (!is_numeric($value)) {
                         $value = '"' . $value . '"';
                     }
-                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ' . $value . '; ' . PHP_EOL;
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key . ' = ' . $value . '; ' . PHP_EOL;
                 }
 
             } else {
@@ -382,7 +383,7 @@ class ShoppingcartPlugin extends Plugin
                     } else {
                         $key = '.' . $key;
                     }
-                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key . ' = {}; ' . PHP_EOL;
 
                     $output .= $this->recurse_settings($base . $key, $value);
                 }
@@ -415,7 +416,6 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onTwigSiteVariables()
     {
-
         // Create ShoppingCart.
         require_once(__DIR__ . '/classes/shoppingcart.php');
         $this->shoppingcart = new ShoppingCart();
@@ -442,7 +442,8 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onShoppingCartSaveOrder($event)
     {
-        $this->order_id = $this->saveOrderToFilesystem($event['order']);
+        $order = $event['order'];
+        $this->order_id = $this->saveOrderToFilesystem($order);
     }
 
     /**
@@ -469,7 +470,9 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/classes/order.php';
         $order = new Order($event['order']);
-        $this->grav->redirect($this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token);
+        $order_page_url = $this->order_url . '/id:' . str_replace('.yaml', '',
+                $this->order_id) . '/token:' . $order->token;
+        $this->grav->redirect($order_page_url);
     }
 
     /**
@@ -487,15 +490,15 @@ class ShoppingcartPlugin extends Plugin
         $filename = $prefix . $this->udate($format) . $ext;
 
         $body = Yaml::dump([
-            'products' => $order->products,
-            'data' => $order->data,
-            'shipping' => $order->shipping,
-            'payment' => $order->payment,
-            'token' => $order->token,
-            'paid' => true,
-            'paid_on' => $this->udate($format),
+            'products'   => $order->products,
+            'data'       => $order->data,
+            'shipping'   => $order->shipping,
+            'payment'    => $order->payment,
+            'token'      => $order->token,
+            'paid'       => true,
+            'paid_on'    => $this->udate($format),
             'created_on' => $this->udate($format),
-            'amount' => $order->amount,
+            'amount'     => $order->amount,
         ]);
 
         $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename);
@@ -508,7 +511,8 @@ class ShoppingcartPlugin extends Plugin
      * Create unix timestamp for storing the data into the filesystem.
      *
      * @param string $format
-     * @param int $utimestamp
+     * @param int    $utimestamp
+     *
      * @return string
      */
     private function udate($format = 'u', $utimestamp = null)
@@ -575,8 +579,8 @@ class ShoppingcartPlugin extends Plugin
         $totalRetrieved = count($orders);
 
         return (object)[
-            "orders" => $orders,
-            "page" => $page,
+            "orders"         => $orders,
+            "page"           => $page,
             "totalAvailable" => $totalAvailable,
             "totalRetrieved" => $totalRetrieved
         ];
@@ -587,7 +591,10 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onAdminMenu()
     {
-        $this->grav['twig']->plugins_hooked_nav['PLUGIN_SHOPPINGCART.SHOPPING_CART'] = ['route' => $this->route, 'icon' => 'fa-shopping-cart'];
+        $this->grav['twig']->plugins_hooked_nav['PLUGIN_SHOPPINGCART.SHOPPING_CART'] = [
+            'route' => $this->route,
+            'icon'  => 'fa-shopping-cart'
+        ];
     }
 
     /**
@@ -609,6 +616,7 @@ class ShoppingcartPlugin extends Plugin
     /**
      *
      * Extend page blueprints with configuration options.
+     *
      * @param Event $event
      *
      * @todo only extend `product` pages
@@ -626,7 +634,8 @@ class ShoppingcartPlugin extends Plugin
     }
 
 
-    public static function currencies() {
+    public static function currencies()
+    {
         return [
             "AED" => "AED",
             "AFN" => "AFN",
@@ -794,246 +803,246 @@ class ShoppingcartPlugin extends Plugin
     public static function countries()
     {
         return [
-            'AF' => 'Afghanistan',
-            'AL' => 'Albania',
-            'DZ' => 'Algeria',
-            'AS' => 'American Samoa',
-            'AD' => 'Andorra',
-            'AO' => 'Angola',
-            'AI' => 'Anguilla',
-            'AQ' => 'Antarctica',
-            'AG' => 'Antigua and Barbuda',
-            'AR' => 'Argentina',
-            'AM' => 'Armenia',
-            'AW' => 'Aruba',
-            'AU' => 'Australia',
-            'AT' => 'Austria',
-            'AZ' => 'Azerbaijan',
-            'BH' => 'Bahrain',
-            'BD' => 'Bangladesh',
-            'BB' => 'Barbados',
-            'BY' => 'Belarus',
-            'BE' => 'Belgium',
-            'BZ' => 'Belize',
-            'BJ' => 'Benin',
-            'BM' => 'Bermuda',
-            'BT' => 'Bhutan',
-            'BO' => 'Bolivia',
-            'BA' => 'Bosnia and Herzegovina',
-            'BW' => 'Botswana',
-            'BV' => 'Bouvet Island',
-            'BR' => 'Brazil',
-            'IO' => 'British Indian Ocean Territory',
-            'VG' => 'British Virgin Islands',
-            'BN' => 'Brunei',
-            'BG' => 'Bulgaria',
-            'BF' => 'Burkina Faso',
-            'BI' => 'Burundi',
-            'CI' => 'Côte d\'Ivoire',
-            'KH' => 'Cambodia',
-            'CM' => 'Cameroon',
-            'CA' => 'Canada',
-            'CV' => 'Cape Verde',
-            'KY' => 'Cayman Islands',
-            'CF' => 'Central African Republic',
-            'TD' => 'Chad',
-            'CL' => 'Chile',
-            'CN' => 'China',
-            'CX' => 'Christmas Island',
-            'CC' => 'Cocos (Keeling) Islands',
-            'CO' => 'Colombia',
-            'KM' => 'Comoros',
-            'CG' => 'Congo',
-            'CK' => 'Cook Islands',
-            'CR' => 'Costa Rica',
-            'HR' => 'Croatia',
-            'CU' => 'Cuba',
-            'CY' => 'Cyprus',
-            'CZ' => 'Czech Republic',
-            'CD' => 'Democratic Republic of the Congo',
-            'DK' => 'Denmark',
-            'DJ' => 'Djibouti',
-            'DM' => 'Dominica',
-            'DO' => 'Dominican Republic',
-            'TP' => 'East Timor',
-            'EC' => 'Ecuador',
-            'EG' => 'Egypt',
-            'SV' => 'El Salvador',
-            'GQ' => 'Equatorial Guinea',
-            'ER' => 'Eritrea',
-            'EE' => 'Estonia',
-            'ET' => 'Ethiopia',
-            'FO' => 'Faeroe Islands',
-            'FK' => 'Falkland Islands',
-            'FJ' => 'Fiji',
-            'FI' => 'Finland',
-            'MK' => 'Former Yugoslav Republic of Macedonia',
-            'FR' => 'France',
-            'FX' => 'France, Metropolitan',
-            'GF' => 'French Guiana',
-            'PF' => 'French Polynesia',
-            'TF' => 'French Southern Territories',
-            'GA' => 'Gabon',
-            'GE' => 'Georgia',
-            'DE' => 'Germany',
-            'GH' => 'Ghana',
-            'GI' => 'Gibraltar',
-            'GR' => 'Greece',
-            'GL' => 'Greenland',
-            'GD' => 'Grenada',
-            'GP' => 'Guadeloupe',
-            'GU' => 'Guam',
-            'GT' => 'Guatemala',
-            'GN' => 'Guinea',
-            'GW' => 'Guinea-Bissau',
-            'GY' => 'Guyana',
-            'HT' => 'Haiti',
-            'HM' => 'Heard and Mc Donald Islands',
-            'HN' => 'Honduras',
-            'HK' => 'Hong Kong',
-            'HU' => 'Hungary',
-            'IS' => 'Iceland',
-            'IN' => 'India',
-            'ID' => 'Indonesia',
-            'IR' => 'Iran',
-            'IQ' => 'Iraq',
-            'IE' => 'Ireland',
-            'IL' => 'Israel',
-            'IT' => 'Italy',
-            'JM' => 'Jamaica',
-            'JP' => 'Japan',
-            'JO' => 'Jordan',
-            'KZ' => 'Kazakhstan',
-            'KE' => 'Kenya',
-            'KI' => 'Kiribati',
-            'KW' => 'Kuwait',
-            'KG' => 'Kyrgyzstan',
-            'LA' => 'Laos',
-            'LV' => 'Latvia',
-            'LB' => 'Lebanon',
-            'LS' => 'Lesotho',
-            'LR' => 'Liberia',
-            'LY' => 'Libya',
-            'LI' => 'Liechtenstein',
-            'LT' => 'Lithuania',
-            'LU' => 'Luxembourg',
-            'MO' => 'Macau',
-            'MG' => 'Madagascar',
-            'MW' => 'Malawi',
-            'MY' => 'Malaysia',
-            'MV' => 'Maldives',
-            'ML' => 'Mali',
-            'MLT' => 'Malta' ,
-            'MT' => 'Mayotte',
-            'MH' => 'Marshall Islands',
-            'MQ' => 'Martinique',
-            'MR' => 'Mauritania',
-            'MU' => 'Mauritius',
-            'MX' => 'Mexico',
-            'FM' => 'Micronesia',
-            'MD' => 'Moldova',
-            'MC' => 'Monaco',
-            'MN' => 'Mongolia',
-            'ME' => 'Montenegro',
-            'MS' => 'Montserrat',
-            'MA' => 'Morocco',
-            'MZ' => 'Mozambique',
-            'MM' => 'Myanmar',
-            'NA' => 'Namibia',
-            'NR' => 'Nauru',
-            'NP' => 'Nepal',
-            'NL' => 'Netherlands',
-            'AN' => 'Netherlands Antilles',
-            'NC' => 'New Caledonia',
-            'NZ' => 'New Zealand',
-            'NI' => 'Nicaragua',
-            'NE' => 'Niger',
-            'NG' => 'Nigeria',
-            'NU' => 'Niue',
-            'NF' => 'Norfolk Island',
-            'KP' => 'North Korea',
-            'MP' => 'Northern Marianas',
-            'NO' => 'Norway',
-            'OM' => 'Oman',
-            'PK' => 'Pakistan',
-            'PW' => 'Palau',
-            'PA' => 'Panama',
-            'PG' => 'Papua New Guinea',
-            'PY' => 'Paraguay',
-            'PE' => 'Peru',
-            'PH' => 'Philippines',
-            'PN' => 'Pitcairn Islands',
-            'PL' => 'Poland',
-            'PT' => 'Portugal',
-            'PR' => 'Puerto Rico',
-            'QA' => 'Qatar',
-            'RE' => 'Reunion',
-            'RO' => 'Romania',
-            'RU' => 'Russia',
-            'RW' => 'Rwanda',
-            'ST' => 'São Tomé and Príncipe',
-            'SH' => 'Saint Helena',
-            'PM' => 'St. Pierre and Miquelon',
-            'KN' => 'Saint Kitts and Nevis',
-            'LC' => 'Saint Lucia',
-            'VC' => 'Saint Vincent and the Grenadines',
-            'WS' => 'Samoa',
-            'SM' => 'San Marino',
-            'SA' => 'Saudi Arabia',
-            'SN' => 'Senegal',
-            'RS' => 'Serbia',
-            'SC' => 'Seychelles',
-            'SL' => 'Sierra Leone',
-            'SG' => 'Singapore',
-            'SK' => 'Slovakia',
-            'SI' => 'Slovenia',
-            'SB' => 'Solomon Islands',
-            'SO' => 'Somalia',
-            'ZA' => 'South Africa',
-            'GS' => 'South Georgia and the South Sandwich Islands',
-            'KR' => 'South Korea',
-            'ES' => 'Spain',
-            'LK' => 'Sri Lanka',
-            'SD' => 'Sudan',
-            'SR' => 'Suriname',
-            'SJ' => 'Svalbard and Jan Mayen Islands',
-            'SZ' => 'Swaziland',
-            'SE' => 'Sweden',
-            'CH' => 'Switzerland',
-            'SY' => 'Syria',
-            'TW' => 'Taiwan',
-            'TJ' => 'Tajikistan',
-            'TZ' => 'Tanzania',
-            'TH' => 'Thailand',
-            'BS' => 'The Bahamas',
-            'GM' => 'The Gambia',
-            'TG' => 'Togo',
-            'TK' => 'Tokelau',
-            'T0' => 'Tonga',
-            'TT' => 'Trinidad and Tobago',
-            'TN' => 'Tunisia',
-            'TR' => 'Turkey',
-            'TM' => 'Turkmenistan',
-            'TC' => 'Turks and Caicos Islands',
-            'TV' => 'Tuvalu',
-            'VI' => 'US Virgin Islands',
-            'UG' => 'Uganda',
-            'UA' => 'Ukraine',
-            'AE' => 'United Arab Emirates',
-            'GB' => 'United Kingdom',
-            'US' => 'United States',
-            'UM' => 'United States Minor Outlying Islands',
-            'UY' => 'Uruguay',
-            'UZ' => 'Uzbekistan',
-            'VU' => 'Vanuatu',
-            'VA' => 'Vatican City',
-            'VE' => 'Venezuela',
-            'VN' => 'Vietnam',
-            'WF' => 'Wallis and Futuna Islands',
-            'EH' => 'Western Sahara',
-            'YE' => 'Yemen',
-            'ZM' => 'Zambia',
-            'ZW' => 'Zimbabwe',
+            'AF'  => 'Afghanistan',
+            'AL'  => 'Albania',
+            'DZ'  => 'Algeria',
+            'AS'  => 'American Samoa',
+            'AD'  => 'Andorra',
+            'AO'  => 'Angola',
+            'AI'  => 'Anguilla',
+            'AQ'  => 'Antarctica',
+            'AG'  => 'Antigua and Barbuda',
+            'AR'  => 'Argentina',
+            'AM'  => 'Armenia',
+            'AW'  => 'Aruba',
+            'AU'  => 'Australia',
+            'AT'  => 'Austria',
+            'AZ'  => 'Azerbaijan',
+            'BH'  => 'Bahrain',
+            'BD'  => 'Bangladesh',
+            'BB'  => 'Barbados',
+            'BY'  => 'Belarus',
+            'BE'  => 'Belgium',
+            'BZ'  => 'Belize',
+            'BJ'  => 'Benin',
+            'BM'  => 'Bermuda',
+            'BT'  => 'Bhutan',
+            'BO'  => 'Bolivia',
+            'BA'  => 'Bosnia and Herzegovina',
+            'BW'  => 'Botswana',
+            'BV'  => 'Bouvet Island',
+            'BR'  => 'Brazil',
+            'IO'  => 'British Indian Ocean Territory',
+            'VG'  => 'British Virgin Islands',
+            'BN'  => 'Brunei',
+            'BG'  => 'Bulgaria',
+            'BF'  => 'Burkina Faso',
+            'BI'  => 'Burundi',
+            'CI'  => 'Côte d\'Ivoire',
+            'KH'  => 'Cambodia',
+            'CM'  => 'Cameroon',
+            'CA'  => 'Canada',
+            'CV'  => 'Cape Verde',
+            'KY'  => 'Cayman Islands',
+            'CF'  => 'Central African Republic',
+            'TD'  => 'Chad',
+            'CL'  => 'Chile',
+            'CN'  => 'China',
+            'CX'  => 'Christmas Island',
+            'CC'  => 'Cocos (Keeling) Islands',
+            'CO'  => 'Colombia',
+            'KM'  => 'Comoros',
+            'CG'  => 'Congo',
+            'CK'  => 'Cook Islands',
+            'CR'  => 'Costa Rica',
+            'HR'  => 'Croatia',
+            'CU'  => 'Cuba',
+            'CY'  => 'Cyprus',
+            'CZ'  => 'Czech Republic',
+            'CD'  => 'Democratic Republic of the Congo',
+            'DK'  => 'Denmark',
+            'DJ'  => 'Djibouti',
+            'DM'  => 'Dominica',
+            'DO'  => 'Dominican Republic',
+            'TP'  => 'East Timor',
+            'EC'  => 'Ecuador',
+            'EG'  => 'Egypt',
+            'SV'  => 'El Salvador',
+            'GQ'  => 'Equatorial Guinea',
+            'ER'  => 'Eritrea',
+            'EE'  => 'Estonia',
+            'ET'  => 'Ethiopia',
+            'FO'  => 'Faeroe Islands',
+            'FK'  => 'Falkland Islands',
+            'FJ'  => 'Fiji',
+            'FI'  => 'Finland',
+            'MK'  => 'Former Yugoslav Republic of Macedonia',
+            'FR'  => 'France',
+            'FX'  => 'France, Metropolitan',
+            'GF'  => 'French Guiana',
+            'PF'  => 'French Polynesia',
+            'TF'  => 'French Southern Territories',
+            'GA'  => 'Gabon',
+            'GE'  => 'Georgia',
+            'DE'  => 'Germany',
+            'GH'  => 'Ghana',
+            'GI'  => 'Gibraltar',
+            'GR'  => 'Greece',
+            'GL'  => 'Greenland',
+            'GD'  => 'Grenada',
+            'GP'  => 'Guadeloupe',
+            'GU'  => 'Guam',
+            'GT'  => 'Guatemala',
+            'GN'  => 'Guinea',
+            'GW'  => 'Guinea-Bissau',
+            'GY'  => 'Guyana',
+            'HT'  => 'Haiti',
+            'HM'  => 'Heard and Mc Donald Islands',
+            'HN'  => 'Honduras',
+            'HK'  => 'Hong Kong',
+            'HU'  => 'Hungary',
+            'IS'  => 'Iceland',
+            'IN'  => 'India',
+            'ID'  => 'Indonesia',
+            'IR'  => 'Iran',
+            'IQ'  => 'Iraq',
+            'IE'  => 'Ireland',
+            'IL'  => 'Israel',
+            'IT'  => 'Italy',
+            'JM'  => 'Jamaica',
+            'JP'  => 'Japan',
+            'JO'  => 'Jordan',
+            'KZ'  => 'Kazakhstan',
+            'KE'  => 'Kenya',
+            'KI'  => 'Kiribati',
+            'KW'  => 'Kuwait',
+            'KG'  => 'Kyrgyzstan',
+            'LA'  => 'Laos',
+            'LV'  => 'Latvia',
+            'LB'  => 'Lebanon',
+            'LS'  => 'Lesotho',
+            'LR'  => 'Liberia',
+            'LY'  => 'Libya',
+            'LI'  => 'Liechtenstein',
+            'LT'  => 'Lithuania',
+            'LU'  => 'Luxembourg',
+            'MO'  => 'Macau',
+            'MG'  => 'Madagascar',
+            'MW'  => 'Malawi',
+            'MY'  => 'Malaysia',
+            'MV'  => 'Maldives',
+            'ML'  => 'Mali',
+            'MLT' => 'Malta',
+            'MT'  => 'Mayotte',
+            'MH'  => 'Marshall Islands',
+            'MQ'  => 'Martinique',
+            'MR'  => 'Mauritania',
+            'MU'  => 'Mauritius',
+            'MX'  => 'Mexico',
+            'FM'  => 'Micronesia',
+            'MD'  => 'Moldova',
+            'MC'  => 'Monaco',
+            'MN'  => 'Mongolia',
+            'ME'  => 'Montenegro',
+            'MS'  => 'Montserrat',
+            'MA'  => 'Morocco',
+            'MZ'  => 'Mozambique',
+            'MM'  => 'Myanmar',
+            'NA'  => 'Namibia',
+            'NR'  => 'Nauru',
+            'NP'  => 'Nepal',
+            'NL'  => 'Netherlands',
+            'AN'  => 'Netherlands Antilles',
+            'NC'  => 'New Caledonia',
+            'NZ'  => 'New Zealand',
+            'NI'  => 'Nicaragua',
+            'NE'  => 'Niger',
+            'NG'  => 'Nigeria',
+            'NU'  => 'Niue',
+            'NF'  => 'Norfolk Island',
+            'KP'  => 'North Korea',
+            'MP'  => 'Northern Marianas',
+            'NO'  => 'Norway',
+            'OM'  => 'Oman',
+            'PK'  => 'Pakistan',
+            'PW'  => 'Palau',
+            'PA'  => 'Panama',
+            'PG'  => 'Papua New Guinea',
+            'PY'  => 'Paraguay',
+            'PE'  => 'Peru',
+            'PH'  => 'Philippines',
+            'PN'  => 'Pitcairn Islands',
+            'PL'  => 'Poland',
+            'PT'  => 'Portugal',
+            'PR'  => 'Puerto Rico',
+            'QA'  => 'Qatar',
+            'RE'  => 'Reunion',
+            'RO'  => 'Romania',
+            'RU'  => 'Russia',
+            'RW'  => 'Rwanda',
+            'ST'  => 'São Tomé and Príncipe',
+            'SH'  => 'Saint Helena',
+            'PM'  => 'St. Pierre and Miquelon',
+            'KN'  => 'Saint Kitts and Nevis',
+            'LC'  => 'Saint Lucia',
+            'VC'  => 'Saint Vincent and the Grenadines',
+            'WS'  => 'Samoa',
+            'SM'  => 'San Marino',
+            'SA'  => 'Saudi Arabia',
+            'SN'  => 'Senegal',
+            'RS'  => 'Serbia',
+            'SC'  => 'Seychelles',
+            'SL'  => 'Sierra Leone',
+            'SG'  => 'Singapore',
+            'SK'  => 'Slovakia',
+            'SI'  => 'Slovenia',
+            'SB'  => 'Solomon Islands',
+            'SO'  => 'Somalia',
+            'ZA'  => 'South Africa',
+            'GS'  => 'South Georgia and the South Sandwich Islands',
+            'KR'  => 'South Korea',
+            'ES'  => 'Spain',
+            'LK'  => 'Sri Lanka',
+            'SD'  => 'Sudan',
+            'SR'  => 'Suriname',
+            'SJ'  => 'Svalbard and Jan Mayen Islands',
+            'SZ'  => 'Swaziland',
+            'SE'  => 'Sweden',
+            'CH'  => 'Switzerland',
+            'SY'  => 'Syria',
+            'TW'  => 'Taiwan',
+            'TJ'  => 'Tajikistan',
+            'TZ'  => 'Tanzania',
+            'TH'  => 'Thailand',
+            'BS'  => 'The Bahamas',
+            'GM'  => 'The Gambia',
+            'TG'  => 'Togo',
+            'TK'  => 'Tokelau',
+            'T0'  => 'Tonga',
+            'TT'  => 'Trinidad and Tobago',
+            'TN'  => 'Tunisia',
+            'TR'  => 'Turkey',
+            'TM'  => 'Turkmenistan',
+            'TC'  => 'Turks and Caicos Islands',
+            'TV'  => 'Tuvalu',
+            'VI'  => 'US Virgin Islands',
+            'UG'  => 'Uganda',
+            'UA'  => 'Ukraine',
+            'AE'  => 'United Arab Emirates',
+            'GB'  => 'United Kingdom',
+            'US'  => 'United States',
+            'UM'  => 'United States Minor Outlying Islands',
+            'UY'  => 'Uruguay',
+            'UZ'  => 'Uzbekistan',
+            'VU'  => 'Vanuatu',
+            'VA'  => 'Vatican City',
+            'VE'  => 'Venezuela',
+            'VN'  => 'Vietnam',
+            'WF'  => 'Wallis and Futuna Islands',
+            'EH'  => 'Western Sahara',
+            'YE'  => 'Yemen',
+            'ZM'  => 'Zambia',
+            'ZW'  => 'Zimbabwe',
         ];
     }
 }
