@@ -143,20 +143,15 @@ class ShoppingcartPlugin extends Plugin
             //TODO: Manage case
         }
 
-        /** @var Twig $twig */
-        $twig = $this->grav['twig'];
-
-        $twig->twig_vars['order_products'] = $order['products'];
-
-        if (isset($order['data'])) {
-            $twig->twig_vars['order_data'] = $order['data'];
-        } else { // BC with ShoppingCart 1.0
-            $twig->twig_vars['order_data'] = $order['address'];
+        if (!isset($order['data'])) {
+            $order['data'] = $order['address'];
+            unset($order['address']);
         }
 
-        $twig->twig_vars['order_amount'] = $order['amount'];
-        $twig->twig_vars['order_token'] = $order['token'];
-        $twig->twig_vars['order_paid'] = $order['paid'];
+        /** @var Twig $twig */
+        $twig = $this->grav['twig'];
+        $twig->twig_vars['order'] = $order;
+
         $twig->twig_vars['currency'] = $this->config->get('plugins.shoppingcart.general.currency');
     }
 
@@ -421,6 +416,8 @@ class ShoppingcartPlugin extends Plugin
         $this->shoppingcart = new ShoppingCart();
 
         $this->grav['twig']->twig_vars['shoppingcart'] = $this->shoppingcart;
+        $this->grav['twig']->twig_vars['currencySymbol'] = $this->shoppingcart->getSymbolOfCurrencyCode($this->config->get('plugins.shoppingcart.general.currency'));
+
     }
 
     public function shoppingCartController()

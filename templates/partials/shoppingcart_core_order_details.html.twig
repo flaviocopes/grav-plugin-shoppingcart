@@ -1,0 +1,40 @@
+<h3>{{ "PLUGIN_SHOPPINGCART.PRODUCTS_BOUGHT"|t }}</h3>
+
+{% for product_ordered in order.products %}
+    <li>
+        {{ product_ordered.quantity }} {{ product_ordered.product.title }} at
+
+        {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
+            {{ product_ordered.product.price }}{{ currencySymbol }}
+        {% else %}
+            {{ currencySymbol }}{{ product_ordered.product.price }}
+        {% endif %}
+
+        each
+    </li>
+{% endfor %}
+
+<h3>{{ "PLUGIN_SHOPPINGCART.TOTAL_PAID"|t }}</h3>
+
+{% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
+    {{ order.amount }}{{ currencySymbol }}
+{% else %}
+    {{ currencySymbol }}{{ order.amount }}
+{% endif %}
+
+<h3>{{ "PLUGIN_SHOPPINGCART.ORDER_DETAILS"|t }}</h3>
+
+{% for index, item in order.data %}
+    {% set the_field = '' %}
+    {% for field in config.plugins.shoppingcart.checkout_form.fields %}
+        {% if field.name == index %}
+            {% set the_field = field %}
+        {% endif %}
+    {% endfor %}
+
+    {% if not the_field.ignore %}
+        <strong>{{ the_field.label|t|default(index)|e }}</strong>:
+        {{ item|e }}
+        <br>
+    {% endif %}
+{% endfor %}
