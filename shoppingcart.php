@@ -66,7 +66,7 @@ class ShoppingcartPlugin extends Plugin
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
 
-        $twig->twig_vars['currencySymbol'] = $this->shoppingcart->getSymbolOfCurrencyCode($this->config->get('plugins.shoppingcart.general.currency'));
+        $twig->twig_vars['currency_symbol'] = $this->shoppingcart->getSymbolOfCurrencyCode($this->config->get('plugins.shoppingcart.general.currency'));
 
         if ($this->isAdmin()) {
             //Admin

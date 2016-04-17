@@ -150,6 +150,8 @@
     /***********************************************************/
     ShoppingCart.populateShippingOptions = function populateShippingOptions() {
         var shippingMethods = [];
+        var currency_symbol = ShoppingCart.currentCurrencySymbol();
+
         for (index in ShoppingCart.settings.shipping.methods) {
             shippingMethods[index] = ShoppingCart.settings.shipping.methods[index];
         }
@@ -186,9 +188,9 @@
             jQuery('.checkout-choose-shipping-block').hide();
         } else if (shippingMethods.length === 1) {
 
-            var priceBlock = shippingMethods[0].price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
+            var priceBlock = shippingMethods[0].price + ' ' + currency_symbol;
             if (ShoppingCart.settings.ui.currency_symbol_position === 'before') {
-                priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + shippingMethods[0].price;
+                priceBlock = currency_symbol + ' ' + shippingMethods[0].price;
             }
 
             jQuery('.checkout-choose-shipping-block .form-select-wrapper').html(shippingMethods[0].name + ' - ' + priceBlock);
@@ -210,9 +212,9 @@
                                 orderWeightIsAllowedForThisMethod(method) &&
                                 orderPriceIsAllowedForThisMethod(method)) {
 
-                            var priceBlock = method.price + ' ' + ShoppingCart.getCurrentCurrencySymbol();
+                            var priceBlock = method.price + ' ' + currency_symbol;
                             if (ShoppingCart.settings.ui.currency_symbol_position === 'before') {
-                                priceBlock = ShoppingCart.getCurrentCurrencySymbol() + ' ' + method.price;
+                                priceBlock = currency_symbol + ' ' + method.price;
                             }
 
                             select.options[select.options.length] = new Option(method.name + ' - ' + priceBlock, method.name);

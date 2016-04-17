@@ -5,9 +5,9 @@
         {{ product_ordered.quantity }} {{ product_ordered.product.title }} at
 
         {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
-            {{ product_ordered.product.price }}{{ currencySymbol }}
+            {{ product_ordered.product.price }}{{ currency_symbol }}
         {% else %}
-            {{ currencySymbol }}{{ product_ordered.product.price }}
+            {{ currency_symbol }}{{ product_ordered.product.price }}
         {% endif %}
 
         each
@@ -17,9 +17,9 @@
 <h3>{{ "PLUGIN_SHOPPINGCART.TOTAL_PAID"|t }}</h3>
 
 {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
-    {{ order.amount }}{{ currencySymbol }}
+    {{ order.amount }}{{ currency_symbol }}
 {% else %}
-    {{ currencySymbol }}{{ order.amount }}
+    {{ currency_symbol }}{{ order.amount }}
 {% endif %}
 
 <h3>{{ "PLUGIN_SHOPPINGCART.ORDER_DETAILS"|t }}</h3>

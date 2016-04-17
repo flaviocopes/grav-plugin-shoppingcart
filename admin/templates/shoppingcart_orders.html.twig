@@ -1,5 +1,4 @@
 {% extends 'shoppingcart_base.html.twig' %}
-{% set currencySymbol = shoppingcart.getSymbolOfCurrencyCode(config.plugins.shoppingcart.general.currency) %}
 
 {% block content %}
     <style>
@@ -30,9 +29,9 @@
                         <td class="date">{{order.created_on|slice(0, 4)}}/{{order.created_on|slice(4, 2)}}/{{order.created_on|slice(6, 2)}}</td>
                         <td class="amount">
                             {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
-                                {{ order.amount }}{{ currencySymbol }}
+                                {{ order.amount }}{{ currency_symbol }}
                             {% else %}
-                                {{ currencySymbol }}{{ order.amount }}
+                                {{ currency_symbol }}{{ order.amount }}
                             {% endif %}
                         </td>
                         <td class="details">
@@ -58,9 +57,9 @@
                                 <strong>Price</strong>:
 
                                 {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
-                                    {{ product.product.price }}{{ currencySymbol }}
+                                    {{ product.product.price }}{{ currency_symbol }}
                                 {% else %}
-                                    {{ currencySymbol }}{{ product.product.price }}
+                                    {{ currency_symbol }}{{ product.product.price }}
                                 {% endif %}
 
                                 <br>

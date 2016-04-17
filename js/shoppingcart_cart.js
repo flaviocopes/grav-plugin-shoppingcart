@@ -342,13 +342,6 @@
     };
 
     /***********************************************************/
-    /* Get the currency symbol from the settings
-    /***********************************************************/
-    ShoppingCart.getCurrentCurrencySymbol = function getCurrentCurrencySymbol() {
-        return jQuery(ShoppingCart.currencies).filter(function(index, item) { if (ShoppingCart.settings.general.currency == item.code) return true; }).toArray()[0].symbol;
-    };
-
-    /***********************************************************/
     /* Get the "show currency before price" setting
     /* #todo #stub
     /***********************************************************/
@@ -445,7 +438,7 @@
 
         thead.html(row);
 
-        var currencySymbol = ShoppingCart.currentCurrencySymbol();
+        var currency_symbol = ShoppingCart.currentCurrencySymbol();
 
         var rows_html = '';
 
@@ -466,9 +459,9 @@
             /***********************************************************/
             row += '<td class="cart-product-price">';
             if (ShoppingCart.showCurrencyBeforePrice()) {
-                row += ShoppingCart.currentCurrencySymbol() + ' ' + parseFloat(item.product.price).toFixed(2);
+                row += currency_symbol + ' ' + parseFloat(item.product.price).toFixed(2);
             } else {
-                row += parseFloat(item.product.price).toFixed(2) + ' ' + ShoppingCart.currentCurrencySymbol();
+                row += parseFloat(item.product.price).toFixed(2) + ' ' + currency_symbol;
             }
             row += '</td>';
 
@@ -491,9 +484,9 @@
             /***********************************************************/
 
             if (ShoppingCart.settings.ui.currency_symbol_position === 'after') {
-                row += '<td class="cart-product-total">' + parseFloat(ShoppingCart.cartSubtotalPrice(item)).toFixed(2) + '<span class="currency"> ' + currencySymbol + '</span>' + '</td>';
+                row += '<td class="cart-product-total">' + parseFloat(ShoppingCart.cartSubtotalPrice(item)).toFixed(2) + '<span class="currency"> ' + currency_symbol + '</span>' + '</td>';
             } else {
-                row += '<td class="cart-product-total">' + '<span class="currency">' + currencySymbol + '</span> ' + parseFloat(ShoppingCart.cartSubtotalPrice(item)).toFixed(2) + '</td>';
+                row += '<td class="cart-product-total">' + '<span class="currency">' + currency_symbol + '</span> ' + parseFloat(ShoppingCart.cartSubtotalPrice(item)).toFixed(2) + '</td>';
             }
 
             if (ShoppingCart.currentPageIsProductOrProductsOrCartOrExternal()) {
@@ -524,9 +517,9 @@
         row += '<td class="cart-product-total">';
 
         if (ShoppingCart.showCurrencyBeforePrice()) {
-            row += ShoppingCart.currentCurrencySymbol() + ' ' + ShoppingCart.cartTotalPrice();
+            row += currency_symbol + ' ' + ShoppingCart.cartTotalPrice();
         } else {
-            row += ShoppingCart.cartTotalPrice() + ' ' + ShoppingCart.currentCurrencySymbol();
+            row += ShoppingCart.cartTotalPrice() + ' ' + currency_symbol;
         }
 
         row += '</td>';
@@ -552,9 +545,9 @@
                 row += window.PLUGIN_SHOPPINGCART.translations.MINIMUM_TO_PLACE_AN_ORDER;
 
                 if (ShoppingCart.showCurrencyBeforePrice()) {
-                    row += ShoppingCart.currentCurrencySymbol() + ' ' + ShoppingCart.settings.cart.minimumSumToPlaceOrder;
+                    row += currency_symbol + ' ' + ShoppingCart.settings.cart.minimumSumToPlaceOrder;
                 } else {
-                    row += ShoppingCart.settings.cart.minimumSumToPlaceOrder + ' ' + ShoppingCart.currentCurrencySymbol();
+                    row += ShoppingCart.settings.cart.minimumSumToPlaceOrder + ' ' + currency_symbol;
                 }
                 row += '</td>';
             }
@@ -585,7 +578,7 @@
                     row += '<td>';
 
                     if (ShoppingCart.showCurrencyBeforePrice()) {
-                        row += ShoppingCart.currentCurrencySymbol();
+                        row += currency_symbol;
                         row += ' ';
 
                         if (ShoppingCart.settings.cart.add_shipping_and_taxes_cost_to_total) {
@@ -601,7 +594,7 @@
                         }
 
                         row += ' ';
-                        row += ShoppingCart.currentCurrencySymbol();
+                        row += currency_symbol;
                     }
 
                     row += '</td>';
@@ -637,7 +630,7 @@
                 row += '<td>';
 
                 if (ShoppingCart.showCurrencyBeforePrice()) {
-                    row += ShoppingCart.currentCurrencySymbol();
+                    row += currency_symbol;
                     row += ' ';
 
                     if (ShoppingCart.settings.cart.add_shipping_and_taxes_cost_to_total) {
@@ -653,7 +646,7 @@
                     }
 
                     row += ' ';
-                    row += ShoppingCart.currentCurrencySymbol();
+                    row += currency_symbol;
                 }
 
                 row += '</td>';
@@ -673,9 +666,9 @@
                 row += '<td>';
 
                 if (ShoppingCart.showCurrencyBeforePrice()) {
-                    row += ShoppingCart.currentCurrencySymbol() + ' ' + totalPriceIncludingTaxesAndShipping;
+                    row += currency_symbol + ' ' + totalPriceIncludingTaxesAndShipping;
                 } else {
-                    row += totalPriceIncludingTaxesAndShipping + ' ' + ShoppingCart.currentCurrencySymbol();
+                    row += totalPriceIncludingTaxesAndShipping + ' ' + currency_symbol;
                 }
 
                 row += '</td>';
