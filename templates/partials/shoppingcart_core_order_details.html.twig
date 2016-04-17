@@ -4,11 +4,7 @@
     <li>
         {{ product_ordered.quantity }} {{ product_ordered.product.title }} at
 
-        {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
-            {{ product_ordered.product.price }}{{ currency_symbol }}
-        {% else %}
-            {{ currency_symbol }}{{ product_ordered.product.price }}
-        {% endif %}
+        {% include 'partials/shoppingcart_core_price.html.twig' with { price: product_ordered.product.price } %}
 
         each
     </li>
@@ -16,11 +12,7 @@
 
 <h3>{{ "PLUGIN_SHOPPINGCART.TOTAL_PAID"|t }}</h3>
 
-{% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
-    {{ order.amount }}{{ currency_symbol }}
-{% else %}
-    {{ currency_symbol }}{{ order.amount }}
-{% endif %}
+{% include 'partials/shoppingcart_core_price.html.twig' with { price: order.amount } %}
 
 <h3>{{ "PLUGIN_SHOPPINGCART.ORDER_DETAILS"|t }}</h3>
 

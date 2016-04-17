@@ -1,5 +1,6 @@
+{% set formatted_price = price|number_format(2, '.', ',') %}
 {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
-    {{ page.header.price }}{{ currency_symbol }}
+    {{ formatted_price }}{{ currency_symbol }}
 {% else %}
-    {{ currency_symbol }}{{ page.header.price }}
+    {{ currency_symbol }}{{ formatted_price }}
 {% endif %}
