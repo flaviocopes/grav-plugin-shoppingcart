@@ -51,6 +51,13 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/vendor/autoload.php';
 
+        // Create ShoppingCart.
+        require_once(__DIR__ . '/classes/shoppingcart.php');
+        $this->shoppingcart = new ShoppingCart();
+
+        /** @var Twig $twig */
+        $twig = $this->grav['twig'];
+
         $this->baseURL = $this->grav['uri']->rootUrl();
         $this->checkout_url = $this->config->get('plugins.shoppingcart.urls.checkout_url');
         $this->save_order_url = $this->config->get('plugins.shoppingcart.urls.save_order_url');
@@ -58,6 +65,8 @@ class ShoppingcartPlugin extends Plugin
 
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
+
+        $twig->twig_vars['currencySymbol'] = $this->shoppingcart->getSymbolOfCurrencyCode($this->config->get('plugins.shoppingcart.general.currency'));
 
         if ($this->isAdmin()) {
             //Admin
@@ -73,7 +82,7 @@ class ShoppingcartPlugin extends Plugin
 
             $page = $this->grav['uri']->param('page') ?: 1;
             $orders = $this->getLastOrders($page);
-            $this->grav['twig']->orders = $orders;
+            $twig->orders = $orders;
 
         } else {
             // Site
@@ -320,8 +329,6 @@ class ShoppingcartPlugin extends Plugin
         $assets->addInlineJs($settings_js);
 
         $this->addCartJavascript();
-
-        $this->grav->fireEvent('onShoppingCartOutputPageProductBeforeAddToCart', new Event());
     }
 
     /**
@@ -411,13 +418,7 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onTwigSiteVariables()
     {
-        // Create ShoppingCart.
-        require_once(__DIR__ . '/classes/shoppingcart.php');
-        $this->shoppingcart = new ShoppingCart();
-
         $this->grav['twig']->twig_vars['shoppingcart'] = $this->shoppingcart;
-        $this->grav['twig']->twig_vars['currencySymbol'] = $this->shoppingcart->getSymbolOfCurrencyCode($this->config->get('plugins.shoppingcart.general.currency'));
-
     }
 
     public function shoppingCartController()
