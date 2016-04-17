@@ -45,28 +45,6 @@ class ShoppingcartPlugin extends Plugin
     }
 
     /**
-     * Get the base URL of the site, including the language if enabled.
-     *
-     * @todo use Grav::Uri own method once merged
-     *
-     * @return string
-     */
-    public function baseIncludingLanguage()
-    {
-        $grav = Grav::instance();
-
-        // Link processing should prepend language
-        $language = $grav['language'];
-        $language_append = '';
-        if ($language->enabled()) {
-            $language_append = $language->getLanguageURLPrefix();
-        }
-
-        $base = $grav['base_url_relative'];
-        return rtrim($base . $grav['pages']->base(), '/') . $language_append;
-    }
-
-    /**
      * Enable search only if url matches to the configuration.
      */
     public function onPluginsInitialized()
@@ -476,7 +454,9 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/classes/order.php';
         $order = new Order($event['order']);
-        echo $this->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+        $order_page_url = $this->grav['uri']->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '',
+                $this->order_id) . '/token:' . $order->token;
+        echo $order_page_url;
         exit();
     }
 
