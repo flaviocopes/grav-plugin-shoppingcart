@@ -10,7 +10,7 @@
         var fillDataObjectWithValuesFromCheckoutForm = function fillDataObjectWithValuesFromCheckoutForm() {
             ShoppingCart.checkout_form_fields.forEach(function(checkout_form_field) {
                 if (typeof checkout_form_field.name !== 'undefined') {
-                    data[checkout_form_field.name] = jQuery('form[name=checkout] [name=' + checkout_form_field.name + ']').val();
+                    data[checkout_form_field.name] = jQuery('form[name=checkout] [name="data[' + checkout_form_field.name + ']"]').val();
                 }
             });
         };
