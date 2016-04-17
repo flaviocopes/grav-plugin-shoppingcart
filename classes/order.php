@@ -1,5 +1,5 @@
 <?php
-namespace Grav\Plugin;
+namespace Grav\Plugin\ShoppingCart;
 
 use Grav\Common\Data\Data;
 
@@ -31,7 +31,7 @@ class Order
             if (isset($order['token'])) $this->data->set('token', $order['token']);
             if (isset($order['extra'])) $this->data->set('extra', $order['extra']);
             if (isset($order['gateway'])) $this->data->set('gateway', $order['gateway']);
-        } elseif (get_class($order) == 'Grav\Plugin\Order' || get_class($order) == 'Order') {
+        } elseif (get_class($order) == 'Grav\Plugin\ShoppingCart\Order' || get_class($order) == 'Order') {
             $this->data = $order->getData();
         }
 

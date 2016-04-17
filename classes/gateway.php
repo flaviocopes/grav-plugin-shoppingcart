@@ -1,14 +1,14 @@
 <?php
-namespace Grav\Plugin;
+namespace Grav\Plugin\ShoppingCart;
 
 use Grav\Common\Grav;
 use RocketTheme\Toolbox\Event\Event;
 
 /**
- * Class ShoppingCartGateway
- * @package Grav\Plugin
+ * Class Gateway
+ * @package Grav\Plugin\ShoppingCart
  */
-abstract class ShoppingCartGateway
+abstract class Gateway
 {
     protected $name = '';
 

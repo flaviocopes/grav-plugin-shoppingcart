@@ -129,7 +129,7 @@ class ShoppingcartPlugin extends Plugin
         $post = !empty($_POST) ? $_POST : [];
 
         require_once __DIR__ . '/classes/controller.php';
-        $controller = new ShoppingCartController($this->grav, $task, $post);
+        $controller = new ShoppingCart\Controller($this->grav, $task, $post);
         $controller->execute();
     }
 
@@ -429,7 +429,7 @@ class ShoppingcartPlugin extends Plugin
         $post = !empty($_POST) ? $_POST : [];
 
         require_once __DIR__ . '/classes/controller.php';
-        $controller = new ShoppingCartController($this->grav, $task, $post);
+        $controller = new ShoppingCart\Controller($this->grav, $task, $post);
         $controller->execute();
     }
 
@@ -458,7 +458,7 @@ class ShoppingcartPlugin extends Plugin
     public function onShoppingCartReturnOrderPageUrlForAjax($event)
     {
         require_once __DIR__ . '/classes/order.php';
-        $order = new Order($event['order']);
+        $order = new ShoppingCart\Order($event['order']);
         $order_page_url = $this->grav['uri']->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '',
                 $this->order_id) . '/token:' . $order->token;
         echo $order_page_url;
@@ -473,7 +473,7 @@ class ShoppingcartPlugin extends Plugin
     public function onShoppingCartRedirectToOrderPageUrl($event)
     {
         require_once __DIR__ . '/classes/order.php';
-        $order = new Order($event['order']);
+        $order = new ShoppingCart\Order($event['order']);
         $order_page_url = $this->order_url . '/id:' . str_replace('.yaml', '',
                 $this->order_id) . '/token:' . $order->token;
         $this->grav->redirect($order_page_url);

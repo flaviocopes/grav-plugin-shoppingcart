@@ -1,15 +1,15 @@
 <?php
-namespace Grav\Plugin;
+namespace Grav\Plugin\ShoppingCart;
 
 use Grav\Common\Grav;
 use RocketTheme\Toolbox\Event\Event;
 use RocketTheme\Toolbox\Session\Message;
 
 /**
- * Class ShoppingCartController
- * @package Grav\Plugin
+ * Class Controller
+ * @package Grav\Plugin\ShoppingCart
  */
-class ShoppingCartController
+class Controller
 {
     /**
      * @param Grav   $grav
