@@ -9,7 +9,7 @@
         /********************************************************/
         var fillDataObjectWithValuesFromCheckoutForm = function fillDataObjectWithValuesFromCheckoutForm() {
             ShoppingCart.checkout_form_fields.forEach(function(checkout_form_field) {
-                if (typeof checkout_form_field.name !== 'undefined') {
+                if (typeof checkout_form_field.name !== 'undefined' && (!('input@' in checkout_form_field) || checkout_form_field['input@'] == true)) {
                     data[checkout_form_field.name] = jQuery('form[name=checkout] [name="data[' + checkout_form_field.name + ']"]').val();
                 }
             });
@@ -197,6 +197,7 @@
             jQuery('.checkout-choose-shipping-block').show();
         } else {
             var select = document.getElementById('js__shipping__method');
+
 
             if (select) {
                 //Calculate shipping methods for the shipping country
