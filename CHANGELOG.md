@@ -1,3 +1,10 @@
+# v1.0.6
+## 21-04-2016
+
+1. [](#bugfix)
+    * Fix issue in JS settings build, backported from 2.0
+    * Fix issue in payment URL task fetch
+
 # v1.0.5
 ## 13-03-2016
 
