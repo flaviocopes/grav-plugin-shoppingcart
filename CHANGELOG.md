@@ -6,6 +6,13 @@
 1. [](#improved)
     * Changed structure of the Twig files: `shoppingcart` has been removed in favor of `shoppingcart_categories`, `shoppingcart_section` is now `shoppingcart_categories`, `shoppingcart_category` is now `shoppingcart_products`. Please rename your markdown pages accordingly.
 
+# v1.0.6
+## 21-04-2016
+
+1. [](#bugfix)
+    * Fix issue in JS settings build, backported from 2.0
+    * Fix issue in payment URL task fetch
+
 # v1.0.5
 ## 13-03-2016
 
