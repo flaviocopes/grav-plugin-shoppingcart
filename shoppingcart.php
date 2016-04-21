@@ -458,10 +458,15 @@ class ShoppingcartPlugin extends Plugin
     public function onShoppingCartReturnOrderPageUrlForAjax($event)
     {
         require_once __DIR__ . '/classes/order.php';
+
         $order = new ShoppingCart\Order($event['order']);
-        $order_page_url = $this->grav['uri']->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '',
-                $this->order_id) . '/token:' . $order->token;
-        echo $order_page_url;
+
+        $language = '';
+        if ($this->grav['language']->getLanguage()) {
+            $language = '/' . $this->grav['language']->getLanguage();
+        }
+
+        echo $this->grav['base_url'] . $language . $this->orderURL  . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
         exit();
     }
 
@@ -473,10 +478,15 @@ class ShoppingcartPlugin extends Plugin
     public function onShoppingCartRedirectToOrderPageUrl($event)
     {
         require_once __DIR__ . '/classes/order.php';
+
         $order = new ShoppingCart\Order($event['order']);
-        $order_page_url = $this->order_url . '/id:' . str_replace('.yaml', '',
-                $this->order_id) . '/token:' . $order->token;
-        $this->grav->redirect($order_page_url);
+
+        $language = '';
+        if ($this->grav['language']->getLanguage()) {
+            $language = '/' . $this->grav['language']->getLanguage();
+        }
+
+        $this->grav->redirect($language . $this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token);
     }
 
     /**
