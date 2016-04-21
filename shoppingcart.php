@@ -123,8 +123,15 @@ class ShoppingcartPlugin extends Plugin
     {
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
-        $task = $uri->query('task');
+        $task = !empty($_POST['task']) ? $_POST['task'] : $uri->query('task');
         $post = !empty($_POST) ? $_POST : [];
+
+        // @todo: remove in 2.0
+        if (!$task) {
+            $uri_bits = Uri::parseUrl(urldecode($uri->query()));
+            parse_str($uri_bits['query'], $query);
+            $task = $query['task'];
+        }
 
         require_once __DIR__ . '/classes/controller.php';
         $controller = new ShoppingCartController($this->grav, $task, $post);
@@ -352,10 +359,10 @@ class ShoppingcartPlugin extends Plugin
     {
         $output = '';
 
-        foreach($settings as $key => $value) {
+        foreach ($settings as $key => $value) {
             if (!is_array($value)) {
                 //Avoid adding private settings to the frontend
-                if (!in_array($key, ['secretKey'])) {
+                if ($key !== 'secretKey') {
                     if (is_numeric($key)) {
                         $key = '[' . $key . ']';
                     } else {
@@ -365,17 +372,20 @@ class ShoppingcartPlugin extends Plugin
                     if (!is_numeric($value)) {
                         $value = '"' . $value . '"';
                     }
-                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ' . $value . '; ' . PHP_EOL;
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key . ' = ' . $value . '; ' . PHP_EOL;
                 }
 
             } else {
-                if (is_numeric($key)) {
-                    $key = '[' . $key . ']';
-                } else {
-                    $key = '.' . $key;
+                if ($key !== 'checkout_form') {
+                    if (is_numeric($key)) {
+                        $key = '[' . $key . ']';
+                    } else {
+                        $key = '.' . $key;
+                    }
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key . ' = {}; ' . PHP_EOL;
+
+                    $output .= $this->recurse_settings($base . $key, $value);
                 }
-                $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;
-                $output .= $this->recurse_settings($base . $key, $value);
             }
         }
 
