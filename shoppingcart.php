@@ -451,6 +451,28 @@ class ShoppingcartPlugin extends Plugin
     }
 
     /**
+     * Get the base URL of the site, including the language if enabled.
+     *
+     * @todo use Grav::Uri own method once merged
+     *
+     * @return string
+     */
+    public function baseIncludingLanguage()
+    {
+        $grav = Grav::instance();
+
+        // Link processing should prepend language
+        $language = $grav['language'];
+        $language_append = '';
+        if ($language->enabled()) {
+            $language_append = $language->getLanguageURLPrefix();
+        }
+
+        $base = $grav['base_url_relative'];
+        return rtrim($base . $grav['pages']->base(), '/') . $language_append;
+    }
+
+    /**
      * Saves the order and sends the order emails
      *
      * @param $event
@@ -460,13 +482,8 @@ class ShoppingcartPlugin extends Plugin
         require_once __DIR__ . '/classes/order.php';
 
         $order = new ShoppingCart\Order($event['order']);
-
-        $language = '';
-        if ($this->grav['language']->getLanguage()) {
-            $language = '/' . $this->grav['language']->getLanguage();
-        }
-
-        echo $this->grav['base_url'] . $language . $this->orderURL  . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+        $order_page_url = $this->grav['uri']->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+        echo $order_page_url;
         exit();
     }
 
@@ -480,13 +497,8 @@ class ShoppingcartPlugin extends Plugin
         require_once __DIR__ . '/classes/order.php';
 
         $order = new ShoppingCart\Order($event['order']);
-
-        $language = '';
-        if ($this->grav['language']->getLanguage()) {
-            $language = '/' . $this->grav['language']->getLanguage();
-        }
-
-        $this->grav->redirect($language . $this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token);
+        $order_page_url = $this->grav['uri']->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+        $this->grav->redirect($order_page_url);
     }
 
     /**
