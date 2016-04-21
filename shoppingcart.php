@@ -123,8 +123,15 @@ class ShoppingcartPlugin extends Plugin
     {
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
-        $task = $uri->query('task');
+        $task = !empty($_POST['task']) ? $_POST['task'] : $uri->query('task');
         $post = !empty($_POST) ? $_POST : [];
+
+        // @todo: remove in 2.0
+        if (!$task) {
+            $uri_bits = Uri::parseUrl(urldecode($uri->query()));
+            parse_str($uri_bits['query'], $query);
+            $task = $query['task'];
+        }
 
         require_once __DIR__ . '/classes/controller.php';
         $controller = new ShoppingCartController($this->grav, $task, $post);
