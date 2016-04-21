@@ -352,10 +352,10 @@ class ShoppingcartPlugin extends Plugin
     {
         $output = '';
 
-        foreach($settings as $key => $value) {
+        foreach ($settings as $key => $value) {
             if (!is_array($value)) {
                 //Avoid adding private settings to the frontend
-                if (!in_array($key, ['secretKey'])) {
+                if ($key !== 'secretKey') {
                     if (is_numeric($key)) {
                         $key = '[' . $key . ']';
                     } else {
@@ -365,17 +365,20 @@ class ShoppingcartPlugin extends Plugin
                     if (!is_numeric($value)) {
                         $value = '"' . $value . '"';
                     }
-                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = ' . $value . '; ' . PHP_EOL;
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key . ' = ' . $value . '; ' . PHP_EOL;
                 }
 
             } else {
-                if (is_numeric($key)) {
-                    $key = '[' . $key . ']';
-                } else {
-                    $key = '.' . $key;
+                if ($key !== 'checkout_form') {
+                    if (is_numeric($key)) {
+                        $key = '[' . $key . ']';
+                    } else {
+                        $key = '.' . $key;
+                    }
+                    $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key . ' = {}; ' . PHP_EOL;
+
+                    $output .= $this->recurse_settings($base . $key, $value);
                 }
-                $output .= 'PLUGIN_SHOPPINGCART.settings' . $base . $key .' = {}; ' . PHP_EOL;
-                $output .= $this->recurse_settings($base . $key, $value);
             }
         }
 
