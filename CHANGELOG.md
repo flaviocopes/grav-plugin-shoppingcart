@@ -1,3 +1,9 @@
+# v1.0.7
+## 21-04-2016
+
+1. [](#bugfix)
+    * Fix issue in multilanguage sites and Grav < 1.1
+
 # v1.0.6
 ## 21-04-2016
 

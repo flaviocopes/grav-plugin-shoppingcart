@@ -443,7 +443,13 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/classes/order.php';
         $order = new Order($event['order']);
-        echo $this->grav['base_url'] . $this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+
+        $language = '';
+        if ($this->grav['language']->getLanguage()) {
+            $language = '/' . $this->grav['language']->getLanguage();
+        }
+
+        echo $this->grav['base_url'] . $language . $this->orderURL  . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
         exit();
     }
 
@@ -456,7 +462,13 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/classes/order.php';
         $order = new Order($event['order']);
-        $this->grav->redirect($this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token);
+
+        $language = '';
+        if ($this->grav['language']->getLanguage()) {
+            $language = '/' . $this->grav['language']->getLanguage();
+        }
+
+        $this->grav->redirect($language . $this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token);
     }
 
     /**
