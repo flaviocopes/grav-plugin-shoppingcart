@@ -37,9 +37,9 @@ class ShoppingcartPlugin extends Plugin
         return [
             //Add 10 as we want to hook onDataTypeExcludeFromDataManagerPluginHook prior to Data Manager fetching it
             'onPluginsInitialized'    => ['onPluginsInitialized', 10],
+            'onGetPageBlueprints'     => ['onGetPageBlueprints', 0],
             'onGetPageTemplates'      => ['onGetPageTemplates', 0],
             'onShoppingCartSaveOrder' => ['onShoppingCartSaveOrder', 0],
-            'onBlueprintCreated'      => ['onBlueprintCreated', 0],
             'onTwigSiteVariables'     => ['onTwigSiteVariables', 0]
         ];
     }
@@ -179,6 +179,18 @@ class ShoppingcartPlugin extends Plugin
             $page->slug(basename($url));
             $pages->addPage($page, $url);
         }
+    }
+
+    /**
+     * Add page blueprints
+     *
+     * @param Event $event
+     */
+    public function onGetPageBlueprints(Event $event)
+    {
+        /** @var Types $types */
+        $types = $event->types;
+        $types->scanBlueprints('plugins://shoppingcart/blueprints/pages/');
     }
 
     /**
@@ -638,27 +650,6 @@ class ShoppingcartPlugin extends Plugin
     {
         $this->grav['twig']->twig_paths[] = __DIR__ . '/admin/templates';
     }
-
-    /**
-     *
-     * Extend page blueprints with configuration options.
-     *
-     * @param Event $event
-     *
-     * @todo only extend `product` pages
-     */
-    public function onBlueprintCreated(Event $event)
-    {
-        /** @var Data\Blueprint $blueprint */
-        $blueprint = $event['blueprint'];
-
-        if ($blueprint->get('form/fields/tabs', null, '/')) {
-            $blueprints = new Data\Blueprints(__DIR__ . '/blueprints/');
-            $extends = $blueprints->get('shoppingcart');
-            $blueprint->extend($extends, true);
-        }
-    }
-
 
     public static function currencies()
     {
