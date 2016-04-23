@@ -88,6 +88,7 @@ class ShoppingcartPlugin extends Plugin
             // Site
             $this->enable([
                 'onPageInitialized'                       => ['onPageInitialized', 0],
+                'onPagesInitialized'      => ['onPagesInitialized', 10],
                 'onTwigTemplatePaths'                     => ['onTwigTemplatePaths', 0],
                 'onShoppingCartReturnOrderPageUrlForAjax' => ['onShoppingCartReturnOrderPageUrlForAjax', 10],
                 'onShoppingCartRedirectToOrderPageUrl'    => ['onShoppingCartRedirectToOrderPageUrl', 10],
@@ -100,12 +101,6 @@ class ShoppingcartPlugin extends Plugin
                 ]);
             }
 
-            if ($this->save_order_url && $this->save_order_url == $uri->path()) {
-                $this->enable([
-                    'onPagesInitialized' => ['saveOrder', 0]
-                ]);
-            }
-
             if ($this->order_url && $this->order_url == $uri->path()) {
                 $this->enable([
                     'onPagesInitialized' => ['addOrderPage', 0]
@@ -114,6 +109,9 @@ class ShoppingcartPlugin extends Plugin
         }
     }
 
+    /**
+     * Dynamically add the checkout page
+     */
     public function addCheckoutPage()
     {
         $url = $this->checkout_url;
@@ -121,18 +119,24 @@ class ShoppingcartPlugin extends Plugin
         $this->addPage($url, $filename);
     }
 
-    public function saveOrder()
+    /**
+     * Sets longer path to the home page allowing us to have list of pages when we enter to pages section.
+     */
+    public function onPagesInitialized()
     {
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
         $task = !empty($_POST['task']) ? $_POST['task'] : $uri->param('task');
         $post = !empty($_POST) ? $_POST : [];
 
-        require_once __DIR__ . '/classes/controller.php';
-        $controller = new ShoppingCart\Controller($this->grav, $task, $post);
-        $controller->execute();
+        if ($task) {
+            $this->initializeController($task, $post);
+        }
     }
 
+    /**
+     * Dynamically add the order page
+     */
     public function addOrderPage()
     {
         $url = $this->order_url;
@@ -433,13 +437,9 @@ class ShoppingcartPlugin extends Plugin
         $this->grav['twig']->twig_vars['shoppingcart'] = $this->shoppingcart;
     }
 
-    public function shoppingCartController()
-    {
-        /** @var Uri $uri */
-        $uri = $this->grav['uri'];
-        $task = !empty($_POST['task']) ? $_POST['task'] : $uri->param('task');
-        $post = !empty($_POST) ? $_POST : [];
-
+    public function initializeController($task, $post)
+    {                 
+        
         require_once __DIR__ . '/classes/controller.php';
         $controller = new ShoppingCart\Controller($this->grav, $task, $post);
         $controller->execute();
