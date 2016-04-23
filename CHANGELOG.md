@@ -2,9 +2,14 @@
 ## xx-05-2016
 
 1. [](#new)
-    * Configure the plugin options via the Admin interface
+    * Ability to configure the plugin options via the Admin interface
+    * Ability to edit the product through the Admin Pages view. Can currently set the price and set the default picture from the page media
+    * Added more events to support more addons features. Documented in the Plugin documentation site
+    * Added the ability to show the cart widget on pages not directly managed by the plugin (e.g. default pages, blog or any other page). Documented in the Plugin documentation site
 1. [](#improved)
-    * Changed structure of the Twig files: `shoppingcart` has been removed in favor of `shoppingcart_categories`, `shoppingcart_section` is now `shoppingcart_categories`, `shoppingcart_category` is now `shoppingcart_products`. Please rename your markdown pages accordingly.
+    * Changed structure of the Twig files: `shoppingcart` has been removed in favor of `shoppingcart_categories`, `shoppingcart_section` is now `shoppingcart_categories`, `shoppingcart_category` is now `shoppingcart_products`. `shoppingcart_product` is the product page. Please rename your markdown pages accordingly. There's backwards compatibility, so at this point things will continue to work fine, but the old filenames are deprecated.
+1. [](#bugfix)
+    * Various bug fixes and improvements
 
 # v1.0.7
 ## 21-04-2016
