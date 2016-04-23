@@ -16,12 +16,15 @@ class ShoppingCart
     public function getOwnPageTypes()
     {
         return [
-            'categories',
-            'products',
-            'payment',
-            'product',
-            'checkout',
-            'order'
+            'shoppingcart_categories',
+            'shoppingcart_products',
+            'shoppingcart_product',
+            'shoppingcart_checkout',
+            'shoppingcart_order',
+            //Add deprecated page types
+            'shoppingcart',
+            'shoppingcart_category',
+            'shoppingcart_detail',
         ];
     }
 
