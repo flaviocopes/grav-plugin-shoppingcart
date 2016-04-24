@@ -76,9 +76,16 @@
         button.attr('disabled', 'disabled');
         var i = 0;
 
+        var onBeforeAddProductToCart;
+        $(document).trigger(onBeforeAddProductToCart = $.Event('onBeforeAddProductToCart', { product: ShoppingCart.currentProduct }));       
+        if (onBeforeAddProductToCart.result === false) {
+            return;
+        }
+
         // Deep copy
         var product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
 
+        $(ShoppingCart).trigger('onAfterAddProductToCart', product);
 
         ShoppingCart.addProduct(product, quantity);
         button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);
@@ -87,7 +94,6 @@
             button.html(window.PLUGIN_SHOPPINGCART.translations.ADD_TO_CART);
             button.attr('disabled', null);
         }, 2000);
-
     });
 
     /***********************************************************/
