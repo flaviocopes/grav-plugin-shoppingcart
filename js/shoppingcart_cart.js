@@ -358,14 +358,6 @@
     };
 
     /***********************************************************/
-    /* Ensure I can add this quantity to the cart
-    /* #todo #stub
-    /***********************************************************/
-    ShoppingCart.canAddToCartThisQuantityOfThisProduct = function canAddToCartThisQuantityOfThisProduct(product, quantity) {
-        return true;
-    };
-
-    /***********************************************************/
     /* Compare the values of 2 objects
     /***********************************************************/
     ShoppingCart.isEquivalent = function isEquivalent(a, b) {
