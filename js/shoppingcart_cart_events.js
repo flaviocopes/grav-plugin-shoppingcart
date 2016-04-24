@@ -130,7 +130,7 @@
         /* Initialize the cart
         /***********************************************************/
         var initializeCart = function initializeCart() {
-            if (new Date().getTime() - storejs.get('grav-shoppingcart-basket-data-updatetime') > 1000 * 60 * 60 * 2) { //the cart lasts 2 hours
+            if (new Date().getTime() - storejs.get('grav-shoppingcart-basket-data-updatetime') > 1000 * 60 * ShoppingCart.settings.cart.timeout) { //empty the cart after x minutes
                 storejs.remove('grav-shoppingcart-basket-data');
             }
 

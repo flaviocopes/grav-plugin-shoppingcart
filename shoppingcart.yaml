@@ -27,6 +27,7 @@ ui:
   use_own_css: true
 cart:
   allow_editing_quantity_from_cart: true
+  timeout: 180
   add_shipping_and_taxes_cost_to_total: true
   maximum_total_quantity_value:
 countries:

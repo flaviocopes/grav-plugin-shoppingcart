@@ -114,6 +114,14 @@ form:
                   validate:
                     type: int
 
+                cart.timeout:
+                  label: Empty the cart after the set amount of minutes
+                  help: Expressed in minutes. Set a high value to retain the cart content for how long you prefer. Defaults to 3 hours
+                  type: text
+                  default: 180
+                  validate:
+                    type: int
+
                 cart.add_shipping_and_taxes_cost_to_total:
                   label: Add shipping and taxes cost to total
                   type: toggle
