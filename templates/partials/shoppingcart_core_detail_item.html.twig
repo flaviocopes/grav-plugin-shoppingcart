@@ -21,13 +21,7 @@
 
             {{ shoppingcart_output_page_product_before_add_to_cart }}
 
-            <a href="#"
-                class="button js__shoppingcart__button-add-to-cart"
-                data-item-id="{{ page.header.product_id }}"
-                data-item-name="{{ page.header.title }}"
-                data-item-price="{{ page.header.price|number_format(2, '.', ',') }}"
-                data-item-url="{{ page.url }}"
-            >
+            <a href="#" class="button js__shoppingcart__button-add-to-cart">
                 <i class="fa fa-shopping-cart"></i> {{ 'PLUGIN_SHOPPINGCART.ADD_TO_CART'|t }}
             </a>
         </p>
