@@ -101,7 +101,7 @@
     /* Add a product to the cart
     /***********************************************************/
     ShoppingCart.addProduct = function addProduct(product, quantity) {
-        var existingProducts = jQuery(ShoppingCart.items).filter(function(index, item) { if (product.id == item.product.id) return true; }).toArray();
+        var existingProducts = jQuery(ShoppingCart.items).filter(function(index, item) { if (product.title == item.product.title) return true; }).toArray();
 
         var existingProduct = existingProducts[0];
 
