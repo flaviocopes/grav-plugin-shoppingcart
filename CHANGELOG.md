@@ -1,4 +1,4 @@
-# v1.1.0
+# v1.1.0-beta.2
 ## xx-05-2016
 
 1. [](#new)
@@ -8,6 +8,8 @@
     * Added the ability to show the cart widget on pages not directly managed by the plugin (e.g. default pages, blog or any other page). Documented in the Plugin documentation site
 1. [](#improved)
     * Changed structure of the Twig files: `shoppingcart` has been removed in favor of `shoppingcart_categories`, `shoppingcart_section` is now `shoppingcart_categories`, `shoppingcart_category` is now `shoppingcart_products`. `shoppingcart_product` is the product page. Please rename your markdown pages accordingly. There's backwards compatibility, so at this point things will continue to work fine, but the old filenames are deprecated.
+    * Core reorganization
+    * More testing
 1. [](#bugfix)
     * Various bug fixes and improvements
 

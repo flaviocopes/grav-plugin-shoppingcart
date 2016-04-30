@@ -1,17 +1,22 @@
 name: Shopping Cart
-version: 1.1.0-beta
+version: 1.1.0-beta.2
 description: "This plugin turns your Grav site into a shopping cart"
 icon: shopping-cart
 author:
   name: Flavio Copes
   email: copesc@gmail.com
-  url: http://flaviocopes.com
-homepage: http://gravshoppingcart.com/
-# demo: http://demo.getgrav.org/shop-skeleton
+  url: https://flaviocopes.com
+homepage: https://gravcart.com/
+demo: https://demo.gravcart.com/
 keywords: shoppingcart, ecommerce, e-commerce, plugin, shop, cart
-readme: https://gravshoppingcart.com/docs
+readme: https://gravcart.com/docs
 bugs: https://github.com/flaviocopes/grav-plugin-shoppingcart/issues
 license: MIT
+
+testing: true
+
+dependencies:
+  - { name: grav, version: '~1.1' }
 
 form:
   validation: loose
@@ -62,7 +67,7 @@ form:
                   label: Currency
                   type: select
                   help: The shop currency
-                  '@data-options': '\Grav\Plugin\ShoppingcartPlugin::currencies'
+                  '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getCurrencies'
                   default: 'USD'
                   validate:
                     type: string
@@ -71,7 +76,7 @@ form:
                   label: Default Country
                   type: select
                   help: Default country to be shown during Checkout
-                  '@data-options': '\Grav\Plugin\ShoppingcartPlugin::countries'
+                  '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getCountries'
                   default: 'US'
                   validate:
                     type: string
@@ -213,7 +218,7 @@ form:
                   label: Country
                   type: select
                   classes: fancy
-                  '@data-options': '\Grav\Plugin\ShoppingcartPlugin::shippingCountries'
+                  '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getShippingCountries'
                   validate:
                     type: commalist
 
@@ -263,7 +268,7 @@ form:
                       type: select
                       classes: fancy
                       multiple: true
-                      '@data-options': '\Grav\Plugin\ShoppingcartPlugin::shippingCountries'
+                      '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getShippingCountries'
                       validate:
                         type: commalist
 
