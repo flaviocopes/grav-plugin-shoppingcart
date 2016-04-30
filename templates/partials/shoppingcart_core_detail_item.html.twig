@@ -39,7 +39,7 @@
     var currentProduct = {
         title: "{{ page.header.title }}",
         id: "{{ md5(page.header.title) }}",
-        price: "{{ page.header.price|number_format(2, '.', ',') }}",
+        price: "{{ page.header.price }}",
         defaultPhoto: "{{ shoppingcart_image|url_encode }}",
         type: "{{ page.header.type }}",
         url: "{{ page.url|url_encode }}",
