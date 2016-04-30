@@ -1,3 +1,11 @@
+# v1.1.0-beta.4
+## 30-04-2016
+
+1. [](#improved)
+    * Add wrapper div in order confirmation
+1. [](#bugfix)
+    * Fixed error in namespace
+
 # v1.1.0-beta.3
 ## 30-04-2016
 
