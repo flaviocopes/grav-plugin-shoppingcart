@@ -1,5 +1,11 @@
+# v1.1.0-beta.3
+## 30-04-2016
+
+1. [](#bugfix)
+    * Fixed issue with price > 999 and NaN shown when adding it to the cart
+
 # v1.1.0-beta.2
-## xx-05-2016
+## 30-04-2016
 
 1. [](#new)
     * Ability to configure the plugin options via the Admin interface
