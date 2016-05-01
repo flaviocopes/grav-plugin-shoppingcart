@@ -12,5 +12,8 @@ settings:
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
+        # - Codeception\Extension\Recorder
+
 modules:
     config:
+       
