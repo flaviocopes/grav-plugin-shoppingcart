@@ -1,3 +1,9 @@
+# v1.1.0-beta.5
+## 01-05-2016
+
+1. [](#bugfix)
+    * Fixed error in version number
+
 # v1.1.0-beta.4
 ## 30-04-2016
 
