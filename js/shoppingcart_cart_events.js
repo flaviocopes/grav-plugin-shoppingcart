@@ -71,7 +71,7 @@
     /* #event
     /***********************************************************/
     jQuery(document).on('click tap', '.js__shoppingcart__button-add-to-cart', function(event) {
-        var quantity = jQuery('#js__shoppingcart__quantity').val() || 1;
+        var quantity = jQuery(this).closest('.shoppingcart-product-container').find('#js__shoppingcart__quantity').val() || 1;
         var button = jQuery(this);
         button.attr('disabled', 'disabled');
         var i = 0;
