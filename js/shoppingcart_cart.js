@@ -101,6 +101,12 @@
     /* Add a product to the cart
     /***********************************************************/
     ShoppingCart.addProduct = function addProduct(product, quantity) {
+        var onBeforeAddProductToCart;
+        $(document).trigger(onBeforeAddProductToCart = $.Event('onBeforeAddProductToCart', { product: product }));       
+        if (onBeforeAddProductToCart.result === false) {
+            return;
+        }
+
         var existingProducts = jQuery(ShoppingCart.items).filter(function(index, item) { if (product.title == item.product.title) return true; }).toArray();
 
         var existingProduct = existingProducts[0];
@@ -110,6 +116,8 @@
         } else {
             existingProduct.quantity = parseInt(existingProduct.quantity) + parseInt(quantity);
         }
+
+        $(ShoppingCart).trigger('onAfterAddProductToCart', product);
 
         ShoppingCart._saveCartToLocalstorage();
         ShoppingCart.renderCart();
