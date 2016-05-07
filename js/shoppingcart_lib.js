@@ -3,6 +3,37 @@ if (typeof window.ShoppingCart == 'undefined') window.ShoppingCart = {};
 
 (function(ShoppingCart) {
 
+    ShoppingCart.isMobile = function isMobile() {
+        var isAndroid = function() {
+            return navigator.userAgent.match(/Android/i);
+        };
+
+        var isBlackBerry = function() {
+            return navigator.userAgent.match(/BlackBerry/i);
+        };
+
+        var isiOS = function() {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        };
+        
+        var isOpera = function() {
+            return navigator.userAgent.match(/Opera Mini/i);
+        };
+        
+        var isWindows = function() {
+            return navigator.userAgent.match(/IEMobile/i);
+        };
+        
+        var isAny = function() {
+            if (isAndroid() || isBlackBerry() || isiOS() || isOpera() || isWindows()) {
+                return true;
+            }
+            return false;
+        };
+
+        return isAny();        
+    };
+
     /***********************************************************/
     /* Gets a country code
     /***********************************************************/

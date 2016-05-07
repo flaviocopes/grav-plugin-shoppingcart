@@ -416,8 +416,16 @@
 
         var row = '<tr>';
         row += '<th class="cart-product">' + window.PLUGIN_SHOPPINGCART.translations.ITEM + '</th>';
-        row += '<th class="cart-product-price">' + window.PLUGIN_SHOPPINGCART.translations.PRICE + '</th>';
-        row += '<th class="cart-product-quantity">' + window.PLUGIN_SHOPPINGCART.translations.QUANTITY + '</th>';
+        if (!ShoppingCart.isMobile()) {
+            row += '<th class="cart-product-price">' + window.PLUGIN_SHOPPINGCART.translations.PRICE + '</th>';    
+        }
+
+        if (!ShoppingCart.isMobile()) {
+            row += '<th class="cart-product-quantity">' + window.PLUGIN_SHOPPINGCART.translations.QUANTITY + '</th>';
+        } else {
+            row += '<th class="cart-product-quantity">' + window.PLUGIN_SHOPPINGCART.translations.QUANTITY_SHORT + '</th>';
+        }
+        
         row += '<th class="cart-product-total">' + window.PLUGIN_SHOPPINGCART.translations.TOTAL + '</th>';
 
         if (ShoppingCart.currentPageIsProductOrProductsOrCartOrExternal()) {
@@ -446,22 +454,24 @@
 
             row += '</td>';
 
-            /***********************************************************/
-            /* Price
-            /***********************************************************/
-            row += '<td class="cart-product-price">';
-            if (ShoppingCart.showCurrencyBeforePrice()) {
-                row += currency_symbol + ' ' + parseFloat(item.product.price).toFixed(2);
-            } else {
-                row += parseFloat(item.product.price).toFixed(2) + ' ' + currency_symbol;
+            if (!ShoppingCart.isMobile()) {
+                /***********************************************************/
+                /* Price
+                /***********************************************************/
+                row += '<td class="cart-product-price">';
+                if (ShoppingCart.showCurrencyBeforePrice()) {
+                    row += currency_symbol + ' ' + parseFloat(item.product.price).toFixed(2);
+                } else {
+                    row += parseFloat(item.product.price).toFixed(2) + ' ' + currency_symbol;
+                }
+                row += '</td>';                
             }
-            row += '</td>';
 
             /***********************************************************/
             /* Quantity
             /***********************************************************/
             row += '<td class="cart-product-quantity">';
-            if (ShoppingCart.settings.cart.allow_editing_quantity_from_cart) {
+            if (ShoppingCart.settings.cart.allow_editing_quantity_from_cart && !ShoppingCart.isMobile()) {
                 if (ShoppingCart.currentPageIsProductOrProductsOrCartOrExternal()) {
                     row += '<input value="' + item.quantity + '" class="input-mini js__shoppingcart__quantity-box-cart" data-id="' + i + '" />';
                 } else {
@@ -506,7 +516,11 @@
         }
 
         row += '<td class="empty"></td>';
-        row += '<td class="empty"></td>';
+
+        if (!ShoppingCart.isMobile()) {
+            row += '<td class="empty"></td>';
+        }
+
         row += '<td class="cart-product-total">';
 
         if (ShoppingCart.showCurrencyBeforePrice()) {
