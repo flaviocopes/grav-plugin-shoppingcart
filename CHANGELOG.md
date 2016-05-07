@@ -1,3 +1,12 @@
+# v1.1.0-beta.6
+## 07-05-2016
+
+1. [](#improved)
+    * Improved rendering of cart on mobile devices
+    * Added support for shortcodes addon
+    * Translate quantity string
+    * Added first acceptance tests
+
 # v1.1.0-beta.5
 ## 01-05-2016
 
