@@ -1,6 +1,5 @@
 {% set shoppingcart_image = page.media.images|first %}
 {% set image_size_product = config.plugins.shoppingcart.ui.image_size_product %}
-{% set image_size_cart = config.plugins.shoppingcart.ui.image_size_cart %}
 
 {% include 'partials/shoppingcart_core_cart.html.twig' %}
 
@@ -22,11 +21,9 @@
                 <input type="text" class="small" id="js__shoppingcart__quantity" placeholder="1" value="1" />
             </div>
 
-            {{ shoppingcart_output_page_product_before_add_to_cart }}
+            {% set product = { 'title': page.header.title, 'id': md5(page.header.title), 'price': page.header.price, 'image': shoppingcart_image, 'url': page.url } %}
+            {% include 'partials/shoppingcart_core_add_to_cart.html.twig' with { product: product } %}
 
-            <a href="#" class="button js__shoppingcart__button-add-to-cart">
-                <i class="fa fa-shopping-cart"></i> {{ 'PLUGIN_SHOPPINGCART.ADD_TO_CART'|t }}
-            </a>
         </p>
     </div>
     <div class="shoppingcart-details block">
@@ -34,20 +31,3 @@
         <p>{{ page.content }}</p>
     </div>
 </div>
-
-<script>
-(function() {
-
-    var currentProduct = {
-        title: "{{ page.header.title }}",
-        id: "{{ md5(page.header.title) }}",
-        price: "{{ page.header.price }}",
-        image: "{{ shoppingcart_image.cropResize(image_size_cart, image_size_cart).url }}",
-        type: "{{ page.header.type }}",
-        url: "{{ page.url }}",
-    };
-
-    ShoppingCart.currentProduct = currentProduct;
-    ShoppingCart.currentPageIsProduct = true;
-}());
-</script>
