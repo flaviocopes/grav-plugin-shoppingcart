@@ -270,12 +270,9 @@ class ShoppingcartPlugin extends Plugin
     private function addSettingsToFrontend()
     {
         $assets = $this->grav['assets'];
-
         $settings = $this->config->get('plugins.shoppingcart');
-
         $settings_js = 'if (!window.PLUGIN_SHOPPINGCART) { window.PLUGIN_SHOPPINGCART = {}; } ' . PHP_EOL . 'window.PLUGIN_SHOPPINGCART.settings = {};' . PHP_EOL;
         $settings_js .= "PLUGIN_SHOPPINGCART.settings.baseURL = '$this->baseURL';" . PHP_EOL;
-
         $settings_js .= $this->recurse_settings('', $settings);
         $assets->addInlineJs($settings_js);
     }

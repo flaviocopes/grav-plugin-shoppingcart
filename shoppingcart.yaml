@@ -7,17 +7,10 @@ general:
 shipping:
   methods:
     -
-      name: 'Favorite countries'
-      allowed_countries:
-        - IT
-        - EN
-        - US
-      price: '10'
-    -
       name: 'All countries'
       allowed_countries:
         - '*'
-      price: '20'
+      price: '0'
 urls:
   checkout_url: /checkout
   save_order_url: /save_order
@@ -145,7 +138,7 @@ checkout_form:
             type: select
             label: PLUGIN_SHOPPINGCART.CHECKOUT_CHOOSE_SHIPPING_METHOD_DESC
             classes: js__shipping__method
-            outerclasses: checkout-choose-shipping-block
+            outerclasses: js__checkout-choose-shipping-block
             id: js__shipping__method
             validate:
                 required: true
@@ -154,14 +147,14 @@ checkout_form:
             type: display
             content: PLUGIN_SHOPPINGCART.CHECKOUT_PAYMENT_METHOD
             markdown: true
-            outerclasses: checkout-choose-payment-block-title
+            outerclasses: js__checkout-choose-payment-block-title
 
         -
             name: payment_method
             type: select
             label: PLUGIN_SHOPPINGCART.CHECKOUT_CHOOSE_PAYMENT_METHOD_DESC
             classes: js__payment__method
-            outerclasses: checkout-choose-payment-block
+            outerclasses: js__checkout-choose-payment-block
             id: js__payment__method
 
         -

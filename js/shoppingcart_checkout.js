@@ -62,8 +62,8 @@
 
             /***********************************************************/
             /* Create a random token and store it in
-             /* storejs.get('grav-shoppingcart-order-token')
-             /***********************************************************/
+            /* storejs.get('grav-shoppingcart-order-token')
+            /***********************************************************/
             var generateRandomToken = function generateRandomToken () {
                 var randomToken = function randomToken(length) {
                     var upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -85,8 +85,8 @@
 
             /***********************************************************/
             /* Check the shipping method and add it to
-             /* storejs.get('grav-shoppingcart-shipping-method')
-             /***********************************************************/
+            /* storejs.get('grav-shoppingcart-shipping-method')
+            /***********************************************************/
             var processShippingMethod = function processShippingMethod() {
                 var shippingMethod = {
                     method: '',
@@ -111,7 +111,7 @@
 
             /***********************************************************/
             /* Calculate the total order price and store it in ShoppingCart.totalOrderPrice
-             /***********************************************************/
+            /***********************************************************/
             var calculateTotalOrderPrice = function calculateTotalOrderPrice () {
                 //Calculate the order price
                 var orderPrice = ShoppingCart.totalOrderPriceIncludingTaxes;
@@ -128,7 +128,7 @@
 
                 /***********************************************************/
                 /* Add shipping costs to the order price
-                 /***********************************************************/
+                /***********************************************************/
                 ShoppingCart.generateShippingPrice();
                 orderPrice = parseFloat(parseFloat(orderPrice) + parseFloat(ShoppingCart.shippingPrice)).toFixed(2);
                 ShoppingCart.totalOrderPrice = orderPrice;
@@ -185,19 +185,28 @@
         }
 
         if (shippingMethods.length === 0) {
-            jQuery('.checkout-choose-shipping-block').hide();
+            var select = document.getElementById('js__shipping__method');
+            (select.options[0] = new Option('-', '-')).setAttribute('selected', 'selected');
+            jQuery('.js__checkout-choose-shipping-block').hide();
+            jQuery('.js__checkout-choose-shipping-block-title').hide();
         } else if (shippingMethods.length === 1) {
+            var shipping_method_name = shippingMethods[0].name;
+
+            var select = document.getElementById('js__shipping__method');
+            (select.options[0] = new Option(shipping_method_name, shipping_method_name)).setAttribute('selected', 'selected');
+            jQuery('.js__checkout-choose-shipping-block select').hide();
+            jQuery('.js__checkout-choose-shipping-block .form-label').hide();
 
             var priceBlock = shippingMethods[0].price + ' ' + currency_symbol;
             if (ShoppingCart.settings.ui.currency_symbol_position === 'before') {
                 priceBlock = currency_symbol + ' ' + shippingMethods[0].price;
             }
 
-            jQuery('.checkout-choose-shipping-block .form-select-wrapper').html(shippingMethods[0].name + ' - ' + priceBlock);
-            jQuery('.checkout-choose-shipping-block').show();
+            jQuery('.js__single-shipping-method-information').remove();
+            jQuery('.js__checkout-choose-shipping-block .form-select-wrapper').append('<div class="js__single-shipping-method-information">' + shippingMethods[0].name + ' - ' + priceBlock + '</div>');
+            jQuery('.js__checkout-choose-shipping-block').show();
         } else {
             var select = document.getElementById('js__shipping__method');
-
 
             if (select) {
                 //Calculate shipping methods for the shipping country
@@ -224,7 +233,7 @@
                 }
             }
 
-            jQuery('.checkout-choose-shipping-block').show();
+            jQuery('.js__checkout-choose-shipping-block').show();
         }
     };
 
@@ -232,8 +241,8 @@
     /* Get the payment options based on the settings
     /***********************************************************/
     ShoppingCart.populatePaymentOptions = function populatePaymentOptions() {
-        jQuery('.checkout-choose-payment-block').hide();
-        jQuery('.checkout-choose-payment-block-title').hide();
+        jQuery('.js__checkout-choose-payment-block').hide();
+        jQuery('.js__checkout-choose-payment-block-title').hide();
 
         var paymentMethods = [];
         for (index in ShoppingCart.settings.payment.methods) {
@@ -262,8 +271,8 @@
         }
 
         if (paymentMethodsCount > 1) {
-            jQuery('.checkout-choose-payment-block').show();
-            jQuery('.checkout-choose-payment-block-title').show();
+            jQuery('.js__checkout-choose-payment-block').show();
+            jQuery('.js__checkout-choose-payment-block-title').show();
         }
     };
 
