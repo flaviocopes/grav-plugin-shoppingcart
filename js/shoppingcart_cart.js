@@ -450,8 +450,14 @@
             var item = ShoppingCart.items[i];
             var row = '<tr><td class="cart-product">';
 
+            if (ShoppingCart.settings.cart.add_product_thumbnail) {
+                if (item.product.image) {
+                    row += '<img src="' + item.product.image + '" class="cart-product-image"> ';
+                }
+            }
+
             if (item.product.url) {
-                row += '<a href="' + decodeURIComponent(item.product.url) + '" class="cart-product-name">' + item.product.title + '</a>';
+                row += '<a href="' + item.product.url + '" class="cart-product-name">' + item.product.title + '</a>';
             } else {
                 row += item.product.title;
             }

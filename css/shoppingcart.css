@@ -154,13 +154,15 @@
       width: 20%;
       margin-left: 20px; }
 
-a.btn {
-  cursor: pointer; }
-
 .hidden {
   display: none; }
 
 .inline {
   display: inline; }
+
+.js__shoppingcart-cart a.btn {
+  cursor: pointer; }
+.js__shoppingcart-cart td, .js__shoppingcart-cart a {
+  vertical-align: top; }
 
 /*# sourceMappingURL=shoppingcart.css.map */

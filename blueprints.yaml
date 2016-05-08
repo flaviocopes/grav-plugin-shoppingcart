@@ -138,6 +138,17 @@ form:
                   validate:
                     type: bool
 
+                cart.add_product_thumbnail:
+                  label: Add product thumbnail to the cart
+                  type: toggle
+                  highlight: 1
+                  default: 0
+                  options:
+                    1: PLUGIN_ADMIN.ENABLED
+                    0: PLUGIN_ADMIN.DISABLED
+                  validate:
+                    type: bool
+
             section_urls:
               type: section
               title: URLs Configuration
@@ -213,6 +224,22 @@ form:
                 0: PLUGIN_ADMIN.DISABLED
               validate:
                 type: bool
+
+            ui.image_size_product:
+              label: Size of the image shown in the product page
+              help: Determines the maximum value of height or width. Expressed in pixels
+              type: text
+              default: 400
+              validate:
+                type: int
+
+            ui.image_size_cart:
+              label: Size of the image thumbnail added to the cart
+              help: Determines the maximum value of height or width. Expressed in pixels
+              type: text
+              default: 50
+              validate:
+                type: int
 
         -
           type: tab

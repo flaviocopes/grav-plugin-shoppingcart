@@ -26,11 +26,14 @@ ui:
   currency_symbol_position: before
   remove_cents_if_zero: true
   use_own_css: true
+  image_size_product: 400
+  image_size_cart: 50
 cart:
   allow_editing_quantity_from_cart: true
   timeout: 180
   add_shipping_and_taxes_cost_to_total: true
   maximum_total_quantity_value:
+  add_product_thumbnail: true
 countries:
   -
     name: US

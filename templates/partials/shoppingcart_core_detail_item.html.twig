@@ -1,4 +1,6 @@
 {% set shoppingcart_image = page.media.images|first %}
+{% set image_size_product = config.plugins.shoppingcart.ui.image_size_product %}
+{% set image_size_cart = config.plugins.shoppingcart.ui.image_size_cart %}
 
 {% include 'partials/shoppingcart_core_cart.html.twig' %}
 
@@ -6,7 +8,7 @@
     <div class="shoppingcart-info block">
         <div class="shoppingcart-thumb">
             {% if shoppingcart_image %}
-                {{ shoppingcart_image.cropResize(400,400).html(page.header.title,'shoppingcart-thumb-image') }}
+                {{ shoppingcart_image.cropResize(image_size_product, image_size_product).html(page.header.title, 'shoppingcart-thumb-image') }}
             {% else %}
                 <br><br><br>
             {% endif %}
@@ -16,7 +18,8 @@
         </div>
         <p>
             <div class="shoppingcart-quantity-chooser">
-                <label for="js__shoppingcart__quantity">{{ 'PLUGIN_SHOPPINGCART.QUANTITY'|t }}</label> <input type="text" class="small" id="js__shoppingcart__quantity" placeholder="1" value="1" />
+                <label for="js__shoppingcart__quantity">{{ 'PLUGIN_SHOPPINGCART.QUANTITY'|t }}</label>
+                <input type="text" class="small" id="js__shoppingcart__quantity" placeholder="1" value="1" />
             </div>
 
             {{ shoppingcart_output_page_product_before_add_to_cart }}
@@ -28,7 +31,6 @@
     </div>
     <div class="shoppingcart-details block">
         <h1>{{ page.header.title }}</h1>
-
         <p>{{ page.content }}</p>
     </div>
 </div>
@@ -40,9 +42,9 @@
         title: "{{ page.header.title }}",
         id: "{{ md5(page.header.title) }}",
         price: "{{ page.header.price }}",
-        defaultPhoto: "{{ shoppingcart_image|url_encode }}",
+        image: "{{ shoppingcart_image.cropResize(image_size_cart, image_size_cart).url }}",
         type: "{{ page.header.type }}",
-        url: "{{ page.url|url_encode }}",
+        url: "{{ page.url }}",
     };
 
     ShoppingCart.currentProduct = currentProduct;
