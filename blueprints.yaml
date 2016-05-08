@@ -189,6 +189,18 @@ form:
               validate:
                 type: string
 
+            ui.remove_cents_if_zero:
+              label: Remove cents if zero
+              help: Hide `.00` to prices. Only show if different than zero
+              type: toggle
+              highlight: 0
+              default: 0
+              options:
+                1: PLUGIN_ADMIN.YES
+                0: PLUGIN_ADMIN.NO
+              validate:
+                type: bool
+
 
             ui.use_own_css:
               label: Use plugin's CSS

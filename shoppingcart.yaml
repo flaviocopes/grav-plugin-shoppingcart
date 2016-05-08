@@ -24,6 +24,7 @@ urls:
   order_url: /order
 ui:
   currency_symbol_position: before
+  remove_cents_if_zero: true
   use_own_css: true
 cart:
   allow_editing_quantity_from_cart: true
