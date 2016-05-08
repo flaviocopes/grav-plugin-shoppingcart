@@ -23,7 +23,7 @@ form:
                   label: Price
                   default: '10'
                   validate:
-                    type: int
+                    type: string
 
                 header.default_photo:
                   toggleable: true
