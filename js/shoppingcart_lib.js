@@ -3,6 +3,27 @@ if (typeof window.ShoppingCart == 'undefined') window.ShoppingCart = {};
 
 (function(ShoppingCart) {
 
+    /***********************************************************/
+    /* Render a correctly parsed price with the currency at the right position
+    /***********************************************************/
+    ShoppingCart.renderPriceWithCurrency = function renderPriceWithCurrency(price) {
+        var currency_symbol = ShoppingCart.currentCurrencySymbol();
+
+        price = parseFloat(price).toFixed(2);
+
+        if (ShoppingCart.settings.ui.remove_cents_if_zero) {
+            if (price  % 1 == 0) {
+                price  = parseInt(price , 10);
+            }
+        }
+
+        if (ShoppingCart.showCurrencyBeforePrice()) {
+            return '<span class="currency">' + currency_symbol + '</span> ' + price;
+        } else {
+            return price + ' <span class="currency">' + currency_symbol + '</span>';
+        }
+    };
+
     ShoppingCart.isMobile = function isMobile() {
         var isAndroid = function() {
             return navigator.userAgent.match(/Android/i);
