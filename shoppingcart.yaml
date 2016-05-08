@@ -131,6 +131,7 @@ checkout_form:
         -
             type: display
             content: PLUGIN_SHOPPINGCART.CHECKOUT_SHIPPING_METHOD
+            ignore: true
             markdown: true
 
         -
@@ -147,11 +148,13 @@ checkout_form:
             type: display
             content: PLUGIN_SHOPPINGCART.CHECKOUT_PAYMENT_METHOD
             markdown: true
+            ignore: true
             outerclasses: js__checkout-choose-payment-block-title
 
         -
             name: payment_method
             type: select
+            ignore: true
             label: PLUGIN_SHOPPINGCART.CHECKOUT_CHOOSE_PAYMENT_METHOD_DESC
             classes: js__payment__method
             outerclasses: js__checkout-choose-payment-block
