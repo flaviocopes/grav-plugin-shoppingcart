@@ -368,8 +368,8 @@ class ShoppingcartPlugin extends Plugin
     }
 
     public function initializeController($task, $post)
-    {                 
-        
+    {
+
         require_once __DIR__ . '/classes/controller.php';
         $controller = new Controller($this->grav, $task, $post);
         $controller->execute();
@@ -424,7 +424,7 @@ class ShoppingcartPlugin extends Plugin
         require_once __DIR__ . '/classes/order.php';
 
         $order = new Order($event['order']);
-        $order_page_url = $this->grav['uri']->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+        $order_page_url = $this->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
         echo $order_page_url;
         exit();
     }
@@ -439,7 +439,7 @@ class ShoppingcartPlugin extends Plugin
         require_once __DIR__ . '/classes/order.php';
 
         $order = new Order($event['order']);
-        $order_page_url = $this->grav['uri']->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+        $order_page_url = $this->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
         $this->grav->redirect($order_page_url);
     }
 
