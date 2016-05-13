@@ -10,7 +10,7 @@
         var fillDataObjectWithValuesFromCheckoutForm = function fillDataObjectWithValuesFromCheckoutForm() {
             ShoppingCart.checkout_form_fields.forEach(function(checkout_form_field) {
                 if (typeof checkout_form_field.name !== 'undefined' && (!('input@' in checkout_form_field) || checkout_form_field['input@'] == true)) {
-                    data[checkout_form_field.name] = jQuery('form[name=checkout] [name="data[' + checkout_form_field.name + ']"]').val();
+                    data[checkout_form_field.name] = jQuery('form[name=checkout] [name="data[' + checkout_form_field.name + ']"]').val() || jQuery('form[name=checkout] [name="' + checkout_form_field.name + '"]').val();;
                 }
             });
         };
@@ -30,7 +30,6 @@
                 if (data.hasOwnProperty("state")) {
                     delete data.state;
                 }
-
                 if (!data.province) {
                     alert(window.PLUGIN_SHOPPINGCART.translations.PLEASE_FILL_ALL_THE_REQUIRED_FIELDS);
                     return false;
