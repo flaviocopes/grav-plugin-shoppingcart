@@ -7,7 +7,7 @@ author:
   email: copesc@gmail.com
   url: https://flaviocopes.com
 homepage: https://gravcart.com/
-demo: https://demo.gravcart.com/
+# demo: https://demo.gravcart.com/
 keywords: shoppingcart, ecommerce, e-commerce, plugin, shop, cart
 readme: https://gravcart.com/docs
 bugs: https://github.com/flaviocopes/grav-plugin-shoppingcart/issues
@@ -22,16 +22,16 @@ form:
   validation: loose
   fields:
 
-    tabs:
-      type: tabs
-      active: 1
+    # tabs:
+    #   type: tabs
+    #   active: 1
 
-      fields:
-        -
-          type: tab
-          title: General
+    #   fields:
+    #     -
+    #       type: tab
+    #       title: General
 
-          fields:
+    #       fields:
 
             enabled:
               label: PLUGIN_ADMIN.PLUGIN_STATUS
@@ -182,87 +182,49 @@ form:
 
 
 
-        -
-          type: tab
-          title: User Interface
+        # -
+        #   type: tab
+        #   title: User Interface
 
-          fields:
+        #   fields:
 
-            ui.currency_symbol_position:
-              label: Currenty Symbol Position
-              help: Show currency `before` of `after` the price
-              type: toggle
-              highlight: before
-              default: before
-              options:
-                before: Before
-                after: After
-              validate:
-                type: string
-
-            ui.remove_cents_if_zero:
-              label: Remove cents if zero
-              help: Hide `.00` to prices. Only show if different than zero
-              type: toggle
-              highlight: 0
-              default: 0
-              options:
-                1: PLUGIN_ADMIN.YES
-                0: PLUGIN_ADMIN.NO
-              validate:
-                type: bool
-
-
-            ui.use_own_css:
-              label: Use plugin's CSS
-              help: Add Shopping Cart plugin own CSS. Disable if you're adding your CSS
-              type: toggle
-              highlight: 1
-              default: 1
-              options:
-                1: PLUGIN_ADMIN.ENABLED
-                0: PLUGIN_ADMIN.DISABLED
-              validate:
-                type: bool
-
-            ui.image_size_product:
-              label: Size of the image shown in the product page
-              help: Determines the maximum value of height or width. Expressed in pixels
-              type: text
-              default: 400
-              validate:
-                type: int
-
-            ui.image_size_cart:
-              label: Size of the image thumbnail added to the cart
-              help: Determines the maximum value of height or width. Expressed in pixels
-              type: text
-              default: 50
-              validate:
-                type: int
-
-        -
-          type: tab
-          title: Countries
-
-          fields:
-            countries:
-              type: list
-              label: Countries settings
-              help: Set countries where people can buy from, and corresponding taxes. Set specific countries as disabled.
+            section_19:
+              type: section
+              title: User Interface
+              underline: true
 
               fields:
 
-                .name:
-                  label: Country
-                  type: select
-                  classes: fancy
-                  '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getShippingCountries'
-                  validate:
-                    type: commalist
+              ##
 
-                .allow:
-                  label: Allow
+                ui.currency_symbol_position:
+                  label: Currenty Symbol Position
+                  help: Show currency `before` of `after` the price
+                  type: toggle
+                  highlight: before
+                  default: before
+                  options:
+                    before: Before
+                    after: After
+                  validate:
+                    type: string
+
+                ui.remove_cents_if_zero:
+                  label: Remove cents if zero
+                  help: Hide `.00` to prices. Only show if different than zero
+                  type: toggle
+                  highlight: 0
+                  default: 0
+                  options:
+                    1: PLUGIN_ADMIN.YES
+                    0: PLUGIN_ADMIN.NO
+                  validate:
+                    type: bool
+
+
+                ui.use_own_css:
+                  label: Use plugin's CSS
+                  help: Add Shopping Cart plugin own CSS. Disable if you're adding your CSS
                   type: toggle
                   highlight: 1
                   default: 1
@@ -272,149 +234,225 @@ form:
                   validate:
                     type: bool
 
-                .tax_percentage:
-                  label: Tax percentage
+                ui.image_size_product:
+                  label: Size of the image shown in the product page
+                  help: Determines the maximum value of height or width. Expressed in pixels
                   type: text
-                  help: The tax percentage for this country
+                  default: 400
                   validate:
-                      type: int
+                    type: int
 
-        -
-          type: tab
-          title: Shipping
+                ui.image_size_cart:
+                  label: Size of the image thumbnail added to the cart
+                  help: Determines the maximum value of height or width. Expressed in pixels
+                  type: text
+                  default: 50
+                  validate:
+                    type: int
 
-          fields:
+        # -
+        #   type: tab
+        #   title: Countries
 
-            shipping:
+        #   fields:
+
+            section_20:
+              type: section
+              title: Countries
+              underline: true
+
+              fields:
+
+              ##
+
+                countries:
+                  type: list
+                  label: Countries settings
+                  help: Set countries where people can buy from, and corresponding taxes. Set specific countries as disabled.
+
+                  fields:
+
+                    .name:
+                      label: Country
+                      type: select
+                      classes: fancy
+                      '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getShippingCountries'
+                      validate:
+                        type: commalist
+
+                    .allow:
+                      label: Allow
+                      type: toggle
+                      highlight: 1
+                      default: 1
+                      options:
+                        1: PLUGIN_ADMIN.ENABLED
+                        0: PLUGIN_ADMIN.DISABLED
+                      validate:
+                        type: bool
+
+                    .tax_percentage:
+                      label: Tax percentage
+                      type: text
+                      help: The tax percentage for this country
+                      validate:
+                          type: int
+
+
+        # -
+        #   type: tab
+        #   title: Shipping
+
+        #   fields:
+
+            section_21:
               type: section
               title: Shipping
               underline: true
 
               fields:
-                shipping.methods:
-                  type: list
-                  label: Shipping Methods available
+
+              ##
+
+                shipping:
+                  type: section
+                  title: Shipping
+                  underline: true
 
                   fields:
+                    shipping.methods:
+                      type: list
+                      label: Shipping Methods available
 
-                    .name:
-                      label: Name
-                      help: The label for this shipping option, to be shown to the user
-                      type: text
+                      fields:
 
-                    .allowed_countries:
-                      label: Allowed Countries
-                      type: select
-                      classes: fancy
-                      multiple: true
-                      '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getShippingCountries'
-                      validate:
-                        type: commalist
+                        .name:
+                          label: Name
+                          help: The label for this shipping option, to be shown to the user
+                          type: text
 
-                    .price:
-                      label: Price
-                      type: text
-                      help: The price of this shipping option
-                      validate:
-                          type: int
+                        .allowed_countries:
+                          label: Allowed Countries
+                          type: select
+                          classes: fancy
+                          multiple: true
+                          '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getShippingCountries'
+                          validate:
+                            type: commalist
 
-        -
-          type: tab
-          title: Checkout Form
+                        .price:
+                          label: Price
+                          type: text
+                          help: The price of this shipping option
+                          validate:
+                              type: int
 
-          fields:
-            checkout_form.fields:
-              type: list
-              label: Checkout Form Fields
+        # -
+        #   type: tab
+        #   title: Checkout Form
+
+        #   fields:
+
+            section_21:
+              type: section
+              title: Checkout Form
+              underline: true
 
               fields:
 
-                .type:
-                  label: Type
-                  help:
-                  type: select
-                  default: text
-                  options:
-                    text: text
-                    display: display
-                    select: select
-                    checkbox: checkbox
-                    email: email
-                    toggle: toggle
-                  validate:
-                    type: string
+              ##
+                checkout_form.fields:
+                  type: list
+                  label: Checkout Form Fields
 
-                .validate:
-                  toggleable: true
-                  type: array
-                  label: Validate
-                  help:
-                  placeholder_key: value
-                  placeholder_value: label
+                  fields:
 
-                .name:
-                  toggleable: true
-                  label: Name
-                  help:
-                  type: text
+                    .type:
+                      label: Type
+                      help:
+                      type: select
+                      default: text
+                      options:
+                        text: text
+                        display: display
+                        select: select
+                        checkbox: checkbox
+                        email: email
+                        toggle: toggle
+                      validate:
+                        type: string
 
-                .label:
-                  toggleable: true
-                  label: Label
-                  help:
-                  type: text
+                    .validate:
+                      toggleable: true
+                      type: array
+                      label: Validate
+                      help:
+                      placeholder_key: value
+                      placeholder_value: label
 
-                .help:
-                  toggleable: true
-                  label: Help
-                  help:
-                  type: text
+                    .name:
+                      toggleable: true
+                      label: Name
+                      help:
+                      type: text
 
-                .ignore:
-                  label: Ignore
-                  type: toggle
-                  highlight: 0
-                  default: 0
-                  options:
-                    1: Yes
-                    0: No
-                  validate:
-                    type: bool
+                    .label:
+                      toggleable: true
+                      label: Label
+                      help:
+                      type: text
 
-                .classes:
-                  toggleable: true
-                  label: Classes
-                  help:
-                  type: text
+                    .help:
+                      toggleable: true
+                      label: Help
+                      help:
+                      type: text
 
-                .id:
-                  toggleable: true
-                  label: Id
-                  help:
-                  type: text
+                    .ignore:
+                      label: Ignore
+                      type: toggle
+                      highlight: 0
+                      default: 0
+                      options:
+                        1: Yes
+                        0: No
+                      validate:
+                        type: bool
 
-                .outerclasses:
-                  toggleable: true
-                  label: Outer classes
-                  help:
-                  type: text
+                    .classes:
+                      toggleable: true
+                      label: Classes
+                      help:
+                      type: text
 
-                .content:
-                  toggleable: true
-                  label: Content
-                  help:
-                  type: text
+                    .id:
+                      toggleable: true
+                      label: Id
+                      help:
+                      type: text
 
-                .markdown:
-                  toggleable: true
-                  label: Content includes Markdown?
-                  help:
-                  type: text
+                    .outerclasses:
+                      toggleable: true
+                      label: Outer classes
+                      help:
+                      type: text
 
-                .options:
-                  toggleable: true
-                  type: array
-                  label: Options
-                  help:
-                  placeholder_key: value
-                  placeholder_value: label
+                    .content:
+                      toggleable: true
+                      label: Content
+                      help:
+                      type: text
+
+                    .markdown:
+                      toggleable: true
+                      label: Content includes Markdown?
+                      help:
+                      type: text
+
+                    .options:
+                      toggleable: true
+                      type: array
+                      label: Options
+                      help:
+                      placeholder_key: value
+                      placeholder_value: label
