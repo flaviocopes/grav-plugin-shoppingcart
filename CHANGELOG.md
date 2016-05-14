@@ -1,3 +1,17 @@
+# v1.1.0-beta.7
+## 07-05-2016
+
+1. [](#new)
+    * Product image in cart, optional
+    * Add option to remove cents if .00
+1. [](#improved)
+    * Add support for Grav 1.0.x and Form 1.2.x in the 1.1 release
+    * Extracted the Add to Cart code in a separate partial for easier override
+    * Default to ignore some checkout information
+    * Move onBeforeAddProductToCart and  onAfterAddProductToCart events inside ShoppingCart.addProduct
+1. [](#bugfix)
+    * Fix saving the cart when no shipping methods are entered. Also add payment info when there's a single shipping method, instead of omitting it
+
 # v1.1.0-beta.6
 ## 07-05-2016
 
