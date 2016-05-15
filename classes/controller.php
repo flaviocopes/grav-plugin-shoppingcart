@@ -44,17 +44,15 @@ class Controller
         $success = false;
         $method = 'task' . ucfirst($this->task);
 
-        if (!method_exists($this, $method)) {
-            throw new \RuntimeException('Page Not Found', 404);
-        }
+        if (method_exists($this, $method)) {
+            try {
+                $success = call_user_func([$this, $method]);
+            } catch (\RuntimeException $e) {
+                $this->setMessage($e->getMessage());
+            }
 
-        try {
-            $success = call_user_func([$this, $method]);
-        } catch (\RuntimeException $e) {
-            $this->setMessage($e->getMessage());
+            return $success;
         }
-
-        return $success;
     }
 
     /**
