@@ -1,3 +1,16 @@
+# v1.1.0-beta.8
+## 15-05-2016
+
+1. [](#new)
+    * If no checkout plugin is installed, alert the site owner. Currently alerting in the frontend since this alert is likely to be encountered just when building the site
+1. [](#improved)
+    * Add a ShoppingCart.provinceIsRequired() utility function
+1. [](#bugfix)
+    * Fix #24 "All countries without specific rule" not working as expected. And also cleanup some useless methods
+    * Only require province is required, fix #25
+    * Fix #27 only execute controller tasks if available
+    * Fix labels in blueprint
+
 # v1.1.0-beta.7
 ## 07-05-2016
 
