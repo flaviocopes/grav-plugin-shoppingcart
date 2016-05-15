@@ -323,6 +323,7 @@ form:
           title: Checkout Form
 
           fields:
+
             checkout_form.fields:
               type: list
               label: Checkout Form Fields
@@ -376,8 +377,8 @@ form:
                   highlight: 0
                   default: 0
                   options:
-                    1: Yes
-                    0: No
+                    1: PLUGIN_ADMIN.YES
+                    0: PLUGIN_ADMIN.NO
                   validate:
                     type: bool
 
