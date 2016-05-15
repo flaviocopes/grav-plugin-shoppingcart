@@ -4,6 +4,10 @@
         var that = this;
         var data = {};
 
+        if (ShoppingCart.settings.payment.methods.length === 0) {
+            alert('Ouch! I didn\'t find a checkout plugin installed. Please install one, or the shop cannot send the order.');
+        }
+
         /********************************************************/
         /* Fill the data object with values from the checkout form
         /********************************************************/
