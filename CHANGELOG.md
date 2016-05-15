@@ -3,6 +3,8 @@
 
 1. [](#new)
     * Product image in cart, optional
+    * Added option to set the product image size in the product page
+    * Added option to set the product image size in the cart
     * Add option to remove cents if .00
 1. [](#improved)
     * Add support for Grav 1.0.x and Form 1.2.x in the 1.1 release
