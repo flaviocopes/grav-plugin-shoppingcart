@@ -164,14 +164,16 @@
         };
 
         var ifIsGenericThereIsNoCountrySpecificMethod = function ifIsGenericThereIsNoCountrySpecificMethod(method, country) {
-            return true;
-        };
+            if (method.allowed_countries[0] !== '*') return true; //is not generic, ignore
 
-        var orderWeightIsAllowedForThisMethod = function orderWeightIsAllowedForThisMethod(method) {
-            return true;
-        };
+            for (var i = 0; i < shippingMethods.length; i++) {
+                var aMethod = shippingMethods[i];
 
-        var orderPriceIsAllowedForThisMethod = function orderPriceIsAllowedForThisMethod(method) {
+                for (index in aMethod.allowed_countries) {
+                    if (aMethod.allowed_countries[index] == country) return false;
+                }
+            }
+
             return true;
         };
 
@@ -217,9 +219,7 @@
                     if (shippingMethods.hasOwnProperty(index)) {
                         method = shippingMethods[index];
                         if (methodIsAllowedInCountry(method, ShoppingCart.checkout_form_data.country) &&
-                                ifIsGenericThereIsNoCountrySpecificMethod(method, ShoppingCart.checkout_form_data.country) &&
-                                orderWeightIsAllowedForThisMethod(method) &&
-                                orderPriceIsAllowedForThisMethod(method)) {
+                            ifIsGenericThereIsNoCountrySpecificMethod(method, ShoppingCart.checkout_form_data.country)) {
 
                             var priceBlock = method.price + ' ' + currency_symbol;
                             if (ShoppingCart.settings.ui.currency_symbol_position === 'before') {
