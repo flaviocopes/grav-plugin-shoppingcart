@@ -34,7 +34,7 @@
                 if (data.hasOwnProperty("state")) {
                     delete data.state;
                 }
-                if (!data.province) {
+                if (!data.province && ShoppingCart.provinceIsRequired()) {
                     alert(window.PLUGIN_SHOPPINGCART.translations.PLEASE_FILL_ALL_THE_REQUIRED_FIELDS);
                     return false;
                 }
