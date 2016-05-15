@@ -4,6 +4,25 @@ if (typeof window.ShoppingCart == 'undefined') window.ShoppingCart = {};
 (function(ShoppingCart) {
 
     /***********************************************************/
+    /* Checks if the province field is required
+    /***********************************************************/
+    ShoppingCart.provinceIsRequired = function provinceIsRequired() {
+        var field = ShoppingCart.checkout_form_fields.filter(function(item) { if (item.name === 'province') return true; }).shift();
+
+        if (!field) {
+            return false;
+        }
+
+        if (!field.validate || !field.validate.required) {
+            return false;
+        }
+
+        if (field.validate.required === 'true') {
+            return true;
+        }
+    };
+
+    /***********************************************************/
     /* Render a correctly parsed price with the currency at the right position
     /***********************************************************/
     ShoppingCart.renderPriceWithCurrency = function renderPriceWithCurrency(price) {
@@ -36,15 +55,15 @@ if (typeof window.ShoppingCart == 'undefined') window.ShoppingCart = {};
         var isiOS = function() {
             return navigator.userAgent.match(/iPhone|iPad|iPod/i);
         };
-        
+
         var isOpera = function() {
             return navigator.userAgent.match(/Opera Mini/i);
         };
-        
+
         var isWindows = function() {
             return navigator.userAgent.match(/IEMobile/i);
         };
-        
+
         var isAny = function() {
             if (isAndroid() || isBlackBerry() || isiOS() || isOpera() || isWindows()) {
                 return true;
@@ -52,7 +71,7 @@ if (typeof window.ShoppingCart == 'undefined') window.ShoppingCart = {};
             return false;
         };
 
-        return isAny();        
+        return isAny();
     };
 
     /***********************************************************/
