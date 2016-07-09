@@ -18,10 +18,19 @@
     </div>
     <div class="shoppingcart-details">
     <p>
-        <a href="{{ page.url }}"
-            class="button button-small">
-            <i class="fa fa-info-circle"></i> {{ 'PLUGIN_SHOPPINGCART.DETAILS'|t }}
-        </a>
-    </p>
+        {% if page.header.pay_what_you_want %}
+            <a href="{{ page.url }}"
+                class="button button-small">
+                <i class="fa fa-info-circle"></i> {{ 'PLUGIN_SHOPPINGCART.DETAILS'|t }}
+            </a>
+        {% else %}
+            <div class="shoppingcart-quantity-chooser">
+                <label for="js__shoppingcart__quantity">{{ 'PLUGIN_SHOPPINGCART.QUANTITY'|t }}</label>
+                <input type="text" class="small" id="js__shoppingcart__quantity" placeholder="1" value="1" />
+            </div>
+
+            {% set product = { 'title': page.header.title, 'id': md5(page.header.title), 'price': page.header.price, 'image': shoppingcart_image, 'url': page.url } %}
+            {% include 'partials/shoppingcart_core_add_to_cart.html.twig' with { product: product } %}
+        {% endif %}
     </div>
 </div>
