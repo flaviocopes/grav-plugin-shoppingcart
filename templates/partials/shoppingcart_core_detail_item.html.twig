@@ -1,7 +1,10 @@
 {% set shoppingcart_image = page.media.images|first %}
 {% set image_size_product = config.plugins.shoppingcart.ui.image_size_product %}
 
-{% include 'partials/shoppingcart_core_cart.html.twig' %}
+{# Display only if it hasn't been added in shoppingcart_products.html.twig #}
+{% if not has_cart %}
+    {% include 'partials/shoppingcart_core_cart.html.twig' %}
+{% endif %}
 
 <div id="shoppingcart-detail" class="shoppingcart-product-container block-group">
     <div class="shoppingcart-info block">

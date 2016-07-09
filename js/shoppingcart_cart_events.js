@@ -73,11 +73,25 @@
     jQuery(document).on('click tap', '.js__shoppingcart__button-add-to-cart', function(event) {
         var quantity = jQuery(this).closest('.shoppingcart-product-container').find('#js__shoppingcart__quantity').val() || 1;
         var button = jQuery(this);
-        button.attr('disabled', 'disabled');
         var i = 0;
+        var product = {};
+        var currentProduct = [];
+        var clickedId = jQuery(this).data('id');
+        
+        button.attr('disabled', 'disabled');
 
+        if (ShoppingCart.currentPageIsProducts) {
+            currentProduct = ShoppingCart.currentProducts.filter(filterById);
+            ShoppingCart.currentProduct = currentProduct[0];
+        }
+
+        function filterById(item) {
+            return item.id == clickedId;
+        }
+        
         // Deep copy
-        var product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
+        // var product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
+        product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
         ShoppingCart.addProduct(product, quantity);
         button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);
 

@@ -6,6 +6,8 @@
     <script>
     (function() {
         ShoppingCart.currentPageIsProducts = true;
+        // Define currentProducts.
+        ShoppingCart.currentProducts = [];
     }());
     </script>
 
@@ -17,7 +19,12 @@
         <div class="shoppingcart-products block-group">
             {% for child in page.collection() %}
                 {% if (child.header.unpublished is not defined or (child.header.unpublished == false)) %}
-                    {% include 'partials/shoppingcart_core_product_item.html.twig' with {'page': child, 'parent': page} %}
+                    <!-- Displays template depending on header option -->
+                    {% if page.header.display_add_to_cart %}
+                        {% include 'partials/shoppingcart_core_detail_item.html.twig' with {'page': child, 'parent': page, 'has_cart': true} %}
+                    {% else %}
+                        {% include 'partials/shoppingcart_core_product_item.html.twig' with {'page': child, 'parent': page} %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </div>

@@ -2,9 +2,12 @@
 
 {{ shoppingcart_output_page_product_before_add_to_cart }}
 
-<a href="#" class="button js__shoppingcart__button-add-to-cart">
+<!-- ** Added ** data-id to bind product with object in currentProducts -->
+<!-- ** Suggestion ** Change link to button. "#" in href is added to url and to the navigation history, and it´s more semantic :) -->
+
+<button type="button" class="button js__shoppingcart__button-add-to-cart" data-id="{{product.id}}">
     <i class="fa fa-shopping-cart"></i> {{ 'PLUGIN_SHOPPINGCART.ADD_TO_CART'|t }}
-</a>
+</button>
 
 <script>
     (function() {
@@ -16,7 +19,12 @@
             url: "{{ product.url }}"
         };
 
-        ShoppingCart.currentProduct = currentProduct;
-        ShoppingCart.currentPageIsProduct = true;
+        // Checks if page is a list of products or single product
+        if (ShoppingCart.currentPageIsProducts) {
+            ShoppingCart.currentProducts.push(currentProduct);
+        } else {
+            ShoppingCart.currentProduct = currentProduct;
+            ShoppingCart.currentPageIsProduct = true;
+        }
     }());
 </script>
