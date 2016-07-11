@@ -19,7 +19,7 @@
         <div class="shoppingcart-products block-group">
             {% for child in page.collection() %}
                 {% if (child.header.unpublished is not defined or (child.header.unpublished == false)) %}
-                    {% include 'partials/shoppingcart_core_product_item.html.twig' with {'page': child, 'parent': page} %}
+                    {% include 'partials/shoppingcart_core_product_item.html.twig' with {'page': child, 'parent': page, 'display_add_to_cart': page.header.display_add_to_cart} %}
                 {% endif %}
             {% endfor %}
         </div>
