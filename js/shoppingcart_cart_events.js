@@ -81,12 +81,10 @@
         button.attr('disabled', 'disabled');
 
         if (ShoppingCart.currentPageIsProducts) {
-            currentProduct = ShoppingCart.currentProducts.filter(filterById);
+            currentProduct = ShoppingCart.currentProducts.filter(function(item) {
+                return item.id == clickedId;
+            });
             ShoppingCart.currentProduct = currentProduct[0];
-        }
-
-        function filterById(item) {
-            return item.id == clickedId;
         }
         
         // Deep copy
