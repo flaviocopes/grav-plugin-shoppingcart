@@ -12,7 +12,7 @@
         /* Fill the data object with values from the checkout form
         /********************************************************/
         var fillDataObjectWithValuesFromCheckoutForm = function fillDataObjectWithValuesFromCheckoutForm() {
-            ShoppingCart.checkout_form_fields.forEach(function(checkout_form_field) {
+            $.each(ShoppingCart.checkout_form_fields, function(index, checkout_form_field) {
                 if (typeof checkout_form_field.name !== 'undefined' && (!('input@' in checkout_form_field) || checkout_form_field['input@'] == true)) {
                     data[checkout_form_field.name] = jQuery('form[name=checkout] [name="data[' + checkout_form_field.name + ']"]').val() || jQuery('form[name=checkout] [name="' + checkout_form_field.name + '"]').val();;
                 }
