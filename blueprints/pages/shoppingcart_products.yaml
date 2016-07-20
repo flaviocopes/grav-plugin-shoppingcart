@@ -1,0 +1,31 @@
+title: Products List
+'@extends':
+    type: default
+    context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+      fields:
+        content:
+          type: tab
+
+          fields:
+
+            product:
+              type: section
+              title: Products options
+              underline: true
+
+              fields:
+                header.display_add_to_cart:
+                  type: toggle
+                  label: Display Add To Cart Button
+                  help: Display "Add to Cart"-button instead of "Details"-button on each product.
+                  highlight: 1
+                  default: 0
+                  options:
+                      1: Yes
+                      0: No
+                  validate:
+                       type: bool

@@ -23,7 +23,6 @@
 
             {% set product = { 'title': page.header.title, 'id': md5(page.header.title), 'price': page.header.price, 'image': shoppingcart_image, 'url': page.url } %}
             {% include 'partials/shoppingcart_core_add_to_cart.html.twig' with { product: product } %}
-
         </p>
     </div>
     <div class="shoppingcart-details block">
