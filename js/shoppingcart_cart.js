@@ -102,7 +102,7 @@
     /***********************************************************/
     ShoppingCart.addProduct = function addProduct(product, quantity) {
         var onBeforeAddProductToCart;
-        $(document).trigger(onBeforeAddProductToCart = $.Event('onBeforeAddProductToCart', { product: product }));       
+        $(document).trigger(onBeforeAddProductToCart = $.Event('onBeforeAddProductToCart', { product: product }));
         if (onBeforeAddProductToCart.result === false) {
             return;
         }
@@ -425,7 +425,7 @@
         var row = '<tr>';
         row += '<th class="cart-product">' + window.PLUGIN_SHOPPINGCART.translations.ITEM + '</th>';
         if (!ShoppingCart.isMobile()) {
-            row += '<th class="cart-product-price">' + window.PLUGIN_SHOPPINGCART.translations.PRICE + '</th>';    
+            row += '<th class="cart-product-price">' + window.PLUGIN_SHOPPINGCART.translations.PRICE + '</th>';
         }
 
         if (!ShoppingCart.isMobile()) {
@@ -433,7 +433,7 @@
         } else {
             row += '<th class="cart-product-quantity">' + window.PLUGIN_SHOPPINGCART.translations.QUANTITY_SHORT + '</th>';
         }
-        
+
         row += '<th class="cart-product-total">' + window.PLUGIN_SHOPPINGCART.translations.TOTAL + '</th>';
 
         if (ShoppingCart.currentPageIsProductOrProductsOrCartOrExternal()) {
@@ -491,7 +491,6 @@
             /***********************************************************/
             /* Total
             /***********************************************************/
-
             row += '<td class="cart-product-total">';
             row += ShoppingCart.renderPriceWithCurrency(ShoppingCart.cartSubtotalPrice(item));
             row += '</td>';
