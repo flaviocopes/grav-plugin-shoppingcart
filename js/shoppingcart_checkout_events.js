@@ -9,7 +9,7 @@
     });
 
     /***********************************************************/
-    /* Store order in localstorage and proceed to Stripe
+    /* Store order in localstorage and proceed to payment
     /* #event
     /***********************************************************/
     jQuery(document).on('submit', 'form[name=checkout]', function(event) {

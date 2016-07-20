@@ -7,6 +7,10 @@ if (typeof window.ShoppingCart == 'undefined') window.ShoppingCart = {};
     /* Checks if the province field is required
     /***********************************************************/
     ShoppingCart.provinceIsRequired = function provinceIsRequired() {
+        if (!ShoppingCart.checkout_form_fields) {
+            return false;
+        }
+        
         var field = ShoppingCart.checkout_form_fields.filter(function(item) { if (item.name === 'province') return true; }).shift();
 
         if (!field) {
@@ -580,4 +584,3 @@ if (typeof window.ShoppingCart == 'undefined') window.ShoppingCart = {};
 if (typeof exports !== 'undefined') {
     exports.window = window;
 }
-

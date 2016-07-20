@@ -13,8 +13,6 @@ readme: https://gravcart.com/docs
 bugs: https://github.com/flaviocopes/grav-plugin-shoppingcart/issues
 license: MIT
 
-testing: true
-
 dependencies:
   - { name: grav, version: '~1.1' }
 

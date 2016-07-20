@@ -160,8 +160,10 @@ class ShoppingcartPlugin extends Plugin
         }
 
         if (!isset($order['data'])) {
-            $order['data'] = $order['address'];
-            unset($order['address']);
+            if (isset($order['address'])) {
+                $order['data'] = $order['address'];
+                unset($order['address']);
+            }
         }
 
         /** @var Twig $twig */

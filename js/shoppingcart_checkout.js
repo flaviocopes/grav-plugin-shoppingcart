@@ -39,6 +39,8 @@
                     return false;
                 }
             }
+
+            return true;
         };
 
         var return_value = customProcessingOfCheckoutForm();
@@ -54,6 +56,10 @@
         ShoppingCart.checkout_form_data = data;
         storejs.set('grav-shoppingcart-checkout-form-data', data); //Store data info in cookie
         ShoppingCart.gateway = jQuery('.js__payment__method').val();
+
+        if (!ShoppingCart.gateway) {
+            ShoppingCart.gateway = Object.keys($(Array(ShoppingCart.settings.payment.methods))[0])[0];
+        }
 
         /********************************************************/
         /* - Generates the order random token
@@ -139,7 +145,7 @@
 
             generateRandomToken ();
             processShippingMethod();
-            calculateTotalOrderPrice ();
+            calculateTotalOrderPrice();
 
             jQuery(that).attr('disabled', 'disabled');
             jQuery(document).trigger('proceedToPayment', ShoppingCart);

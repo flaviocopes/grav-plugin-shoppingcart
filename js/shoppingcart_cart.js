@@ -297,14 +297,14 @@
     /* Calculate the shipping price
     /***********************************************************/
     ShoppingCart.generateShippingPrice = function generateShippingPrice() {
-
         var countMethods = 0;
         for (index in ShoppingCart.settings.shipping.methods) {
             countMethods++;
         }
 
+        ShoppingCart.shippingPrice = 0.00;
+
         if (countMethods === 0) {
-            ShoppingCart.shippingPrice = 0.00;
             ShoppingCart.renderCart();
         } else if (countMethods === 1) {
             var method;
