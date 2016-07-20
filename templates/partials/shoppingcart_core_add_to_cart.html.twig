@@ -1,3 +1,4 @@
+{% set price = product.price|number_format(2, '.', ',') %}
 {% set image_size_cart = config.plugins.shoppingcart.ui.image_size_cart %}
 
 {{ shoppingcart_output_page_product_before_add_to_cart }}
@@ -14,7 +15,7 @@
         var currentProduct = {
             title: "{{ product.title }}",
             id: "{{ product.id }}",
-            price: "{{ product.price }}",
+            price: "{{ price }}",
             image: "{{ product.image.cropResize(image_size_cart, image_size_cart).url }}",
             url: "{{ product.url }}"
         };
