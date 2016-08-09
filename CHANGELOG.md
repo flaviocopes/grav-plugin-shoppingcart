@@ -1,10 +1,11 @@
-# v1.1.0
-## xx-07-2016
+# v1.1.0-beta.9
+## 09-08-2016
 
 1. [](#new)
     * "Add to cart"-button functionality on products list page. Updated [#35](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/35)
 1. [](#bugfix)
     * Remove the default checkout form fields to workaround a Grav bug [#33](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/33)
+    * Fix issue with shipping being reset while recalculated
 
 # v1.1.0-beta.8
 ## 15-05-2016
