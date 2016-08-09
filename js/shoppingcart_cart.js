@@ -302,7 +302,9 @@
             countMethods++;
         }
 
-        ShoppingCart.shippingPrice = 0.00;
+        if (!ShoppingCart.shippingPrice) {
+            ShoppingCart.shippingPrice = 0.00;
+        }
 
         if (countMethods === 0) {
             ShoppingCart.renderCart();
