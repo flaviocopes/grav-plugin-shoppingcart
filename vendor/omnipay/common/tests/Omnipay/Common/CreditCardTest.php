@@ -127,6 +127,13 @@ class CreditCardTest extends TestCase
         $this->assertEquals('omniexpress', $this->card->getBrand());
     }
 
+    public function testCustomBrandAddedTwiceReturnsFalse()
+    {
+        $this->assertTrue($this->card->addSupportedBrand('omniexpress', '/^9\d{12}(\d{3})?$/'));
+        $this->assertArrayHasKey('omniexpress', $this->card->getSupportedBrands());
+        $this->assertFalse($this->card->addSupportedBrand('omniexpress', '/^9\d{12}(\d{3})?$/'));
+    }
+
     public function testTitle()
     {
         $this->card->setTitle('Mr.');
@@ -232,6 +239,8 @@ class CreditCardTest extends TestCase
     public function testGetBrandMasterCard()
     {
         $card = new CreditCard(array('number' => '5555555555554444'));
+        $this->assertSame(CreditCard::BRAND_MASTERCARD, $card->getBrand());
+        $card = new CreditCard(array('number' => '2221000010000015'));
         $this->assertSame(CreditCard::BRAND_MASTERCARD, $card->getBrand());
     }
 

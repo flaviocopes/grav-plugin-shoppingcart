@@ -325,6 +325,23 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @dataProvider getFormatToMimeTypeMapProvider
+     */
+    public function testGetMimeTypesFromFormat($format, $mimeTypes)
+    {
+        if (null !== $format) {
+            $this->assertEquals($mimeTypes, Request::getMimeTypes($format));
+        }
+    }
+
+    public function testGetMimeTypesFromInexistentFormat()
+    {
+        $request = new Request();
+        $this->assertNull($request->getMimeType('foo'));
+        $this->assertEquals(array(), Request::getMimeTypes('foo'));
+    }
+
     public function testGetFormatWithCustomMimeType()
     {
         $request = new Request();
@@ -923,6 +940,74 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException \Symfony\Component\HttpFoundation\Exception\ConflictingHeadersException
+     * @dataProvider testGetClientIpsWithConflictingHeadersProvider
+     */
+    public function testGetClientIpsWithConflictingHeaders($httpForwarded, $httpXForwardedFor)
+    {
+        $request = new Request();
+
+        $server = array(
+            'REMOTE_ADDR' => '88.88.88.88',
+            'HTTP_FORWARDED' => $httpForwarded,
+            'HTTP_X_FORWARDED_FOR' => $httpXForwardedFor,
+        );
+
+        Request::setTrustedProxies(array('88.88.88.88'));
+
+        $request->initialize(array(), array(), array(), array(), array(), $server);
+
+        $request->getClientIps();
+    }
+
+    public function testGetClientIpsWithConflictingHeadersProvider()
+    {
+        //        $httpForwarded                   $httpXForwardedFor
+        return array(
+            array('for=87.65.43.21',                 '192.0.2.60'),
+            array('for=87.65.43.21, for=192.0.2.60', '192.0.2.60'),
+            array('for=192.0.2.60',                  '192.0.2.60,87.65.43.21'),
+            array('for="::face", for=192.0.2.60',    '192.0.2.60,192.0.2.43'),
+            array('for=87.65.43.21, for=192.0.2.60', '192.0.2.60,87.65.43.21'),
+        );
+    }
+
+    /**
+     * @dataProvider testGetClientIpsWithAgreeingHeadersProvider
+     */
+    public function testGetClientIpsWithAgreeingHeaders($httpForwarded, $httpXForwardedFor)
+    {
+        $request = new Request();
+
+        $server = array(
+            'REMOTE_ADDR' => '88.88.88.88',
+            'HTTP_FORWARDED' => $httpForwarded,
+            'HTTP_X_FORWARDED_FOR' => $httpXForwardedFor,
+        );
+
+        Request::setTrustedProxies(array('88.88.88.88'));
+
+        $request->initialize(array(), array(), array(), array(), array(), $server);
+
+        $request->getClientIps();
+
+        Request::setTrustedProxies(array());
+    }
+
+    public function testGetClientIpsWithAgreeingHeadersProvider()
+    {
+        //        $httpForwarded                               $httpXForwardedFor
+        return array(
+            array('for="192.0.2.60"',                          '192.0.2.60'),
+            array('for=192.0.2.60, for=87.65.43.21',           '192.0.2.60,87.65.43.21'),
+            array('for="[::face]", for=192.0.2.60',            '::face,192.0.2.60'),
+            array('for="192.0.2.60:80"',                       '192.0.2.60'),
+            array('for=192.0.2.60;proto=http;by=203.0.113.43', '192.0.2.60'),
+            array('for="[2001:db8:cafe::17]:4711"',            '2001:db8:cafe::17'),
+        );
+    }
+
     public function testGetContentWorksTwiceInDefaultMode()
     {
         $req = new Request();
@@ -974,8 +1059,16 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $req->getContent($second);
     }
 
+    public function getContentCantBeCalledTwiceWithResourcesProvider()
+    {
+        return array(
+            'Resource then fetch' => array(true, false),
+            'Resource then resource' => array(true, true),
+        );
+    }
+
     /**
-     * @dataProvider getContentCantBeCalledTwiceWithResourcesProvider
+     * @dataProvider getContentCanBeCalledTwiceWithResourcesProvider
      * @requires PHP 5.6
      */
     public function testGetContentCanBeCalledTwiceWithResources($first, $second)
@@ -992,12 +1085,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             $b = stream_get_contents($b);
         }
 
-        $this->assertEquals($a, $b);
+        $this->assertSame($a, $b);
     }
 
-    public function getContentCantBeCalledTwiceWithResourcesProvider()
+    public function getContentCanBeCalledTwiceWithResourcesProvider()
     {
         return array(
+            'Fetch then fetch' => array(false, false),
+            'Fetch then resource' => array(false, true),
             'Resource then fetch' => array(true, false),
             'Resource then resource' => array(true, true),
         );
@@ -1012,7 +1107,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             array('put'),
             array('delete'),
             array('patch'),
-
         );
     }
 
@@ -1188,6 +1282,25 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/path%20test/info', $request->getPathInfo());
     }
 
+    public function testGetParameterPrecedence()
+    {
+        $request = new Request();
+        $request->attributes->set('foo', 'attr');
+        $request->query->set('foo', 'query');
+        $request->request->set('foo', 'body');
+
+        $this->assertSame('attr', $request->get('foo'));
+
+        $request->attributes->remove('foo');
+        $this->assertSame('query', $request->get('foo'));
+
+        $request->query->remove('foo');
+        $this->assertSame('body', $request->get('foo'));
+
+        $request->request->remove('foo');
+        $this->assertNull($request->get('foo'));
+    }
+
     public function testGetPreferredLanguage()
     {
         $request = new Request();
@@ -1329,6 +1442,9 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $request = new Request();
         $this->assertNull($request->setRequestFormat('foo'));
         $this->assertEquals('foo', $request->getRequestFormat(null));
+
+        $request = new Request(array('_format' => 'foo'));
+        $this->assertEquals('html', $request->getRequestFormat());
     }
 
     public function testHasSession()
@@ -1842,6 +1958,58 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         return array(
             array('a'.str_repeat('.a', 40000)),
             array(str_repeat(':', 101)),
+        );
+    }
+
+    /**
+     * @dataProvider methodSafeProvider
+     */
+    public function testMethodSafe($method, $safe)
+    {
+        $request = new Request();
+        $request->setMethod($method);
+        $this->assertEquals($safe, $request->isMethodSafe());
+    }
+
+    public function methodSafeProvider()
+    {
+        return array(
+            array('HEAD', true),
+            array('GET', true),
+            array('POST', false),
+            array('PUT', false),
+            array('PATCH', false),
+            array('DELETE', false),
+            array('PURGE', false),
+            array('OPTIONS', true),
+            array('TRACE', true),
+            array('CONNECT', false),
+        );
+    }
+
+    /**
+     * @dataProvider methodCacheableProvider
+     */
+    public function testMethodCacheable($method, $chacheable)
+    {
+        $request = new Request();
+        $request->setMethod($method);
+        $this->assertEquals($chacheable, $request->isMethodCacheable());
+    }
+
+    public function methodCacheableProvider()
+    {
+        return array(
+            array('HEAD', true),
+            array('GET', true),
+            array('POST', false),
+            array('PUT', false),
+            array('PATCH', false),
+            array('DELETE', false),
+            array('PURGE', false),
+            array('OPTIONS', false),
+            array('TRACE', false),
+            array('CONNECT', false),
         );
     }
 }
