@@ -57,7 +57,7 @@ en:
     PRODUCT_ADDED_TO_CART: Product added to cart
     PRODUCTS_BOUGHT: Products bought
     SEE_THE_ORDER_DETAILS: See the order details
-    TERMS_AND_CONDITIONS: "Accept the <a href='#'>terms and conditions</a>"
+    TERMS_AND_CONDITIONS: "Accept the terms and conditions"
     SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY: Sorry, we cannot ship to your country
     READ_MORE: Read more
     MINIMUM_TO_PLACE_AN_ORDER: Minimum to place an order:
@@ -77,7 +77,7 @@ en:
     ORDER_DETAILS: Order Details
     THANKS_FOR_YOUR_ORDER: Thanks for your order
     PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Please fill all the required fields
-    
+
 fr:
   PLUGIN_SHOPPINGCART:
     DETAILS: Détails
@@ -137,7 +137,7 @@ fr:
     PRODUCT_ADDED_TO_CART: Produit ajouté au panier
     PRODUCTS_BOUGHT: Produits achetés
     SEE_THE_ORDER_DETAILS: Voir les détails de la commande
-    TERMS_AND_CONDITIONS: "Accepter les <a href='#'>Conditions Générales de Vente</a>"
+    TERMS_AND_CONDITIONS: "Accepter les Conditions Générales de Vente"
     SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY: Désolé, la livraison est impossible pour votre pays
     READ_MORE: Lire la suite
     MINIMUM_TO_PLACE_AN_ORDER: Minimum pour passer une commande :
@@ -216,7 +216,7 @@ it:
     PRODUCT_ADDED_TO_CART: Prodotto aggiungo al carrello
     PRODUCTS_BOUGHT: Prodotti acquistati
     SEE_THE_ORDER_DETAILS: Visualizza i dettagli dell'ordine
-    TERMS_AND_CONDITIONS: "Accetta i <a href='#'>termini e le condizioni</a>"
+    TERMS_AND_CONDITIONS: "Accetta i termini e le condizioni"
     SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY: Siamo spiacenti, non possiamo spedire al tuo indirizzo
     READ_MORE: Leggi di più
     MINIMUM_TO_PLACE_AN_ORDER: Minimo per inviare l'ordine:
