@@ -1,3 +1,9 @@
+# v1.1.0
+## 05-12-2016
+
+1. [](#improved)
+    * Restore the default checkout form in Admin
+
 # v1.1.0-beta.10
 ## 09-08-2016
 
