@@ -1,27 +1,2 @@
-{% extends 'partials/shoppingcart_base.html.twig' %}
-
-{% block content %}
-
-    {{ parent() }}
-
-    <div class="content-wrapper">
-
-        {% include 'partials/shoppingcart_cart.html.twig' %}
-
-        <script>
-        (function() {
-            ShoppingCart.currentPageIsProducts = true;
-        }());
-        </script>
-
-        {{ page.content }}
-
-        <div class="shoppingcart-categories block-group">
-            {% for child in page.collection() %}
-                {% if (child.header.unpublished is not defined or (child.header.unpublished == false)) %}
-                    {% include 'partials/shoppingcart_category_item.html.twig' with {'page': child, 'parent': page} %}
-                {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-{% endblock %}
+{# deprecated #}
+{% extends 'shoppingcart_categories.html.twig' %}

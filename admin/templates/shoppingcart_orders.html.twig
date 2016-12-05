@@ -2,90 +2,16 @@
 
 {% block content %}
     <style>
-        td.orders-actions {
-            flex: 0.1;
-        }
-
-        .pages-list .row {
-            padding-right: 1rem;
-        }
-
-        .comment-text {
-            line-height: 1.5rem;
-            display: inline-block;
-        }
-
-        .pages-list .row p.page-route {
-            margin: 0px 0 10px 0px;
-        }
-
         th { background: #d9d9d9; }
 
         tr, td { text-align: left;}
-        .comment { flex: 3 }
         .details { flex: 1.5 }
 
         .center {
             margin: 0 auto;
             text-align: center;
-            display: block;
         }
-
-        .button:active { margin: 0 auto;}
     </style>
-
-    <script>
-        $(function() {
-            var currentPage = 0;
-            var totalRetrieved = 10;
-            var markup = '';
-
-            $(document).on('click tap', '.js__load-more', function(event) {
-               $.getJSON(window.location + '/page:' + (currentPage + 1))
-                .success(function(response) {
-                    currentPage = parseInt(response.page);
-
-
-                    response.orders.forEach(function(order) {
-                        markup = '<tr>' +
-                                '<td class="author">' + order.address.firstname + ' ' + order.address.lastname + '</td>' +
-                                '<td class="products">';
-
-                        order.products.forEach(function(product) {
-                            markup += product.quantity + ' ' + product.product.title + ' (' + product.product.price + ')<br>';
-                        });
-
-                        markup += '<td class="amount">' + order.amount + '</td>' +
-                                '<td class="date">' + order.paid_on.slice(0, 4) + '/' + order.paid_on.slice(4, 6) + '/' + order.paid_on.slice(6, 8) + '</td>' +
-                                '<td class="details">' +
-                                    order.address.address1 + ' ' +
-                                    order.address.address2 + '<br>' +
-                                    order.address.zip + ' ' +
-                                    order.address.city + '<br>' +
-                                    order.address.state + ' ' +
-                                    order.address.province + '<br>' +
-                                    order.address.country +
-                                '</td>' +
-                            '</tr>';
-
-                        $('.js__orders-container').append(markup);
-                    });
-
-                    totalRetrieved += response.totalRetrieved;
-
-                    $('.totalRetrieved').html(totalRetrieved);
-                    $('.totalAvailable').html(response.totalAvailable);
-
-                    if (totalRetrieved == response.totalAvailable) {
-                        $('.js__load-more').hide();
-                    }
-                })
-                .error(function() {
-                    alert('Unexpected error');
-                });
-            });
-        });
-    </script>
 
     <h1>Latest Orders</h1>
 
@@ -93,42 +19,69 @@
         <table>
             <tbody class="js__orders-container">
                 <tr class="h">
-                    <th class="author">Purchaser</th>
-                    <th class="products">Bought</th>
-                    <th class="amount">Amount</th>
                     <th class="date">Date</th>
-                    <th class="details">Address</th>
+                    <th class="amount">Amount</th>
+                    <th class="details">Details</th>
+                    <th class="products">Products</th>
                 </tr>
                 {% for order in grav.twig.orders.orders %}
                     <tr>
-                        <td class="author">{{order.address.firstname ~ ' ' ~ order.address.lastname}}</td>
-                        <td class="products">
-                            {% for product in order.products %}
-                                {{product.quantity}} {{product.product.title}} ({{product.product.price}})<br>
+                        <td class="date">{{order.created_on|slice(0, 4)}}/{{order.created_on|slice(4, 2)}}/{{order.created_on|slice(6, 2)}}</td>
+                        <td class="amount">
+                            {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
+                                {{ order.amount }}{{ currency_symbol }}
+                            {% else %}
+                                {{ currency_symbol }}{{ order.amount }}
+                            {% endif %}
+                        </td>
+                        <td class="details">
+                            {% for index, item in (order.data ?: [])|merge(order.address ?: []) %}
+                                {% set the_field = '' %}
+                                {% for field in config.plugins.shoppingcart.checkout_form.fields %}
+                                    {% if field.name == index %}
+                                        {% set the_field = field %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if not the_field.ignore %}
+                                    <strong>{{ the_field.label|t|e }}</strong>:
+                                    {{ item|e }}
+                                    <br>
+                                {% endif %}
                             {% endfor %}
                         </td>
-                        <td class="amount">{{order.amount}}</td>
-                        <td class="date">{{order.paid_on|slice(0, 4)}}/{{order.paid_on|slice(4, 2)}}/{{order.paid_on|slice(6, 2)}}</td>
-                        <td class="details">
-                            {{order.address.address1}}
-                            {{order.address.address2}}<br>
-                            {{order.address.zip}}
-                            {{order.address.city}}<br>
-                            {{order.address.state}}
-                            {{order.address.province}}<br>
-                            {{order.address.country}}
+                        <td class="products">
+                            {% for product in order.products %}
+                                <strong>Item</strong>: {{product.product.title}} -
+                                <strong>Quantity</strong>: {{product.quantity}} -
+                                <strong>Price</strong>:
+
+                                {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
+                                    {{ product.product.price }}{{ currency_symbol }}
+                                {% else %}
+                                    {{ currency_symbol }}{{ product.product.price }}
+                                {% endif %}
+
+                                <br>
+                            {% endfor %}
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        {% if grav.twig.orders.totalRetrieved < grav.twig.orders.totalAvailable %}
-            <button type="button" class="button center js__load-more">
-                Load more
-            </button>
-        {% endif %}
+        <p class="center">
+            <br>
+            Showing <span class="totalRetrieved">{{grav.twig.orders.totalRetrieved}}</span> orders of <span class="totalAvailable">{{grav.twig.orders.totalAvailable}}</span>
+            <br>
+            <br>
+            {% if (grav.twig.orders.page > 1) %}
+                <a class="button center" href="{{ config.plugins.admin.route }}/shoppingcart/page:{{ (grav.twig.orders.page - 1) }}">Prev</a>
+            {% endif %}
 
-        <p class="center">Showing <span class="totalRetrieved">{{grav.twig.orders.totalRetrieved}}</span> orders of <span class="totalAvailable">{{grav.twig.orders.totalAvailable}}</span></p>
+            {% if (grav.twig.orders.page * grav.twig.orders.totalRetrieved) < grav.twig.orders.totalAvailable %}
+                <a class="button center" href="{{ config.plugins.admin.route }}/shoppingcart/page:{{ (grav.twig.orders.page + 1) }}">Next</a>
+            {% endif %}
+        </p>
     </div>
 {% endblock %}

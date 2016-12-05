@@ -71,28 +71,37 @@
     /* #event
     /***********************************************************/
     jQuery(document).on('click tap', '.js__shoppingcart__button-add-to-cart', function(event) {
-        var quantity = jQuery('#js__shoppingcart__quantity').val() || 1;
+        var quantity = jQuery(this).closest('.shoppingcart-product-container').find('#js__shoppingcart__quantity').val() || 1;
         var button = jQuery(this);
-        button.attr('disabled', 'disabled');
         var i = 0;
+        var product = {};
+        var currentProduct = [];
+        var clickedId = jQuery(this).data('id');
+        
+        button.attr('disabled', 'disabled');
 
-        // Deep copy
-        var product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
-
-        if (ShoppingCart.canAddToCartThisQuantityOfThisProduct(product, quantity)) {
-            ShoppingCart.addProduct(product, quantity);
-            button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);
+        if (ShoppingCart.currentPageIsProducts) {
+            currentProduct = ShoppingCart.currentProducts.filter(function(item) {
+                return item.id == clickedId;
+            });
+            ShoppingCart.currentProduct = currentProduct[0];
         }
+        
+        // Deep copy
+        // var product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
+        product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
+        ShoppingCart.addProduct(product, quantity);
+        button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);
 
         setTimeout(function() {
             button.html(window.PLUGIN_SHOPPINGCART.translations.ADD_TO_CART);
             button.attr('disabled', null);
         }, 2000);
-
     });
 
     /***********************************************************/
     /* Handle change the quantity box in the cart
+    /* #event
     /***********************************************************/
     jQuery(document).on('keyup', '.js__shoppingcart__quantity-box-cart', function() {
         var element_id = jQuery(this).data('id');
@@ -107,8 +116,8 @@
             return;
         }
 
-        if (ShoppingCart.settings.cart.maximumTotalQuantityValue && (parseInt(new_quantity) > ShoppingCart.settings.cart.maximumTotalQuantityValue)) {
-            alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximumTotalQuantityValue);
+        if (ShoppingCart.settings.cart.maximum_total_quantity_value && (parseInt(new_quantity) > ShoppingCart.settings.cart.maximum_total_quantity_value)) {
+            alert(window.PLUGIN_SHOPPINGCART.translations.QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE + ': ' + ShoppingCart.settings.cart.maximum_total_quantity_value);
             jQuery(this).val(ShoppingCart.items[element_id].quantity);
             return;
         }
@@ -130,7 +139,7 @@
         /* Initialize the cart
         /***********************************************************/
         var initializeCart = function initializeCart() {
-            if (new Date().getTime() - storejs.get('grav-shoppingcart-basket-data-updatetime') > 1000 * 60 * 60 * 2) { //the cart lasts 2 hours
+            if (new Date().getTime() - storejs.get('grav-shoppingcart-basket-data-updatetime') > 1000 * 60 * ShoppingCart.settings.cart.timeout) { //empty the cart after x minutes
                 storejs.remove('grav-shoppingcart-basket-data');
             }
 

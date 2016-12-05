@@ -1,44 +1,26 @@
-{% extends 'partials/shoppingcart_base.html.twig' %}
+{% extends 'partials/shoppingcart_core_base.html.twig' %}
 
 {% block javascripts %}
     {{ parent() }}
     {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_checkout.js') %}
     {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_checkout_events.js') %}
+    {% do assets.addInlineJs('(function() { ShoppingCart.currentPageIsCheckout = true; }());') %}
 {% endblock %}
 
 {% block content %}
-    {% include 'partials/shoppingcart_cart.html.twig' %}
-
-    <script>
-    (function() {
-        ShoppingCart.currentPageIsCheckout = true;
-    }());
-    </script>
+    {% include 'partials/shoppingcart_core_cart.html.twig' %}
 
     <div class="shoppingcart-container js__checkout__block">
         <h1>{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_PAGE_TITLE'|t }}</h1>
-
+        {{ page.content }}
         {% set form = config.plugins.shoppingcart.checkout_form %}
-        <form name="{{ form.name }}"
-              action="{{ form.action ? base_url ~ form.action : page.url }}"
-              method="{{ method }}"{{ multipart }}>
-
-        {% for field in form.fields %}
-            {% set value = form.value(field.name) %}
-            <div>
-                {% include "forms/fields/#{field.type}/#{field.type}.html.twig" %}
-            </div>
-        {% endfor %}
-
-          <div class="buttons">
-          {% for button in form.buttons %}
-              <button class="{{ button.classes|default('button') }}" type="{{ button.type|default('submit') }}">{{ button.value|t|default('Submit') }}</button>
-          {% endfor %}
-          </div>
-
-          {{ nonce_field('form', 'form-nonce') }}
-        </form>
+        {% include 'forms/default/form.html.twig' %}
     </div>
 
+    <script>
+        (function() {
+            ShoppingCart.checkout_form_fields = {{ json_encode(config.plugins.shoppingcart.checkout_form.fields) }};
+        }());
+    </script>
 
 {% endblock %}

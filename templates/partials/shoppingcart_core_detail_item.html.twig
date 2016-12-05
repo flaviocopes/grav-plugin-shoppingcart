@@ -1,0 +1,32 @@
+{% set shoppingcart_image = page.media.images|first %}
+{% set image_size_product = config.plugins.shoppingcart.ui.image_size_product %}
+
+{% include 'partials/shoppingcart_core_cart.html.twig' %}
+
+<div id="shoppingcart-detail" class="shoppingcart-product-container block-group">
+    <div class="shoppingcart-info block">
+        <div class="shoppingcart-thumb">
+            {% if shoppingcart_image %}
+                {{ shoppingcart_image.cropResize(image_size_product, image_size_product).html(page.header.title, 'shoppingcart-thumb-image') }}
+            {% else %}
+                <br><br><br>
+            {% endif %}
+            <span class="shoppingcart-price">
+                {% include 'partials/shoppingcart_core_price.html.twig' with { price: page.header.price } %}
+            </span>
+        </div>
+        <p>
+            <div class="shoppingcart-quantity-chooser">
+                <label for="js__shoppingcart__quantity">{{ 'PLUGIN_SHOPPINGCART.QUANTITY'|t }}</label>
+                <input type="text" class="small" id="js__shoppingcart__quantity" placeholder="1" value="1" />
+            </div>
+
+            {% set product = { 'title': page.header.title, 'id': md5(page.header.title), 'price': page.header.price, 'image': shoppingcart_image, 'url': page.url } %}
+            {% include 'partials/shoppingcart_core_add_to_cart.html.twig' with { product: product } %}
+        </p>
+    </div>
+    <div class="shoppingcart-details block">
+        <h1>{{ page.header.title }}</h1>
+        <p>{{ page.content }}</p>
+    </div>
+</div>

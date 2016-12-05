@@ -1,0 +1,10 @@
+{% set shoppingcart_category_image = page.media.images|first %}
+
+<div class="shoppingcart-item block">
+    <h3><a href="{{ page.url }}">{{ page.header.category }}</a></h3>
+    <div class="shoppingcart-thumb">
+        {% if shoppingcart_category_image %}
+            <a href="{{ page.url }}">{{ shoppingcart_category_image.cropResize(300, 300).html(page.header.category, 'shoppingcart-thumb-image') }}</a>
+        {% endif %}
+    </div>
+</div>

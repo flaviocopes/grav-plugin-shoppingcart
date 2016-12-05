@@ -1,12 +1,17 @@
 <?php
 namespace Grav\Plugin;
 
-use Grav\Common\Plugin;
+use Grav\Common\Grav;
+use Grav\Common\Data;
 use Grav\Common\Filesystem\Folder;
 use Grav\Common\Page\Page;
 use Grav\Common\Page\Types;
+use Grav\Common\Plugin;
 use Grav\Common\Twig\Twig;
 use Grav\Common\Uri;
+use Grav\Plugin\ShoppingCart\Controller;
+use Grav\Plugin\ShoppingCart\Order;
+use Grav\Plugin\ShoppingCart\ShoppingCart;
 use RocketTheme\Toolbox\Event\Event;
 use RocketTheme\Toolbox\File\File;
 use Symfony\Component\Yaml\Yaml;
@@ -18,9 +23,9 @@ use Symfony\Component\Yaml\Yaml;
 class ShoppingcartPlugin extends Plugin
 {
     protected $baseURL;
-    protected $checkoutURL;
-    protected $saveOrderURL;
-    protected $orderURL;
+    protected $checkout_url;
+    protected $save_order_url;
+    protected $order_url;
     protected $order_id;
     protected $route = 'shoppingcart';
 
@@ -34,9 +39,11 @@ class ShoppingcartPlugin extends Plugin
     {
         return [
             //Add 10 as we want to hook onDataTypeExcludeFromDataManagerPluginHook prior to Data Manager fetching it
-            'onPluginsInitialized' => ['onPluginsInitialized', 10],
-            'onGetPageTemplates' => ['onGetPageTemplates', 0],
+            'onPluginsInitialized'    => ['onPluginsInitialized', 10],
+            'onGetPageBlueprints'     => ['onGetPageBlueprints', 0],
+            'onGetPageTemplates'      => ['onGetPageTemplates', 0],
             'onShoppingCartSaveOrder' => ['onShoppingCartSaveOrder', 0],
+            'onTwigSiteVariables'     => ['onTwigSiteVariables', 0]
         ];
     }
 
@@ -47,21 +54,28 @@ class ShoppingcartPlugin extends Plugin
     {
         require_once __DIR__ . '/vendor/autoload.php';
 
+        // Create ShoppingCart.
+        require_once(__DIR__ . '/classes/shoppingcart.php');
+        $this->shoppingcart = new ShoppingCart();
+
+        /** @var Twig $twig */
+        $twig = $this->grav['twig'];
+
         $this->baseURL = $this->grav['uri']->rootUrl();
-        $this->checkoutURL = $this->config->get('plugins.shoppingcart.urls.checkoutURL');
-        $this->saveOrderURL = $this->config->get('plugins.shoppingcart.urls.saveOrderURL');
-        $this->orderURL =  $this->config->get('plugins.shoppingcart.urls.orderURL');
+        $this->checkout_url = $this->config->get('plugins.shoppingcart.urls.checkout_url');
+        $this->save_order_url = $this->config->get('plugins.shoppingcart.urls.save_order_url');
+        $this->order_url = $this->config->get('plugins.shoppingcart.urls.order_url');
+
+        /** @var Uri $uri */
+        $uri = $this->grav['uri'];
+
+        $twig->twig_vars['currency_symbol'] = $this->shoppingcart->getSymbolOfCurrencyCode($this->config->get('plugins.shoppingcart.general.currency'));
 
         if ($this->isAdmin()) {
-            // Admin
-
-            /** @var Uri $uri */
-            $uri = $this->grav['uri'];
-
             //Admin
             $this->enable([
-                'onTwigTemplatePaths' => ['onTwigAdminTemplatePaths', 0],
-                'onAdminMenu' => ['onAdminMenu', 0],
+                'onTwigTemplatePaths'                        => ['onTwigAdminTemplatePaths', 0],
+                'onAdminMenu'                                => ['onAdminMenu', 0],
                 'onDataTypeExcludeFromDataManagerPluginHook' => ['onDataTypeExcludeFromDataManagerPluginHook', 0],
             ]);
 
@@ -69,42 +83,28 @@ class ShoppingcartPlugin extends Plugin
                 return;
             }
 
-            $page = $this->grav['uri']->param('page');
+            $page = $this->grav['uri']->param('page') ?: 1;
             $orders = $this->getLastOrders($page);
-
-            if ($page > 0) {
-                echo json_encode($orders);
-                exit();
-            }
-
-            $this->grav['twig']->orders = $orders;
+            $twig->orders = $orders;
 
         } else {
             // Site
-
             $this->enable([
-                'onPageInitialized' => ['onPageInitialized', 0],
-                'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
+                'onPageInitialized'                       => ['onPageInitialized', 0],
+                'onPagesInitialized'      => ['onPagesInitialized', 10],
+                'onTwigTemplatePaths'                     => ['onTwigTemplatePaths', 0],
                 'onShoppingCartReturnOrderPageUrlForAjax' => ['onShoppingCartReturnOrderPageUrlForAjax', 10],
-                'onShoppingCartRedirectToOrderPageUrl' => ['onShoppingCartRedirectToOrderPageUrl', 10]
+                'onShoppingCartRedirectToOrderPageUrl'    => ['onShoppingCartRedirectToOrderPageUrl', 10],
+                'onAssetsInitialized'                     => ['onAssetsInitialized', 0]
             ]);
 
-            /** @var Uri $uri */
-            $uri = $this->grav['uri'];
-
-            if ($this->checkoutURL && $this->checkoutURL == $uri->path()) {
+            if ($this->checkout_url && $this->checkout_url == $uri->path()) {
                 $this->enable([
                     'onPagesInitialized' => ['addCheckoutPage', 0]
                 ]);
             }
 
-            if ($this->saveOrderURL && $this->saveOrderURL == $uri->path()) {
-                $this->enable([
-                    'onPagesInitialized' => ['saveOrder', 0]
-                ]);
-            }
-
-            if ($this->orderURL && $this->orderURL == $uri->path()) {
+            if ($this->order_url && $this->order_url == $uri->path()) {
                 $this->enable([
                     'onPagesInitialized' => ['addOrderPage', 0]
                 ]);
@@ -112,35 +112,37 @@ class ShoppingcartPlugin extends Plugin
         }
     }
 
+    /**
+     * Dynamically add the checkout page
+     */
     public function addCheckoutPage()
     {
-        $url = $this->checkoutURL;
+        $url = $this->checkout_url;
         $filename = 'shoppingcart_checkout.md';
         $this->addPage($url, $filename);
     }
 
-    public function saveOrder()
+    /**
+     * Sets longer path to the home page allowing us to have list of pages when we enter to pages section.
+     */
+    public function onPagesInitialized()
     {
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
-        $task = !empty($_POST['task']) ? $_POST['task'] : $uri->query('task');
+        $task = !empty($_POST['task']) ? $_POST['task'] : $uri->param('task');
         $post = !empty($_POST) ? $_POST : [];
 
-        // @todo: remove in 2.0
-        if (!$task) {
-            $uri_bits = Uri::parseUrl(urldecode($uri->query()));
-            parse_str($uri_bits['query'], $query);
-            $task = $query['task'];
+        if ($task) {
+            $this->initializeController($task, $post);
         }
-
-        require_once __DIR__ . '/classes/controller.php';
-        $controller = new ShoppingCartController($this->grav, $task, $post);
-        $controller->execute();
     }
 
+    /**
+     * Dynamically add the order page
+     */
     public function addOrderPage()
     {
-        $url = $this->orderURL;
+        $url = $this->order_url;
         $filename = 'shoppingcart_order.md';
         $this->addPage($url, $filename);
 
@@ -157,14 +159,17 @@ class ShoppingcartPlugin extends Plugin
             //TODO: Manage case
         }
 
+        if (!isset($order['data'])) {
+            if (isset($order['address'])) {
+                $order['data'] = $order['address'];
+                unset($order['address']);
+            }
+        }
+
         /** @var Twig $twig */
         $twig = $this->grav['twig'];
+        $twig->twig_vars['order'] = $order;
 
-        $twig->twig_vars['order_products'] = $order['products'];
-        $twig->twig_vars['order_address'] = $order['address'];
-        $twig->twig_vars['order_amount'] = $order['amount'];
-        $twig->twig_vars['order_token'] = $order['token'];
-        $twig->twig_vars['order_paid'] = $order['paid'];
         $twig->twig_vars['currency'] = $this->config->get('plugins.shoppingcart.general.currency');
     }
 
@@ -186,6 +191,18 @@ class ShoppingcartPlugin extends Plugin
     }
 
     /**
+     * Add page blueprints
+     *
+     * @param Event $event
+     */
+    public function onGetPageBlueprints(Event $event)
+    {
+        /** @var Types $types */
+        $types = $event->types;
+        $types->scanBlueprints('plugins://shoppingcart/blueprints/pages/');
+    }
+
+    /**
      * Add page template types.
      *
      * @param Event $event
@@ -202,151 +219,85 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onPageInitialized()
     {
-        $defaults = (array) $this->config->get('plugins.shoppingcart');
-
         /** @var Page $page */
         $page = $this->grav['page'];
 
-        $template = $page->template();
-
-        if (!in_array($template, ['shoppingcart',
-                                  'shoppingcart_category',
-                                  'shoppingcart_payment',
-                                  'shoppingcart_detail',
-                                  'shoppingcart_checkout',
-                                  'shoppingcart_order'])) {
-            return;
-        }
-
-        if ($page->header() != null) {
-            if (isset($page->header()->shoppingcart)) {
-                $page->header()->shoppingcart = array_merge($defaults, $page->header()->shoppingcart);
-            } else {
-                $page->header()->shoppingcart = $defaults;
+        // if I'm not in a Shop page, and I don't need to add JS globally, return
+        if (!$this->config->get('plugins.shoppingcart.general.load_js_globally')) {
+            if (!in_array($page->template(), $this->shoppingcart->getOwnPageTypes())) {
+                return;
             }
         }
 
-        // Create form.
-        require_once(__DIR__ . '/classes/shoppingcart.php');
-        $this->shoppingcart = new ShoppingCart($page);
+        // Init the page header by merging the ShoppingCart defaults
+        if ($page->header() != null) {
+            $settings = (array)$this->config->get('plugins.shoppingcart');
+            if (isset($page->header()->shoppingcart)) {
+                $page->header()->shoppingcart = array_merge($settings, $page->header()->shoppingcart);
+            } else {
+                $page->header()->shoppingcart = $settings;
+            }
+        }
 
-        $this->enable([
-            'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
-        ]);
+        // Add translations needed in JavaScript code
+        $this->addTranslationsToFrontend();
 
-        /**
-         * Add translations needed in JavaScript code
-         */
+        // Add plugin settings as JavaScript code
+        $this->addSettingsToFrontend();
+
+        // Add the cart javascript files
+        $this->addCartJavascript();
+    }
+
+    /**
+     * Add translations needed in JavaScript code
+     */
+    private function addTranslationsToFrontend()
+    {
         $assets = $this->grav['assets'];
+
         $translations = 'if (!window.PLUGIN_SHOPPINGCART) { window.PLUGIN_SHOPPINGCART = {}; } ' . PHP_EOL . 'window.PLUGIN_SHOPPINGCART.translations = {};' . PHP_EOL;
 
-        $strings = [
-            'DETAILS',
-            'PRICE',
-            'INCLUDING_TAXES',
-            'EXCLUDING_TAXES',
-            'ADD_TO_CART',
-            'DESCRIPTION',
-            'NO_PRODUCTS_FOUND',
-            'CHECKOUT_PAGE_TITLE',
-            'CHECKOUT_STEP1_BILLING_DETAILS_TITLE',
-            'CHECKOUT_HEADLINE_YOUR_PERSONAL_DETAILS',
-            'CHECKOUT_FIRST_NAME',
-            'CHECKOUT_LAST_NAME',
-            'CHECKOUT_EMAIL',
-            'CHECKOUT_PHONE',
-            'CHECKOUT_HEADLINE_YOUR_ADDRESS',
-            'CHECKOUT_ADDRESS_1',
-            'CHECKOUT_ADDRESS_2',
-            'CHECKOUT_CITY',
-            'CHECKOUT_ZIP',
-            'CHECKOUT_COUNTRY',
-            'CHECKOUT_STATE',
-            'CHECKOUT_PROVINCE',
-            'CHECKOUT_BUTTON_GO_TO_STEP_2',
-            'CHECKOUT_STEP2_SHIPPING_PAYMENT_DETAILS_TITLE',
-            'CHECKOUT_CHOOSE_SHIPPING_METHOD',
-            'CHECKOUT_CHOOSE_SHIPPING_METHOD_DESC',
-            'CHECKOUT_CHOOSE_PAYMENT_METHOD',
-            'CHECKOUT_CHOOSE_PAYMENT_METHOD_QUESTION',
-            'CHECKOUT_PAYMENT_SECURE_NOTE',
-            'CHECKOUT_BUTTON_BACK',
-            'CHECKOUT_BUTTON_PAY',
-            'PRICE_DO_NOT_INCLUDE_TAXES',
-            'ORDER_SUCCESSFUL_PAGE_TITLE',
-            'ITEMS_PURCHASED',
-            'ORDER_SUCCESSFUL_CONFIRMATION_TEXT',
-            'ORDER_PAGE_WRONG_TOKEN_MESSAGE',
-            'LOADING_WORD_BEFORE_ORDER_CONFIRMATION_PAGE',
-            'DOWNLOAD',
-            'SHOPPING_CART',
-            'YOU_ARE_PURCHASING_THESE_ITEMS',
-            'ITEM',
-            'QUANTITY',
-            'TOTAL',
-            'REMOVE',
-            'UPDATE_QUANTITIES',
-            'CHECKOUT',
-            'INCLUDING_SHIPPING',
-            'ORDER_NOT_PAID_YET',
-            'ORDER_CANCELLED',
-            'YOU_CANCELLED_THE_ORDER',
-            'VALUE_NOT_ACCEPTABLE',
-            'QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE',
-            'CHECKOUT_PAYMENT_METHOD',
-            'CHECKOUT_SHIPPING_METHOD',
-            'THANK_YOU',
-            'OFFLINE_ORDER_TEXT',
-            'CHOOSE_AN_OPTION',
-            'EDIT_CART',
-            'QUANTITY_SHORT',
-            'NO_ITEMS_IN_CART',
-            'PRODUCT_ADDED_TO_CART',
-            'PRODUCTS_BOUGHT',
-            'SEE_THE_ORDER_DETAILS',
-            'MESSAGE_FROM_THE_CLIENT',
-            'TERMS_AND_CONDITIONS',
-            'SORRY_THE_EMAIL_IS_NOT_VALID',
-            'SORRY_THE_EMAIL_IS_NOT_VALID_DID_YOU_MEAN',
-            'SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY',
-            'PLEASE_FILL_PAYMENT_INFORMATION_TEXT_AREA',
-            'PLEASE_FILL_ALL_THE_REQUIRED_FIELDS',
-            'READ_MORE',
-            'MINIMUM_TO_PLACE_AN_ORDER',
-            'OUT_OF_STOCK',
-            'PAYPAL',
-            'CREDITCARD',
-            'ITEMS_LEFT',
-            'SUBCATEGORIES_HEADING',
-            'HAVE_A_DISCOUNT_CODE',
-            'TOTAL_AFTER_DISCOUNT',
-            'SHIPPING',
-            'TAXES',
-            'SUBTOTAL',
-            'CONTINUE_SHOPPING',
-            'DOWNLOAD_EXPIRED',
-            'TOTAL_PAID',
-            'ORDER_ID',
-            'ORDER_DATE',
-            'NO_ORDERS_FOUND',
-        ];
-
-        foreach($strings as $string) {
-            $translations .= 'PLUGIN_SHOPPINGCART.translations.' . $string .' = "' . $this->grav['language']->translate(['PLUGIN_SHOPPINGCART.' . $string]) . '"; ' . PHP_EOL;
+        $strings = $this->shoppingcart->getTranslationStringsForFrontend();
+        foreach ($strings as $string) {
+            $translations .= 'PLUGIN_SHOPPINGCART.translations.' . $string . ' = "' . $this->grav['language']->translate(['PLUGIN_SHOPPINGCART.' . $string]) . '"; ' . PHP_EOL;
         }
 
         $assets->addInlineJs($translations);
+    }
 
-        /**
-         * Add plugin settings as JavaScript code
-         */
+    /**
+     * Add plugin settings as JavaScript code
+     */
+    private function addSettingsToFrontend()
+    {
+        $assets = $this->grav['assets'];
         $settings = $this->config->get('plugins.shoppingcart');
-
         $settings_js = 'if (!window.PLUGIN_SHOPPINGCART) { window.PLUGIN_SHOPPINGCART = {}; } ' . PHP_EOL . 'window.PLUGIN_SHOPPINGCART.settings = {};' . PHP_EOL;
         $settings_js .= "PLUGIN_SHOPPINGCART.settings.baseURL = '$this->baseURL';" . PHP_EOL;
-
         $settings_js .= $this->recurse_settings('', $settings);
         $assets->addInlineJs($settings_js);
+    }
+
+    /**
+     * Adds the cart javascript
+     */
+    private function addCartJavascript()
+    {
+        /** @var Page $page */
+        $page = $this->grav['page'];
+
+        if (!$this->config->get('plugins.shoppingcart.general.load_js_globally')) {
+            if (!in_array($page->template(), $this->shoppingcart->getOwnPageTypes())) {
+                return;
+            }
+        }
+
+        $this->grav['assets']->add('plugin://shoppingcart/js/lib/store.min.js');
+        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart.js');
+        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart_lib.js');
+        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart_cart.js');
+        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart_cart_events.js');
     }
 
     /**
@@ -401,37 +352,68 @@ class ShoppingcartPlugin extends Plugin
     }
 
     /**
+     * Add assets to the frontend
+     */
+    public function onAssetsInitialized()
+    {
+        if ($this->config->get('plugins.shoppingcart.ui.use_own_css')) {
+            $this->grav['assets']->add('plugin://shoppingcart/css/shoppingcart.css');
+        }
+    }
+
+    /**
      * Set needed variables to display cart.
      */
     public function onTwigSiteVariables()
     {
-        if ($this->config->get('plugins.shoppingcart.ui.useOwnCSS')) {
-            $this->grav['assets']->add('plugin://shoppingcart/css/shoppingcart.css');
-        }
-
         $this->grav['twig']->twig_vars['shoppingcart'] = $this->shoppingcart;
     }
 
-    public function shoppingCartController()
+    public function initializeController($task, $post)
     {
-        /** @var Uri $uri */
-        $uri = $this->grav['uri'];
-        $task = !empty($_POST['task']) ? $_POST['task'] : $uri->param('task');
-        $post = !empty($_POST) ? $_POST : [];
 
         require_once __DIR__ . '/classes/controller.php';
-        $controller = new ShoppingCartController($this->grav, $task, $post);
+        $controller = new Controller($this->grav, $task, $post);
         $controller->execute();
     }
 
     /**
      * Saves the order and sends the order emails
      *
+     * @event onShoppingCartAfterSaveOrder triggered after the order is saved
+     *
      * @param $event
      */
     public function onShoppingCartSaveOrder($event)
     {
-        $this->order_id = $this->saveOrderToFilesystem($event['order']);
+        $order = $event['order'];
+        $this->order_id = $this->saveOrderToFilesystem($order);
+        $this->grav->fireEvent('onShoppingCartAfterSaveOrder', new Event([
+            'order'    => $order,
+            'order_id' => $this->order_id
+        ]));
+    }
+
+    /**
+     * Get the base URL of the site, including the language if enabled.
+     *
+     * @todo use Grav::Uri own method once merged
+     *
+     * @return string
+     */
+    public function baseIncludingLanguage()
+    {
+        $grav = Grav::instance();
+
+        // Link processing should prepend language
+        $language = $grav['language'];
+        $language_append = '';
+        if ($language->enabled()) {
+            $language_append = $language->getLanguageURLPrefix();
+        }
+
+        $base = $grav['base_url_relative'];
+        return rtrim($base . $grav['pages']->base(), '/') . $language_append;
     }
 
     /**
@@ -442,14 +424,10 @@ class ShoppingcartPlugin extends Plugin
     public function onShoppingCartReturnOrderPageUrlForAjax($event)
     {
         require_once __DIR__ . '/classes/order.php';
+
         $order = new Order($event['order']);
-
-        $language = '';
-        if ($this->grav['language']->getLanguage()) {
-            $language = '/' . $this->grav['language']->getLanguage();
-        }
-
-        echo $this->grav['base_url'] . $language . $this->orderURL  . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+        $order_page_url = $this->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+        echo $order_page_url;
         exit();
     }
 
@@ -461,14 +439,10 @@ class ShoppingcartPlugin extends Plugin
     public function onShoppingCartRedirectToOrderPageUrl($event)
     {
         require_once __DIR__ . '/classes/order.php';
+
         $order = new Order($event['order']);
-
-        $language = '';
-        if ($this->grav['language']->getLanguage()) {
-            $language = '/' . $this->grav['language']->getLanguage();
-        }
-
-        $this->grav->redirect($language . $this->orderURL . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token);
+        $order_page_url = $this->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
+        $this->grav->redirect($order_page_url);
     }
 
     /**
@@ -485,17 +459,17 @@ class ShoppingcartPlugin extends Plugin
         $ext = '.yaml';
         $filename = $prefix . $this->udate($format) . $ext;
 
-        $body = Yaml::dump(array(
-            'products' => $order->products,
-            'address' => $order->address,
-            'shipping' => $order->shipping,
-            'payment' => $order->payment,
-            'token' => $order->token,
-            'paid' => true,
-            'paid_on' => $this->udate($format),
+        $body = Yaml::dump([
+            'products'   => $order->products,
+            'data'       => $order->data,
+            'shipping'   => $order->shipping,
+            'payment'    => $order->payment,
+            'token'      => $order->token,
+            'paid'       => true,
+            'paid_on'    => $this->udate($format),
             'created_on' => $this->udate($format),
-            'amount' => $order->amount,
-        ));
+            'amount'     => $order->amount,
+        ]);
 
         $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename);
         $file->save($body);
@@ -507,7 +481,8 @@ class ShoppingcartPlugin extends Plugin
      * Create unix timestamp for storing the data into the filesystem.
      *
      * @param string $format
-     * @param int $utimestamp
+     * @param int    $utimestamp
+     *
      * @return string
      */
     private function udate($format = 'u', $utimestamp = null)
@@ -522,9 +497,14 @@ class ShoppingcartPlugin extends Plugin
         return date(preg_replace('`(?<!\\\\)u`', \sprintf('%06d', $milliseconds), $format), $timestamp);
     }
 
+    /**
+     * Get all the orders
+     *
+     * @return array
+     */
     private function getAllOrders()
     {
-        $files = [];
+        $orders = [];
         $path = DATA_DIR . 'shoppingcart';
 
         if (!file_exists($path)) {
@@ -544,29 +524,36 @@ class ShoppingcartPlugin extends Plugin
                 $yaml['created_on'] = $order_date;
             }
 
-            $files[] = $yaml;
+            $orders[] = $yaml;
         }
 
-        array_reverse($files);
+        $orders = array_reverse($orders);
 
-        return $files;
+        return $orders;
     }
 
-    private function getLastOrders($page = 0)
+    /**
+     * Get the last orders, paginated ten per page
+     *
+     * @param int $page The page to return
+     *
+     * @return object
+     */
+    private function getLastOrders($page = 1)
     {
         $number = 10;
         $orders = $this->getAllOrders();
 
         $totalAvailable = count($orders);
-        $orders = array_slice($orders, $page * $number, $number);
+        $orders = array_slice($orders, ($page - 1) * $number, $number);
         $totalRetrieved = count($orders);
 
-        return (object)array(
-            "orders" => $orders,
-            "page" => $page,
+        return (object)[
+            "orders"         => $orders,
+            "page"           => $page,
             "totalAvailable" => $totalAvailable,
             "totalRetrieved" => $totalRetrieved
-        );
+        ];
     }
 
     /**
@@ -574,7 +561,10 @@ class ShoppingcartPlugin extends Plugin
      */
     public function onAdminMenu()
     {
-        $this->grav['twig']->plugins_hooked_nav['PLUGIN_SHOPPINGCART.SHOPPING_CART'] = ['route' => $this->route, 'icon' => 'fa-shopping-cart'];
+        $this->grav['twig']->plugins_hooked_nav['PLUGIN_SHOPPINGCART.SHOPPING_CART'] = [
+            'route' => $this->route,
+            'icon'  => 'fa-shopping-cart'
+        ];
     }
 
     /**
@@ -592,5 +582,6 @@ class ShoppingcartPlugin extends Plugin
     {
         $this->grav['twig']->twig_paths[] = __DIR__ . '/admin/templates';
     }
+
 
 }

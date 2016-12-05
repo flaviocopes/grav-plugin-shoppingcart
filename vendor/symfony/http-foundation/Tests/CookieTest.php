@@ -85,6 +85,17 @@ class CookieTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expire->format('U'), $cookie->getExpiresTime(), '->getExpiresTime() returns the expire date');
     }
 
+    /**
+     * @requires PHP 5.5
+     */
+    public function testConstructorWithDateTimeImmutable()
+    {
+        $expire = new \DateTimeImmutable();
+        $cookie = new Cookie('foo', 'bar', $expire);
+
+        $this->assertEquals($expire->format('U'), $cookie->getExpiresTime(), '->getExpiresTime() returns the expire date');
+    }
+
     public function testGetExpiresTimeWithStringValue()
     {
         $value = '+1 day';
@@ -139,5 +150,14 @@ class CookieTest extends \PHPUnit_Framework_TestCase
 
         $cookie = new Cookie('foo', 'bar', 0, '/', '');
         $this->assertEquals('foo=bar; path=/; httponly', $cookie->__toString());
+    }
+
+    public function testRawCookie()
+    {
+        $cookie = new Cookie('foo', 'bar', 3600, '/', '.myfoodomain.com', false, true);
+        $this->assertFalse($cookie->isRaw());
+
+        $cookie = new Cookie('foo', 'bar', 3600, '/', '.myfoodomain.com', false, true, true);
+        $this->assertTrue($cookie->isRaw());
     }
 }

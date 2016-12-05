@@ -1,0 +1,11 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block footer %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% if config.plugins.breadcrumbs.enabled %}
+        {% include 'partials/breadcrumbs.html.twig' ignore missing %}
+    {% endif %}
+{% endblock %}

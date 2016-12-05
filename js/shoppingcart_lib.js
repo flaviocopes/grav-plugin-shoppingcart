@@ -1,4 +1,82 @@
+if (typeof window == 'undefined') window = {};
+if (typeof window.ShoppingCart == 'undefined') window.ShoppingCart = {};
+
 (function(ShoppingCart) {
+
+    /***********************************************************/
+    /* Checks if the province field is required
+    /***********************************************************/
+    ShoppingCart.provinceIsRequired = function provinceIsRequired() {
+        if (!ShoppingCart.checkout_form_fields) {
+            return false;
+        }
+        
+        var field = ShoppingCart.checkout_form_fields.filter(function(item) { if (item.name === 'province') return true; }).shift();
+
+        if (!field) {
+            return false;
+        }
+
+        if (!field.validate || !field.validate.required) {
+            return false;
+        }
+
+        if (field.validate.required === 'true') {
+            return true;
+        }
+    };
+
+    /***********************************************************/
+    /* Render a correctly parsed price with the currency at the right position
+    /***********************************************************/
+    ShoppingCart.renderPriceWithCurrency = function renderPriceWithCurrency(price) {
+        var currency_symbol = ShoppingCart.currentCurrencySymbol();
+
+        price = parseFloat(price).toFixed(2);
+
+        if (ShoppingCart.settings.ui.remove_cents_if_zero) {
+            if (price  % 1 == 0) {
+                price  = parseInt(price , 10);
+            }
+        }
+
+        if (ShoppingCart.showCurrencyBeforePrice()) {
+            return '<span class="currency">' + currency_symbol + '</span> ' + price;
+        } else {
+            return price + ' <span class="currency">' + currency_symbol + '</span>';
+        }
+    };
+
+    ShoppingCart.isMobile = function isMobile() {
+        var isAndroid = function() {
+            return navigator.userAgent.match(/Android/i);
+        };
+
+        var isBlackBerry = function() {
+            return navigator.userAgent.match(/BlackBerry/i);
+        };
+
+        var isiOS = function() {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        };
+
+        var isOpera = function() {
+            return navigator.userAgent.match(/Opera Mini/i);
+        };
+
+        var isWindows = function() {
+            return navigator.userAgent.match(/IEMobile/i);
+        };
+
+        var isAny = function() {
+            if (isAndroid() || isBlackBerry() || isiOS() || isOpera() || isWindows()) {
+                return true;
+            }
+            return false;
+        };
+
+        return isAny();
+    };
 
     /***********************************************************/
     /* Gets a country code
@@ -379,10 +457,10 @@
         {"code":"CVE","symbol":"Esc","name":"Cape Verdean escudo"},
         {"code":"CZK","symbol":"K\u010d","name":"Czech koruna"},
         {"code":"DJF","symbol":"Fdj","name":"Djiboutian franc"},
-        {"code":"DKK","symbol":"Kr","name":"Danish krone"},
+        {"code":"DKK","symbol":"DKK","name":"Danish krone"},
         {"code":"DOP","symbol":"RD$","name":"Dominican peso"},
         {"code":"DZD","symbol":"\u062f.\u062c","name":"Algerian dinar"},
-        {"code":"EEK","symbol":"KR","name":"Estonian kroon"},
+        {"code":"EEK","symbol":"EEK","name":"Estonian kroon"},
         {"code":"EGP","symbol":"\u00a3","name":"Egyptian pound"},
         {"code":"ERN","symbol":"Nfa","name":"Eritrean nakfa"},
         {"code":"ETB","symbol":"Br","name":"Ethiopian birr"},
@@ -408,7 +486,7 @@
         {"code":"INR","symbol":"\u2089","name":"Indian rupee"},
         {"code":"IQD","symbol":"\u062f.\u0639","name":"Iraqi dinar"},
         {"code":"IRR","symbol":"IRR","name":"Iranian rial"},
-        {"code":"ISK","symbol":"kr","name":"Icelandic kr\u00f3na"},
+        {"code":"ISK","symbol":"ISK","name":"Icelandic kr\u00f3na"},
         {"code":"JMD","symbol":"J$","name":"Jamaican dollar"},
         {"code":"JOD","symbol":"JOD","name":"Jordanian dinar"},
         {"code":"JPY","symbol":"\u00a5","name":"Japanese yen"},
@@ -446,7 +524,7 @@
         {"code":"NAD","symbol":"N$","name":"Namibian dollar"},
         {"code":"NGN","symbol":"\u20a6","name":"Nigerian naira"},
         {"code":"NIO","symbol":"C$","name":"Nicaraguan c\u00f3rdoba"},
-        {"code":"NOK","symbol":"kr","name":"Norwegian krone"},
+        {"code":"NOK","symbol":"NOK","name":"Norwegian krone"},
         {"code":"NPR","symbol":"NRs","name":"Nepalese rupee"},
         {"code":"NZD","symbol":"NZ$","name":"New Zealand dollar"},
         {"code":"OMR","symbol":"OMR","name":"Omani rial"},
@@ -465,7 +543,7 @@
         {"code":"SBD","symbol":"SI$","name":"Solomon Islands dollar"},
         {"code":"SCR","symbol":"SR","name":"Seychellois rupee"},
         {"code":"SDG","symbol":"SDG","name":"Sudanese pound"},
-        {"code":"SEK","symbol":"kr","name":"Swedish krona"},
+        {"code":"SEK","symbol":"SEK","name":"Swedish krona"},
         {"code":"SGD","symbol":"S$","name":"Singapore dollar"},
         {"code":"SHP","symbol":"\u00a3","name":"Saint Helena pound"},
         {"code":"SLL","symbol":"Le","name":"Sierra Leonean leone"},
@@ -502,3 +580,7 @@
     ];
 
 })(window.ShoppingCart);
+
+if (typeof exports !== 'undefined') {
+    exports.window = window;
+}

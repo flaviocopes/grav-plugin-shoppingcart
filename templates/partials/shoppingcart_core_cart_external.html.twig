@@ -1,0 +1,15 @@
+{# Include this Twig in other template files to correctly show the cart on them #}
+
+{% if config.plugins.shoppingcart.general.load_js_globally == false %}
+    Turn on the "Load Cart JavaScript globally" option to show the cart on this page
+{% else %}
+    <script>
+    (function() {
+        ShoppingCart.currentPageIsExternal = true;
+    }());
+    </script>
+
+    {% if page.template not in shoppingcart.getOwnPageTypes %}
+        {% include 'partials/shoppingcart_core_cart.html.twig' %}
+    {% endif %}
+{% endif %}

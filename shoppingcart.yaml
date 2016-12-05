@@ -1,56 +1,45 @@
 enabled: true
-
-test_mode: true
-
 general:
-    currency: 'USD' # The shop currency
-    defaultCountry: 'US' # Default country to be shown during Checkout
-    productTaxes: 'excluded'
-
+  currency: USD
+  default_country: US
+  product_taxes: excluded
+  load_js_globally: true
 shipping:
-    methods:
-        -
-            name: Favorite countries
-            allowedCountries: ['IT', 'EN', 'US']
-            price: 10
-        -
-            name: All other countries
-            allowedCountries: ['*']
-            price: 20
-        -
-            name: 'Ordinary shipping'
-            price: 10
-            allowedCountries: ['*']
-
+  methods:
+    -
+      name: 'All countries'
+      allowed_countries:
+        - '*'
+      price: '0'
 urls:
-    checkoutURL: /checkout # The checkout page URL. Change if conflicting with another route
-    saveOrderURL: /save_order # The save order page URL. Change if conflicting with another route
-    orderURL: /order # The order visualization page URL. Change if conflicting with another route
-
+  checkout_url: /checkout
+  save_order_url: /save_order
+  order_url: /order
 ui:
-    currencySymbolPosition: 'after' # Show currency `before` of `after` the price
-    useOwnCSS: true # Add our own CSS. Disable if you're using your own
-
+  currency_symbol_position: before
+  remove_cents_if_zero: true
+  use_own_css: true
+  image_size_product: 400
+  image_size_cart: 50
 cart:
-    allowEditingQuantityFromCart: true # Enable to allow editing a product quantity from the cart
-    maximumTotalQuantityValue: # Set if you want a global limit to the ordered products
-    addShippingAndTaxesCostToTotal: true #
-
-countries: # Set countries where people can buy from, and corresponding taxes
-    -
-        readableName: 'United States'
-        name: 'US'
-        tax_percentage: '10' # If taxes are not factored in the product price, add them at checkout with this percentage
-        allow: true
-    -
-        readableName: 'All unlisted countries'
-        name: '*' # `*` identifies all countries
-        tax_percentage: '0' # If taxes are not factored in the product price, add them at checkout with this percentage
-        allow: true
+  allow_editing_quantity_from_cart: true
+  timeout: 180
+  add_shipping_and_taxes_cost_to_total: true
+  maximum_total_quantity_value:
+  add_product_thumbnail: true
+countries:
+  -
+    name: US
+    allow: '1'
+    tax_percentage: '10'
+  -
+    name: '*'
+    allow: '1'
 
 checkout_form:
     name: checkout
     fields:
+    buttons:
         -
             type: display
             content: PLUGIN_SHOPPINGCART.CHECKOUT_HEADLINE_YOUR_PERSONAL_DETAILS
@@ -85,18 +74,20 @@ checkout_form:
             markdown: true
 
         -
-            name: telephone
+            name: address
             type: text
-            label: PLUGIN_SHOPPINGCART.CHECKOUT_ADDRESS_1
-            classes: js__billing__address1
+            label: PLUGIN_SHOPPINGCART.CHECKOUT_ADDRESS
+            classes: js__billing__address
             validate:
                 required: true
 
         -
-            name: address
+            name: telephone
             type: text
-            label: PLUGIN_SHOPPINGCART.CHECKOUT_ADDRESS_2
-            classes: js__billing__address2
+            label: PLUGIN_SHOPPINGCART.CHECKOUT_PHONE
+            classes: js__billing__telephone
+            validate:
+                required: true
 
         -
             name: city
@@ -141,6 +132,7 @@ checkout_form:
         -
             type: display
             content: PLUGIN_SHOPPINGCART.CHECKOUT_SHIPPING_METHOD
+            ignore: true
             markdown: true
 
         -
@@ -148,7 +140,7 @@ checkout_form:
             type: select
             label: PLUGIN_SHOPPINGCART.CHECKOUT_CHOOSE_SHIPPING_METHOD_DESC
             classes: js__shipping__method
-            outerclasses: checkout-choose-shipping-block
+            outerclasses: js__checkout-choose-shipping-block
             id: js__shipping__method
             validate:
                 required: true
@@ -157,33 +149,23 @@ checkout_form:
             type: display
             content: PLUGIN_SHOPPINGCART.CHECKOUT_PAYMENT_METHOD
             markdown: true
-            outerclasses: checkout-choose-payment-block-title
+            ignore: true
+            outerclasses: js__checkout-choose-payment-block-title
 
         -
             name: payment_method
             type: select
+            ignore: true
             label: PLUGIN_SHOPPINGCART.CHECKOUT_CHOOSE_PAYMENT_METHOD_DESC
             classes: js__payment__method
-            outerclasses: checkout-choose-payment-block
+            outerclasses: js__checkout-choose-payment-block
             id: js__payment__method
 
         -
             name: agree_to_terms
             type: checkbox
+            ignore: true
             label: PLUGIN_SHOPPINGCART.TERMS_AND_CONDITIONS
-            classes: js__shipping__method
-            outerclasses: checkout-choose-shipping-block
-            id: js__shipping__method
             validate:
                 required: true
-
-
-    buttons:
-        -
-            type: submit
-            value: PLUGIN_SHOPPINGCART.CHECKOUT_BUTTON_PAY
-
-
-
-
 

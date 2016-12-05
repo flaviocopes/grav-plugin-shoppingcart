@@ -1,15 +1,15 @@
 <?php
-namespace Grav\Plugin;
+namespace Grav\Plugin\ShoppingCart;
 
-use Grav\Common\File\CompiledYamlFile;
 use Grav\Common\Grav;
-use Grav\Common\User\User;
-use Grav\Common\Page\Page;
-use Symfony\Component\Yaml\Yaml;
 use RocketTheme\Toolbox\Event\Event;
-use RocketTheme\Toolbox\File\File;
+use RocketTheme\Toolbox\Session\Message;
 
-class ShoppingCartController
+/**
+ * Class Controller
+ * @package Grav\Plugin\ShoppingCart
+ */
+class Controller
 {
     /**
      * @param Grav   $grav
@@ -44,17 +44,15 @@ class ShoppingCartController
         $success = false;
         $method = 'task' . ucfirst($this->task);
 
-        if (!method_exists($this, $method)) {
-            throw new \RuntimeException('Page Not Found', 404);
-        }
+        if (method_exists($this, $method)) {
+            try {
+                $success = call_user_func([$this, $method]);
+            } catch (\RuntimeException $e) {
+                $this->setMessage($e->getMessage());
+            }
 
-        try {
-            $success = call_user_func(array($this, $method));
-        } catch (\RuntimeException $e) {
-            $this->setMessage($e->getMessage());
+            return $success;
         }
-
-        return $success;
     }
 
     /**

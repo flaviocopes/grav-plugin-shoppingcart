@@ -125,42 +125,44 @@
     border-radius: 100%;
     color: #fff; }
 
-#shoppingcart-detail {
+.shoppingcart-product-container {
   padding-top: 50px; }
-  #shoppingcart-detail h1, #shoppingcart-detail h2, #shoppingcart-detail h3, #shoppingcart-detail h4 {
+  .shoppingcart-product-container h1, .shoppingcart-product-container h2, .shoppingcart-product-container h3, .shoppingcart-product-container h4 {
     line-height: 1.2; }
-  #shoppingcart-detail .shoppingcart-info, #shoppingcart-detail .shoppingcart-details {
+  .shoppingcart-product-container .shoppingcart-info, .shoppingcart-product-container .shoppingcart-details {
     width: 50%; }
     @media only all and (max-width: 47.938em) {
-      #shoppingcart-detail .shoppingcart-info, #shoppingcart-detail .shoppingcart-details {
+      .shoppingcart-product-container .shoppingcart-info, .shoppingcart-product-container .shoppingcart-details {
         width: 100%; } }
-  #shoppingcart-detail .shoppingcart-info {
+  .shoppingcart-product-container .shoppingcart-info {
     text-align: center; }
-  #shoppingcart-detail .shoppingcart-details {
+  .shoppingcart-product-container .shoppingcart-details {
     padding-left: 30px; }
-    #shoppingcart-detail .shoppingcart-details h1 {
+    .shoppingcart-product-container .shoppingcart-details h1 {
       text-align: left; }
-  #shoppingcart-detail .shoppingcart-thumb .shoppingcart-price {
+  .shoppingcart-product-container .shoppingcart-thumb .shoppingcart-price {
     height: 100px;
     line-height: 100px;
     width: 100px;
     font-size: 1.5rem; }
-  #shoppingcart-detail .shoppingcart-quantity-chooser {
+  .shoppingcart-product-container .shoppingcart-quantity-chooser {
     text-align: center; }
-    #shoppingcart-detail .shoppingcart-quantity-chooser label {
+    .shoppingcart-product-container .shoppingcart-quantity-chooser label {
       display: inline; }
-    #shoppingcart-detail .shoppingcart-quantity-chooser input {
+    .shoppingcart-product-container .shoppingcart-quantity-chooser input {
       display: inline;
       width: 20%;
       margin-left: 20px; }
-
-a.btn {
-  cursor: pointer; }
 
 .hidden {
   display: none; }
 
 .inline {
   display: inline; }
+
+.js__shoppingcart-cart a.btn {
+  cursor: pointer; }
+.js__shoppingcart-cart td, .js__shoppingcart-cart a {
+  vertical-align: top; }
 
 /*# sourceMappingURL=shoppingcart.css.map */

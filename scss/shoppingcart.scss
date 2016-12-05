@@ -114,7 +114,7 @@
      }
  }
 
- #shoppingcart-detail {
+ .shoppingcart-product-container {
      padding-top: 50px;
 
      h1, h2, h3, h4 {
@@ -159,16 +159,22 @@
     }
 }
 
-////////
-// Cart
-a.btn {
-    cursor: pointer;
-}
-
 .hidden {
     display: none;
 }
 
 .inline {
     display: inline;
+}
+
+.js__shoppingcart-cart {
+
+    a.btn {
+        cursor: pointer;
+    }
+
+
+    td, a {
+        vertical-align: top;
+    }
 }

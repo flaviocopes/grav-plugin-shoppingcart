@@ -1,6 +1,0 @@
-{% set currencySymbol = shoppingcart.getSymbolOfCurrencyCode(config.plugins.shoppingcart.general.currency) %}
-{% if config.plugins.shoppingcart.ui.currencySymbolPosition == 'after' %}
-    {{ page.header.price }}{{ currencySymbol }}
-{% else %}
-    {{ currencySymbol }}{{ page.header.price }}
-{% endif %}

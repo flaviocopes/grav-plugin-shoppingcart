@@ -1,28 +1,419 @@
 name: Shopping Cart
-version: 1.0.7
+version: 1.1.0
 description: "This plugin turns your Grav site into a shopping cart"
 icon: shopping-cart
 author:
   name: Flavio Copes
   email: copesc@gmail.com
-  url: http://flaviocopes.com
-homepage: http://gravshoppingcart.com/
-# demo: http://demo.getgrav.org/shop-skeleton
+  url: https://flaviocopes.com
+homepage: https://gravcart.com/
+demo: https://demo.gravcart.com/
 keywords: shoppingcart, ecommerce, e-commerce, plugin, shop, cart
-readme: https://github.com/flaviocopes/grav-plugin-shoppingcart/blob/develop/README.md
+readme: https://gravcart.com/docs
 bugs: https://github.com/flaviocopes/grav-plugin-shoppingcart/issues
 license: MIT
+
+dependencies:
+  - { name: grav, version: '~1.1' }
 
 form:
   validation: loose
   fields:
-    enabled:
-      type: toggle
-      label: PLUGIN_ADMIN.PLUGIN_STATUS
-      highlight: 1
-      default: 0
-      options:
-        1: PLUGIN_ADMIN.ENABLED
-        0: PLUGIN_ADMIN.DISABLED
-      validate:
-        type: bool
+
+    tabs:
+      type: tabs
+      active: 1
+
+      fields:
+        -
+          type: tab
+          title: General
+
+          fields:
+
+            enabled:
+              label: PLUGIN_ADMIN.PLUGIN_STATUS
+              type: toggle
+              highlight: 1
+              default: 0
+              options:
+                1: PLUGIN_ADMIN.ENABLED
+                0: PLUGIN_ADMIN.DISABLED
+              validate:
+                type: bool
+
+            load_js_globally:
+              label: Load Cart JavaScript globally
+              help: Enable if you want the cart to appear on pages different than the shop pages
+              type: toggle
+              highlight: 1
+              default: 0
+              options:
+                1: PLUGIN_ADMIN.YES
+                0: PLUGIN_ADMIN.NO
+              validate:
+                type: bool
+
+            section_basic:
+              type: section
+              title: Basic Shop Configuration
+              underline: true
+
+              fields:
+
+                general.currency:
+                  label: Currency
+                  type: select
+                  help: The shop currency
+                  '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getCurrencies'
+                  default: 'USD'
+                  validate:
+                    type: string
+
+                general.default_country:
+                  label: Default Country
+                  type: select
+                  help: Default country to be shown during Checkout
+                  '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getCountries'
+                  default: 'US'
+                  validate:
+                    type: string
+
+                general.product_taxes:
+                  label: Product taxes
+                  type: toggle
+                  help: Taxes included in the price, or must be calculated?
+                  options:
+                    included: Included
+                    excluded: Excluded
+                  highlight: included
+                  default: included
+                  validate:
+                    type: string
+
+            section_cart:
+              type: section
+              title: Cart Configuration
+              underline: true
+
+              fields:
+                cart.allow_editing_quantity_from_cart:
+                  label: Allow editing quantity from cart
+                  help: Enable to allow editing a product quantity from the cart
+                  type: toggle
+                  highlight: 1
+                  default: 0
+                  options:
+                    1: PLUGIN_ADMIN.ENABLED
+                    0: PLUGIN_ADMIN.DISABLED
+                  validate:
+                    type: bool
+
+                cart.maximum_total_quantity_value:
+                  label: Maximum total quantity value
+                  help: Set if you want a global limit to the ordered products
+                  type: text
+                  default: ''
+                  validate:
+                    type: int
+
+                cart.timeout:
+                  label: Empty the cart after the set amount of minutes
+                  help: Expressed in minutes. Set a high value to retain the cart content for how long you prefer. Defaults to 3 hours
+                  type: text
+                  default: 180
+                  validate:
+                    type: int
+
+                cart.add_shipping_and_taxes_cost_to_total:
+                  label: Add shipping and taxes cost to total
+                  type: toggle
+                  highlight: 1
+                  default: 0
+                  options:
+                    1: PLUGIN_ADMIN.ENABLED
+                    0: PLUGIN_ADMIN.DISABLED
+                  validate:
+                    type: bool
+
+                cart.add_product_thumbnail:
+                  label: Add product thumbnail to the cart
+                  type: toggle
+                  highlight: 1
+                  default: 0
+                  options:
+                    1: PLUGIN_ADMIN.ENABLED
+                    0: PLUGIN_ADMIN.DISABLED
+                  validate:
+                    type: bool
+
+            section_urls:
+              type: section
+              title: URLs Configuration
+              underline: true
+
+              fields:
+
+                urls.checkout_url:
+                  label: Checkout URL
+                  type: text
+                  help: The checkout page URL. Change if conflicting with another route
+                  default: '/checkout'
+                  validate:
+                    type: string
+
+                urls.save_order_url:
+                  label: Save Order URL
+                  type: text
+                  help: The save order page URL. Change if conflicting with another route
+                  default: '/save_order'
+                  validate:
+                    type: string
+
+                urls.order_url:
+                  label: Visualize Order URL
+                  type: text
+                  help: The order visualization page URL. Change if conflicting with another route
+                  default: '/order'
+                  validate:
+                    type: string
+
+
+
+        -
+          type: tab
+          title: User Interface
+
+          fields:
+
+            ui.currency_symbol_position:
+              label: Currenty Symbol Position
+              help: Show currency `before` of `after` the price
+              type: toggle
+              highlight: before
+              default: before
+              options:
+                before: Before
+                after: After
+              validate:
+                type: string
+
+            ui.remove_cents_if_zero:
+              label: Remove cents if zero
+              help: Hide `.00` to prices. Only show if different than zero
+              type: toggle
+              highlight: 0
+              default: 0
+              options:
+                1: PLUGIN_ADMIN.YES
+                0: PLUGIN_ADMIN.NO
+              validate:
+                type: bool
+
+
+            ui.use_own_css:
+              label: Use plugin's CSS
+              help: Add Shopping Cart plugin own CSS. Disable if you're adding your CSS
+              type: toggle
+              highlight: 1
+              default: 1
+              options:
+                1: PLUGIN_ADMIN.ENABLED
+                0: PLUGIN_ADMIN.DISABLED
+              validate:
+                type: bool
+
+            ui.image_size_product:
+              label: Size of the image shown in the product page
+              help: Determines the maximum value of height or width. Expressed in pixels
+              type: text
+              default: 400
+              validate:
+                type: int
+
+            ui.image_size_cart:
+              label: Size of the image thumbnail added to the cart
+              help: Determines the maximum value of height or width. Expressed in pixels
+              type: text
+              default: 50
+              validate:
+                type: int
+
+        -
+          type: tab
+          title: Countries
+
+          fields:
+            countries:
+              type: list
+              label: Countries settings
+              help: Set countries where people can buy from, and corresponding taxes. Set specific countries as disabled.
+
+              fields:
+
+                .name:
+                  label: Country
+                  type: select
+                  classes: fancy
+                  '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getShippingCountries'
+                  validate:
+                    type: commalist
+
+                .allow:
+                  label: Allow
+                  type: toggle
+                  highlight: 1
+                  default: 1
+                  options:
+                    1: PLUGIN_ADMIN.ENABLED
+                    0: PLUGIN_ADMIN.DISABLED
+                  validate:
+                    type: bool
+
+                .tax_percentage:
+                  label: Tax percentage
+                  type: text
+                  help: The tax percentage for this country
+                  validate:
+                      type: int
+
+        -
+          type: tab
+          title: Shipping
+
+          fields:
+
+            shipping:
+              type: section
+              title: Shipping
+              underline: true
+
+              fields:
+                shipping.methods:
+                  type: list
+                  label: Shipping Methods available
+
+                  fields:
+
+                    .name:
+                      label: Name
+                      help: The label for this shipping option, to be shown to the user
+                      type: text
+
+                    .allowed_countries:
+                      label: Allowed Countries
+                      type: select
+                      classes: fancy
+                      multiple: true
+                      '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getShippingCountries'
+                      validate:
+                        type: commalist
+
+                    .price:
+                      label: Price
+                      type: text
+                      help: The price of this shipping option
+                      validate:
+                          type: int
+
+        -
+          type: tab
+          title: Checkout Form
+
+          fields:
+
+            checkout_form.fields:
+              type: list
+              label: Checkout Form Fields
+
+              fields:
+
+                .type:
+                  label: Type
+                  help:
+                  type: select
+                  default: text
+                  options:
+                    text: text
+                    display: display
+                    select: select
+                    checkbox: checkbox
+                    email: email
+                    toggle: toggle
+                  validate:
+                    type: string
+
+                .validate:
+                  toggleable: true
+                  type: array
+                  label: Validate
+                  help:
+                  placeholder_key: value
+                  placeholder_value: label
+
+                .name:
+                  toggleable: true
+                  label: Name
+                  help:
+                  type: text
+
+                .label:
+                  toggleable: true
+                  label: Label
+                  help:
+                  type: text
+
+                .help:
+                  toggleable: true
+                  label: Help
+                  help:
+                  type: text
+
+                .ignore:
+                  label: Ignore
+                  type: toggle
+                  highlight: 0
+                  default: 0
+                  options:
+                    1: PLUGIN_ADMIN.YES
+                    0: PLUGIN_ADMIN.NO
+                  validate:
+                    type: bool
+
+                .classes:
+                  toggleable: true
+                  label: Classes
+                  help:
+                  type: text
+
+                .id:
+                  toggleable: true
+                  label: Id
+                  help:
+                  type: text
+
+                .outerclasses:
+                  toggleable: true
+                  label: Outer classes
+                  help:
+                  type: text
+
+                .content:
+                  toggleable: true
+                  label: Content
+                  help:
+                  type: text
+
+                .markdown:
+                  toggleable: true
+                  label: Content includes Markdown?
+                  help:
+                  type: text
+
+                .options:
+                  toggleable: true
+                  type: array
+                  label: Options
+                  help:
+                  placeholder_key: value
+                  placeholder_value: label
