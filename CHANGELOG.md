@@ -1,3 +1,9 @@
+# v1.1.x
+## xx-12-2016
+
+1. [](#bugfix)
+    * Also store taxes in the order data
+
 # v1.1.0
 ## 05-12-2016
 

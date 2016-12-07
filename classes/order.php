@@ -31,6 +31,7 @@ class Order
             if (isset($order['shipping'])) $this->data->set('shipping', $order['shipping']);
             if (isset($order['payment'])) $this->data->set('payment', $order['payment']);
             if (isset($order['amount'])) $this->data->set('amount', $order['amount']);
+            if (isset($order['taxes'])) $this->data->set('taxes', $order['taxes']);
             if (isset($order['token'])) $this->data->set('token', $order['token']);
             if (isset($order['extra'])) $this->data->set('extra', $order['extra']);
             if (isset($order['gateway'])) $this->data->set('gateway', $order['gateway']);
