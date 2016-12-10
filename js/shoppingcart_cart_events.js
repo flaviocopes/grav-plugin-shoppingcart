@@ -77,7 +77,7 @@
         var product = {};
         var currentProduct = [];
         var clickedId = jQuery(this).data('id');
-        
+
         button.attr('disabled', 'disabled');
 
         if (ShoppingCart.currentPageIsProducts) {
@@ -86,7 +86,7 @@
             });
             ShoppingCart.currentProduct = currentProduct[0];
         }
-        
+
         // Deep copy
         // var product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
         product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
@@ -171,8 +171,26 @@
             }, 200);
         };
 
+        /***********************************************************/
+        /* Populate the cart counter (if present) at page load
+        /***********************************************************/
+        var populateCartCounter = function populateCartCounter() {
+            var interval = setInterval(function() {
+                if (ShoppingCart.items) {
+                    clearInterval(interval);
+                    setTimeout(function() {
+                        var count = ShoppingCart.items.length;
+                        if (count > 0) {
+                            $('.js__shoppingcart-counter').append('(' + count + ')');
+                        }
+                    }, 300);
+                }
+            }, 200);
+        };
+
         initializeCart();
         renderCart();
+        populateCartCounter();
     });
 
 
