@@ -469,6 +469,7 @@ class ShoppingcartPlugin extends Plugin
             'paid_on'    => $this->udate($format),
             'created_on' => $this->udate($format),
             'amount'     => $order->amount,
+            'taxes'      => $order->taxes,
         ]);
 
         $file = File::instance(DATA_DIR . 'shoppingcart' . '/' . $filename);
