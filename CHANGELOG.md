@@ -1,5 +1,5 @@
-# v1.1.x
-## xx-12-2016
+# v1.1.1
+## 11-12-2016
 
 1. [](#new)
     * Append the number of items to any item with class `js__shoppingcart-counter`. Allows to have an icon in the menu with the cart, which shows `(2)` if for example there are 2 items in the cart
