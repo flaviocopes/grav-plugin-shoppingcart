@@ -1,3 +1,9 @@
+# v1.1.2
+## 29-01-2017
+
+1. [](#bugfix)
+    * Fix issue in the default configuration for the checkout form
+
 # v1.1.1
 ## 11-12-2016
 
