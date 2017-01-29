@@ -1,5 +1,5 @@
 # v1.1.2
-## xx-xx-2017
+## 29-01-2017
 
 1. [](#bugfix)
     * Fix issue in the default configuration for the checkout form
