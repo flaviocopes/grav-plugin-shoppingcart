@@ -1,3 +1,9 @@
+# v1.1.3
+## 02-02-2017
+
+1. [](#bugfix)
+    * Temp removal of the checkout form editing in Admin, due to a problem with the blueprint
+
 # v1.1.2
 ## 29-01-2017
 
