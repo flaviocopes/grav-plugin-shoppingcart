@@ -3,6 +3,7 @@
 
 1. [](#bugfix)
     * Fix trying to validate shipping method when just one shipping method is available
+    * Make sure when using the PayPal plugin, password and signature are not included in the javascript settings
 
 # v1.1.3
 ## 02-02-2017
