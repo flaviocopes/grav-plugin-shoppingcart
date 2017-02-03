@@ -141,8 +141,6 @@ checkout_form:
             classes: js__shipping__method
             outerclasses: js__checkout-choose-shipping-block
             id: js__shipping__method
-            validate:
-                required: true
 
         -
             type: display
