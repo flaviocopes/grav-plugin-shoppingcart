@@ -1,3 +1,9 @@
+# v1.1.4
+## 03-02-2017
+
+1. [](#bugfix)
+    * Fix trying to validate shipping method when just one shipping method is available
+
 # v1.1.3
 ## 02-02-2017
 
