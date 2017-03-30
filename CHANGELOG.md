@@ -1,3 +1,9 @@
+# v1.1.5
+## 30-03-2017
+
+1. [](#bugfix)
+    * Fix [#49](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/49) NaN in pricing for over 999
+
 # v1.1.4
 ## 03-02-2017
 
