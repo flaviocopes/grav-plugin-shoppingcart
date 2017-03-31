@@ -517,7 +517,7 @@
         if (ShoppingCart.currentPageIsProduct) {
             row += '<td class="goback"><a href="#" class="btn btn-success js__shoppingcart__continue-shopping">' + window.PLUGIN_SHOPPINGCART.translations.CONTINUE_SHOPPING + '</a></td>';
         } else {
-            row += '<td class="empty"></td>';
+            row += '<td class="empty"><strong>' + window.PLUGIN_SHOPPINGCART.translations.SUBTOTAL + '</strong></td>';
         }
 
         row += '<td class="empty"></td>';
