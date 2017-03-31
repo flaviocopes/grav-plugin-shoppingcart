@@ -1,3 +1,9 @@
+# v1.1.6
+## xx-04-2017
+
+1. [](#bugfix)
+    * Fix [#53](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/53) Fix validating as commalist breaks Country choosing
+
 # v1.1.5
 ## 31-03-2017
 
