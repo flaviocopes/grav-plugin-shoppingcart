@@ -37,7 +37,7 @@
             }
         }
 
-        for (index in ShoppingCart.settings.shipping.methods) {
+        for (index in ShoppingCart.settings.countries) {
             item = ShoppingCart.settings.countries[index];
             if (typeof item !== 'undefined') {
                 if (item.allow === 'false' || item.allow === false) {
