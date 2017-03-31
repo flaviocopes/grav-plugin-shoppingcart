@@ -256,7 +256,7 @@ form:
                   classes: fancy
                   '@data-options': '\Grav\Plugin\ShoppingCart\ShoppingCart::getShippingCountries'
                   validate:
-                    type: commalist
+                    required: true
 
                 .allow:
                   label: Allow
