@@ -88,7 +88,6 @@
         }
 
         // Deep copy
-        // var product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
         product = jQuery.extend(true, {}, ShoppingCart.currentProduct);
         ShoppingCart.addProduct(product, quantity);
         button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);

@@ -234,3 +234,83 @@ it:
     ORDERS: Ordini
     ORDER_DETAILS: Dettagli ordine
     PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Per favore compila tutti i campi richiesti
+
+cs:
+  PLUGIN_SHOPPINGCART:
+    DETAILS: Podrobnosti
+    PRICE: Cena
+    INCLUDING_TAXES: S daněmi
+    EXCLUDING_TAXES: Bez daní
+    ADD_TO_CART: Přidat do košíku
+    DESCRIPTION: Popis
+    NO_PRODUCTS_FOUND: Produkty nebyly nalezeny
+    CHECKOUT_PAGE_TITLE: Zaplatit
+    CHECKOUT_HEADLINE_YOUR_PERSONAL_DETAILS: "## Vaše osobní údaje"
+    CHECKOUT_FIRST_NAME: Jméno
+    CHECKOUT_LAST_NAME: Příjmení
+    CHECKOUT_EMAIL: E-mailová adresa
+    CHECKOUT_PHONE: Telefon
+    CHECKOUT_HEADLINE_YOUR_ADDRESS: "## Vaše adresa"
+    CHECKOUT_ADDRESS: Ulice
+    CHECKOUT_CITY: Město
+    CHECKOUT_ZIP: PSČ
+    CHECKOUT_COUNTRY: Země
+    CHECKOUT_STATE: Stát
+    CHECKOUT_PROVINCE: Okres
+    CHECKOUT_CHOOSE_SHIPPING_METHOD: Vyberte způsob doručení
+    CHECKOUT_CHOOSE_SHIPPING_METHOD_DESC: Prosím vyberte způsob, jak vám bude objednávka doručena.
+    CHECKOUT_CHOOSE_PAYMENT_METHOD: Vyberte způsob platby
+    CHECKOUT_CHOOSE_PAYMENT_METHOD_DESC: Prosím vyberte způsob platby
+    CHECKOUT_PAYMENT_SECURE_NOTE: Všechny transakce jsou zabezpečeny a zašifrovány a údaje o vaší platební kartě nejsou uchovávány. Pro více informací si prosím prohlédněte naše zásady soukromí a bezpečnosti.
+    CHECKOUT_BUTTON_BACK: Zpět
+    CHECKOUT_BUTTON_PAY: Zaplatit
+    PRICE_DO_NOT_INCLUDE_TAXES: Ceny neobsahují daně. Ty jsou vypočítány u placení po výběru země doručení.
+    ORDER_SUCCESSFUL_PAGE_TITLE: Objednávka dokončena
+    ITEMS_PURCHASED: Items purchased:
+    ORDER_SUCCESSFUL_CONFIRMATION_TEXT: Děkujeme za vaši objednávku! Ta bude následně zpracována a přijde vám e-mailem oznámení v momentě jejího odeslání.
+    ORDER_PAGE_WRONG_TOKEN_MESSAGE: Tuto stránku vám nemůžeme zobrazit. Jste si jist, že je zadaná adresa správně?
+    LOADING_WORD_BEFORE_ORDER_CONFIRMATION_PAGE: Nahrávám...
+    DOWNLOAD: Stáhnout
+    SHOPPING_CART: Nákupní košík
+    YOU_ARE_PURCHASING_THESE_ITEMS: You're purchasing these items:
+    ITEM: Položka
+    QUANTITY: Množství
+    TOTAL: Celkem
+    REMOVE: Odstranit
+    UPDATE_QUANTITIES: Změnit množství
+    CHECKOUT: Zaplatit
+    INCLUDING_SHIPPING: Cena s dopravou
+    ORDER_CANCELLED: Objednávka zrušena
+    YOU_CANCELLED_THE_ORDER: Objednávka byla vámi zrušena
+    VALUE_NOT_ACCEPTABLE: Hodnota v poli pro množství není povolena
+    QUANTITY_EXCEEDS_MAX_ALLOWED_VALUE: Množství překračuje povolenou hodnotu
+    CHECKOUT_PAYMENT_METHOD: "## Způsob platby"
+    CHECKOUT_SHIPPING_METHOD: "## Způsob dopravy"
+    THANK_YOU: Děkujeme za vaši objednávku
+    CHOOSE_AN_OPTION: Vyberte jednu z možností
+    EDIT_CART: Upravit košík
+    QUANTITY_SHORT: Množ.
+    NO_ITEMS_IN_CART: Položky nebyly zatím přidány do košíku
+    PRODUCT_ADDED_TO_CART: Položka přidána do košíku
+    PRODUCTS_BOUGHT: Zakoupené položky
+    SEE_THE_ORDER_DETAILS: Více informací o objednávce
+    TERMS_AND_CONDITIONS: "Přijmout smluvní podmínky"
+    SORRY_CANNOT_SHIP_TO_YOUR_COUNTRY: Omlouváme se, ale do vaší země nemůžeme doručovat
+    READ_MORE: Více
+    MINIMUM_TO_PLACE_AN_ORDER: Minimum to place an order:
+    PAYPAL: PayPal
+    CREDITCARD: Kreditní karta
+    SHIPPING: Doprava
+    TAXES: Daně
+    SUBTOTAL: Mezisoučet
+    CONTINUE_SHOPPING: Pokračovat v nákupu
+    DOWNLOAD_EXPIRED: Stažení vypršelo
+    TOTAL_PAID: Celkem
+    ORDER_ID: Číslo objednávky
+    ORDER_DATE: Seřadit podle data
+    NO_ORDERS_FOUND: Objednávky nebyly nalezeny
+    MANAGE_ORDERS: Spravovat objednávky
+    ORDERS: Objednávky
+    ORDER_DETAILS: Detail objednávky
+    THANKS_FOR_YOUR_ORDER: Děkujeme za vaši objednávku
+    PLEASE_FILL_ALL_THE_REQUIRED_FIELDS: Prosím vyplňte všechna vyžadovaná pole

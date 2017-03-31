@@ -1,3 +1,11 @@
+# v1.1.5
+## 31-03-2017
+
+1. [](#bugfix)
+    * Fix [#49](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/49) NaN in pricing for over 999
+    * Fix [#51](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/51) issue in calculating taxes in the cart
+    * Fix [#52](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/52) add subtotal label
+
 # v1.1.4
 ## 03-02-2017
 
