@@ -3,6 +3,7 @@
 
 1. [](#bugfix)
     * Fix [#53](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/53) Fix validating as commalist breaks Country choosing
+    * Fix showing breadcrumbs on top on products list
 
 # v1.1.5
 ## 31-03-2017

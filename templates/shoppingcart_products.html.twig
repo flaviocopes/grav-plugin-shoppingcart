@@ -1,17 +1,17 @@
 {% extends 'partials/shoppingcart_core_base.html.twig' %}
 
 {% block content %}
+
+    {{ parent() }}
+
     {% include 'partials/shoppingcart_core_cart.html.twig' %}
 
     <script>
     (function() {
         ShoppingCart.currentPageIsProducts = true;
-        // Define currentProducts.
         ShoppingCart.currentProducts = [];
     }());
     </script>
-
-    {{ parent() }}
 
     <div class="content-wrapper">
         {{ page.content }}
