@@ -184,57 +184,64 @@
         var totalPrice;
         var country = null;
         var tax_percentage = 0;
+		var tax_included = 0;
 
         while (i < ShoppingCart.items.length) {
             orderPrice += ShoppingCart.items[i].product.price * ShoppingCart.items[i].quantity;
             i++;
         }
-
-        if (ShoppingCart.productPriceDoesNotIncludeTaxes()) {
-            //calculate country taxes
-            var country;
+		
+		//calculate country taxes
+        var country;
+        for (index in ShoppingCart.settings.countries) {
+            if (ShoppingCart.checkout_form_data.country == ShoppingCart.settings.countries[index].name) {
+                country = ShoppingCart.settings.countries[index];
+            }
+        }
+        if (!country) {
             for (index in ShoppingCart.settings.countries) {
-                if (ShoppingCart.checkout_form_data.country == ShoppingCart.settings.countries[index].name) {
+                if ('*' == ShoppingCart.settings.countries[index].name) {
                     country = ShoppingCart.settings.countries[index];
                 }
             }
-            if (!country) {
-                for (index in ShoppingCart.settings.countries) {
-                    if ('*' == ShoppingCart.settings.countries[index].name) {
-                        country = ShoppingCart.settings.countries[index];
-                    }
-                }
-            }
+        }
 
-            if (country) {
-                if (country.isAllowed) {
-                    tax_percentage = parseInt(country.tax_percentage) || 0;
-                    if (country.name === 'US') {
-                        if (ShoppingCart.settings.us_states) {
-                            var state = jQuery(ShoppingCart.settings.us_states).filter(function(index, item) { if (ShoppingCart.checkout_form_data.state == item.name) return true; }).toArray()[0];
-                            if (state) {
-                                tax_percentage = state.tax_percentage || 0;
-                            }
+		if (country) {
+            if (country.isAllowed) {
+                tax_percentage = parseInt(country.tax_percentage) || 0;
+                if (country.name === 'US') {
+                    if (ShoppingCart.settings.us_states) {
+                        var state = jQuery(ShoppingCart.settings.us_states).filter(function(index, item) { if (ShoppingCart.checkout_form_data.state == item.name) return true; }).toArray()[0];
+                        if (state) {
+                            tax_percentage = state.tax_percentage || 0;
                         }
                     }
                 }
             }
-
+        }
+		
+        if (ShoppingCart.productPriceDoesNotIncludeTaxes()) {
+            
             if (tax_percentage !== 0) {
                 totalPrice = orderPrice + orderPrice * (tax_percentage / 100);
             } else {
                 totalPrice = orderPrice;
             }
-
+			
+			totalPrice = parseFloat(totalPrice.toFixed(2)).toFixed(2);
+			ShoppingCart.taxesApplied = parseFloat(totalPrice - orderPrice).toFixed(2);
+			ShoppingCart.totalOrderPriceIncludingTaxes = totalPrice;
+			
         } else {
             totalPrice = orderPrice;
+			tax_included = totalPrice * (tax_percentage / 100);
+			
+			totalPrice = parseFloat(totalPrice.toFixed(2)).toFixed(2);
+			
+			ShoppingCart.taxesApplied = parseFloat(tax_included).toFixed(2);
+			ShoppingCart.totalOrderPriceIncludingTaxes = totalPrice;
         }
-
-        totalPrice = parseFloat(totalPrice.toFixed(2)).toFixed(2);
-
-        ShoppingCart.taxesApplied = parseFloat(totalPrice - orderPrice).toFixed(2);
-        ShoppingCart.totalOrderPriceIncludingTaxes = totalPrice;
-
+            
         return totalPrice;
     };
 
@@ -592,7 +599,19 @@
                 }
 
                 row += '</tr>';
-            }
+            } else {
+				var amount = ShoppingCart.taxesApplied;
+				row += '<tr class="cart-taxes-calculated">';
+				row += '<td><strong>';
+				row += window.PLUGIN_SHOPPINGCART.translations.TAXES;
+				row += '</strong></td>';
+				row += '<td></td>';
+                row += '<td></td>';
+                row += '<td>';
+				row += ShoppingCart.renderPriceWithCurrency(amount);
+                row += '</td>';
+				row += '</tr>';
+			}
 
             /***********************************************************/
             /* Shipping price
