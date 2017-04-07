@@ -1,3 +1,8 @@
+title: Products List
+'@extends':
+    type: default
+    context: blueprints://pages
+
 form:
   fields:
     tabs:
@@ -13,12 +18,11 @@ form:
               underline: true
 
               fields:
-              
-                header.content.items:
-                  type: hidden
-                  label: PLUGIN_ADMIN.ITEMS
-                  default: '@self.children'
-
+                header.category:
+                  type: text
+                  label: Product Category
+                  help: Enter in a product categroy
+                               
                 header.content.order.by:
                   type: select
                   label: PLUGIN_ADMIN.ORDER_BY
@@ -48,3 +52,4 @@ form:
                       0: No
                   validate:
                        type: bool
+
