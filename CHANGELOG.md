@@ -3,6 +3,7 @@
 
 1. [](#improved)
     * Add more blueprint options - thanks @mikegcox [#58](https://github.com/flaviocopes/grav-plugin-shoppingcart/pull/58)
+    * Show amount of tax included in Total Price - thanks @carlu93 [#56](https://github.com/flaviocopes/grav-plugin-shoppingcart/pull/56)
 1. [](#bugfix)
     * Fix [#53](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/53) Fix validating as commalist breaks Country choosing
     * Fix showing breadcrumbs on top on products list
