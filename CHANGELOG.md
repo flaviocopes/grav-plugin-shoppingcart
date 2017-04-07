@@ -4,6 +4,7 @@
 1. [](#bugfix)
     * Fix [#53](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/53) Fix validating as commalist breaks Country choosing
     * Fix showing breadcrumbs on top on products list
+    * Fix issue with allowed countries [#60](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/60) [#57](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/57) - thanks @gmplab
 
 # v1.1.5
 ## 31-03-2017
