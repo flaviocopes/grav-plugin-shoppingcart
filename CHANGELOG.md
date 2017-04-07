@@ -1,6 +1,8 @@
 # v1.1.6
 ## xx-04-2017
 
+1. [](#improved)
+    * Add more blueprint options - thanks @mikegcox [#58](https://github.com/flaviocopes/grav-plugin-shoppingcart/pull/58)
 1. [](#bugfix)
     * Fix [#53](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/53) Fix validating as commalist breaks Country choosing
     * Fix showing breadcrumbs on top on products list
