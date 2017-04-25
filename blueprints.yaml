@@ -246,6 +246,7 @@ form:
           fields:
             countries:
               type: list
+              array: true
               label: Countries settings
               help: Set countries where people can buy from, and corresponding taxes. Set specific countries as disabled.
 
@@ -291,6 +292,7 @@ form:
               fields:
                 shipping.methods:
                   type: list
+                  array: true
                   label: Shipping Methods available
 
                   fields:
