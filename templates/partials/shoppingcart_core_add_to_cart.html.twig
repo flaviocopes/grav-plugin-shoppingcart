@@ -1,21 +1,21 @@
 {% set price = product.price|number_format(2, '.', ',') %}
 {% set image_size_cart = config.plugins.shoppingcart.ui.image_size_cart %}
 
-{{ shoppingcart_output_page_product_before_add_to_cart }}
+{{ shoppingcart_output_page_product_before_add_to_cart|raw }}
 
-<button type="button" class="button js__shoppingcart__button-add-to-cart" data-id="{{product.id}}">
-    <i class="fa fa-shopping-cart"></i> {{ 'PLUGIN_SHOPPINGCART.ADD_TO_CART'|t }}
+<button type="button" class="button js__shoppingcart__button-add-to-cart" data-id="{{product.id|e}}">
+    <i class="fa fa-shopping-cart"></i> {{ 'PLUGIN_SHOPPINGCART.ADD_TO_CART'|t|e }}
 </button>
 
 <script>
     (function() {
         var currentProduct = {
-            title: "{{ product.title }}",
-            id: "{{ product.id }}",
-            formatted_price: "{{ price }}",
-            price: "{{ product.price }}",
-            image: "{{ product.image.cropResize(image_size_cart, image_size_cart).url }}",
-            url: "{{ product.url }}"
+            title: "{{ product.title|e }}",
+            id: "{{ product.id|e }}",
+            formatted_price: "{{ price|e }}",
+            price: "{{ product.price|e }}",
+            image: "{{ product.image.cropResize(image_size_cart, image_size_cart).url|raw }}",
+            url: "{{ product.url|raw }}"
         };
 
         // Checks if page is a list of products or single product
