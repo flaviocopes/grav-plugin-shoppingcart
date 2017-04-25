@@ -293,11 +293,20 @@ class ShoppingcartPlugin extends Plugin
             }
         }
 
-        $this->grav['assets']->add('plugin://shoppingcart/js/lib/store.min.js');
-        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart.js');
-        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart_lib.js');
-        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart_cart.js');
-        $this->grav['assets']->add('plugin://shoppingcart/js/shoppingcart_cart_events.js');
+        $this->grav['assets']->addJs('jquery');
+        $this->grav['assets']->addJs('plugin://shoppingcart/js/lib/store.min.js');
+        $this->grav['assets']->addJs('plugin://shoppingcart/js/shoppingcart.js');
+        $this->grav['assets']->addJs('plugin://shoppingcart/js/shoppingcart_lib.js');
+        $this->grav['assets']->addJs('plugin://shoppingcart/js/shoppingcart_cart.js');
+        $this->grav['assets']->addJs('plugin://shoppingcart/js/shoppingcart_cart_events.js');
+
+        if ($page->template() === 'shoppingcart_checkout') {
+            $this->grav['assets']->addJs('plugin://shoppingcart/js/shoppingcart_checkout.js');
+            $this->grav['assets']->addJs('plugin://shoppingcart/js/shoppingcart_checkout_events.js');
+            $this->grav['assets']->addJs('plugin://shoppingcart/js/shoppingcart_checkout_events.js');
+            $this->grav['assets']->addInlineJs('(function() { ShoppingCart.currentPageIsCheckout = true; }());');
+        }
+
     }
 
     /**
