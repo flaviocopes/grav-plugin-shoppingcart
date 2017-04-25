@@ -11,8 +11,8 @@
     {% include 'partials/shoppingcart_core_cart.html.twig' %}
 
     <div class="shoppingcart-container js__checkout__block">
-        <h1>{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_PAGE_TITLE'|t }}</h1>
-        {{ page.content }}
+        <h1>{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_PAGE_TITLE'|t|e }}</h1>
+        {{ page.content|raw }}
         {% set form = config.plugins.shoppingcart.checkout_form %}
         {% include 'forms/default/form.html.twig' %}
     </div>

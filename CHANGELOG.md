@@ -1,3 +1,17 @@
+# v1.2.0
+## 25-04-2017
+
+1. [](#improved)
+    * Add more blueprint options - thanks @mikegcox [#58](https://github.com/flaviocopes/grav-plugin-shoppingcart/pull/58)
+    * Show amount of tax included in Total Price - thanks @carlu93 [#56](https://github.com/flaviocopes/grav-plugin-shoppingcart/pull/56)
+    * Add checkout form to the blueprint
+1. [](#bugfix)
+    * Fix [#53](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/53) Fix validating as commalist breaks Country choosing
+    * Fix showing breadcrumbs on top on products list
+    * Fix issue with allowed countries [#60](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/60) [#57](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/57) - thanks @gmplab
+    * Array: true for list items in blueprint, fixes issue with list items in config
+    * Escape everything that needs to be escaped
+
 # v1.1.5
 ## 31-03-2017
 

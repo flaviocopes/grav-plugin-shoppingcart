@@ -3,7 +3,7 @@
 {% block content %}
     {% if uri.param('token') == order.token %}
     	<div class="shoppingcart-container shoppingcart__order-confirmation">
-        	<h1>{{ "PLUGIN_SHOPPINGCART.THANKS_FOR_YOUR_ORDER"|t }}</h1>
+        	<h1>{{ "PLUGIN_SHOPPINGCART.THANKS_FOR_YOUR_ORDER"|t|e }}</h1>
 
         	{% include 'partials/shoppingcart_core_order_details.html.twig' %}
     	</div>

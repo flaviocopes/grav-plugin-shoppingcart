@@ -3,7 +3,7 @@
     {% set formatted_price = price|number_format(0) %}
 {% endif %}
 {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
-    {{ formatted_price }}{{ currency_symbol }}
+    {{ formatted_price|e }}{{ currency_symbol|e }}
 {% else %}
-    {{ currency_symbol }}{{ formatted_price }}
+    {{ currency_symbol|e }}{{ formatted_price|e }}
 {% endif %}

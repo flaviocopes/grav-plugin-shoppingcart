@@ -1,10 +1,10 @@
 {% set shoppingcart_image = page.media.images|first %}
 
 <div class="shoppingcart-item shoppingcart-product-container block" >
-    <h3><a href="{{ page.url }}">{{ page.header.title }}</a></h3>
+    <h3><a href="{{ page.url|raw }}">{{ page.header.title|e }}</a></h3>
     <div class="shoppingcart-thumb">
         {% if shoppingcart_image %}
-            <a href="{{ page.url }}">{{ shoppingcart_image.cropResize(200,200).html(page.header.title,'shoppingcart-thumb-image') }}</a>
+            <a href="{{ page.url|raw }}">{{ shoppingcart_image.cropResize(200,200).html(page.header.title,'shoppingcart-thumb-image')|raw }}</a>
         {% else %}
             <br><br><br>
         {% endif %}
@@ -17,15 +17,15 @@
         <p>
             {% if display_add_to_cart %}
                 <div class="shoppingcart-quantity-chooser">
-                    <label for="js__shoppingcart__quantity">{{ 'PLUGIN_SHOPPINGCART.QUANTITY'|t }}</label>
+                    <label for="js__shoppingcart__quantity">{{ 'PLUGIN_SHOPPINGCART.QUANTITY'|t|e }}</label>
                     <input type="text" class="small" id="js__shoppingcart__quantity" placeholder="1" value="1" />
                 </div>
                 {% set product = { 'title': page.header.title, 'id': md5(page.header.title), 'price': page.header.price, 'image': shoppingcart_image, 'url': page.url } %}
                 {% include 'partials/shoppingcart_core_add_to_cart.html.twig' with { product: product } %}
             {% else %}
-                <a href="{{ page.url }}"
+                <a href="{{ page.url|raw }}"
                     class="button button-small">
-                    <i class="fa fa-info-circle"></i> {{ 'PLUGIN_SHOPPINGCART.DETAILS'|t }}
+                    <i class="fa fa-info-circle"></i> {{ 'PLUGIN_SHOPPINGCART.DETAILS'|t|e }}
                 </a>
             {% endif %}
         </p>

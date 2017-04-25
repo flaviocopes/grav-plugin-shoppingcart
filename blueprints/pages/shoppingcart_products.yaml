@@ -18,6 +18,29 @@ form:
               underline: true
 
               fields:
+                header.category:
+                  type: text
+                  label: Product Category
+                  help: Enter in a product categroy
+                               
+                header.content.order.by:
+                  type: select
+                  label: PLUGIN_ADMIN.ORDER_BY
+                  default: title
+                  options:
+                    folder: PLUGIN_ADMIN.FOLDER
+                    title: PLUGIN_ADMIN.TITLE
+                    date: PLUGIN_ADMIN.DATE
+                    default: PLUGIN_ADMIN.DEFAULT
+
+                header.content.order.dir:
+                  type: select
+                  label: PLUGIN_ADMIN.ORDER
+                  default: asc
+                  options:
+                    asc: PLUGIN_ADMIN.ASCENDING
+                    desc: PLUGIN_ADMIN.DESCENDING              
+                
                 header.display_add_to_cart:
                   type: toggle
                   label: Display Add To Cart Button
@@ -29,3 +52,4 @@ form:
                       0: No
                   validate:
                        type: bool
+
