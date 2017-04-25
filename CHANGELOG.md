@@ -1,5 +1,5 @@
 # v1.2.0
-## xx-04-2017
+## 25-04-2017
 
 1. [](#improved)
     * Add more blueprint options - thanks @mikegcox [#58](https://github.com/flaviocopes/grav-plugin-shoppingcart/pull/58)
