@@ -1,3 +1,9 @@
+# v1.2.1
+## 25-04-2017
+
+1. [](#bugfix)
+    * Fix issue on Gantry themes
+
 # v1.2.0
 ## 25-04-2017
 
