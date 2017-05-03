@@ -1,5 +1,5 @@
 name: Shopping Cart
-version: 1.1.5
+version: 1.2.1
 description: "This plugin turns your Grav site into a shopping cart"
 icon: shopping-cart
 author:
@@ -246,6 +246,8 @@ form:
           fields:
             countries:
               type: list
+              style: vertical
+              array: true
               label: Countries settings
               help: Set countries where people can buy from, and corresponding taxes. Set specific countries as disabled.
 
@@ -291,6 +293,8 @@ form:
               fields:
                 shipping.methods:
                   type: list
+                  style: vertical
+                  array: true
                   label: Shipping Methods available
 
                   fields:
@@ -315,3 +319,106 @@ form:
                       help: The price of this shipping option
                       validate:
                           type: int
+
+        -
+          type: tab
+          title: Checkout Form
+
+          fields:
+
+            checkout_form.fields:
+              type: list
+              array: true
+              style: vertical
+
+              fields:
+
+                .type:
+                  label: Type
+                  help:
+                  type: select
+                  default: text
+                  options:
+                    text: text
+                    display: display
+                    select: select
+                    checkbox: checkbox
+                    email: email
+                    toggle: toggle
+                  validate:
+                    type: string
+
+                .validate:
+                  toggleable: true
+                  type: array
+                  label: Validate
+                  help:
+                  placeholder_key: value
+                  placeholder_value: label
+
+                .name:
+                  toggleable: true
+                  label: Name
+                  help:
+                  type: text
+
+                .label:
+                  toggleable: true
+                  label: Label
+                  help:
+                  type: text
+
+                .help:
+                  toggleable: true
+                  label: Help
+                  help:
+                  type: text
+
+                .ignore:
+                  label: Ignore
+                  type: toggle
+                  highlight: 0
+                  default: 0
+                  options:
+                    1: PLUGIN_ADMIN.YES
+                    0: PLUGIN_ADMIN.NO
+                  validate:
+                    type: bool
+
+                .classes:
+                  toggleable: true
+                  label: Classes
+                  help:
+                  type: text
+
+                .id:
+                  toggleable: true
+                  label: Id
+                  help:
+                  type: text
+
+                .outerclasses:
+                  toggleable: true
+                  label: Outer classes
+                  help:
+                  type: text
+
+                .content:
+                  toggleable: true
+                  label: Content
+                  help:
+                  type: text
+
+                .markdown:
+                  toggleable: true
+                  label: Content includes Markdown?
+                  help:
+                  type: text
+
+                .options:
+                  toggleable: true
+                  type: array
+                  label: Options
+                  help:
+                  placeholder_key: value
+                  placeholder_value: label

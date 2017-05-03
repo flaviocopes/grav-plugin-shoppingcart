@@ -7,7 +7,7 @@
     <div class="shoppingcart-info block">
         <div class="shoppingcart-thumb">
             {% if shoppingcart_image %}
-                {{ shoppingcart_image.cropResize(image_size_product, image_size_product).html(page.header.title, 'shoppingcart-thumb-image') }}
+                {{ shoppingcart_image.cropResize(image_size_product, image_size_product).html(page.header.title, 'shoppingcart-thumb-image')|raw }}
             {% else %}
                 <br><br><br>
             {% endif %}
@@ -17,7 +17,7 @@
         </div>
         <p>
             <div class="shoppingcart-quantity-chooser">
-                <label for="js__shoppingcart__quantity">{{ 'PLUGIN_SHOPPINGCART.QUANTITY'|t }}</label>
+                <label for="js__shoppingcart__quantity">{{ 'PLUGIN_SHOPPINGCART.QUANTITY'|t|e }}</label>
                 <input type="text" class="small" id="js__shoppingcart__quantity" placeholder="1" value="1" />
             </div>
 
@@ -26,7 +26,7 @@
         </p>
     </div>
     <div class="shoppingcart-details block">
-        <h1>{{ page.header.title }}</h1>
-        <p>{{ page.content }}</p>
+        <h1>{{ page.header.title|e }}</h1>
+        <p>{{ page.content|raw }}</p>
     </div>
 </div>

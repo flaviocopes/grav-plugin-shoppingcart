@@ -1,25 +1,18 @@
 {% extends 'partials/shoppingcart_core_base.html.twig' %}
 
-{% block javascripts %}
-    {{ parent() }}
-    {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_checkout.js') %}
-    {% do assets.addJs('plugin://shoppingcart/js/shoppingcart_checkout_events.js') %}
-    {% do assets.addInlineJs('(function() { ShoppingCart.currentPageIsCheckout = true; }());') %}
-{% endblock %}
-
 {% block content %}
     {% include 'partials/shoppingcart_core_cart.html.twig' %}
 
     <div class="shoppingcart-container js__checkout__block">
-        <h1>{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_PAGE_TITLE'|t }}</h1>
-        {{ page.content }}
+        <h1>{{ 'PLUGIN_SHOPPINGCART.CHECKOUT_PAGE_TITLE'|t|e }}</h1>
+        {{ page.content|raw }}
         {% set form = config.plugins.shoppingcart.checkout_form %}
         {% include 'forms/default/form.html.twig' %}
     </div>
 
     <script>
         (function() {
-            ShoppingCart.checkout_form_fields = {{ json_encode(config.plugins.shoppingcart.checkout_form.fields) }};
+            ShoppingCart.checkout_form_fields = {{ json_encode(config.plugins.shoppingcart.checkout_form.fields)|raw }};
         }());
     </script>
 

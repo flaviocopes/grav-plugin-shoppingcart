@@ -14,7 +14,7 @@
     </script>
 
     <div class="content-wrapper">
-        {{ page.content }}
+        {{ page.content|raw }}
 
         <div class="shoppingcart-products block-group">
             {% for child in page.collection() %}
