@@ -1,3 +1,10 @@
+# v1.2.2
+## 05-05-2017
+
+1. [](#bugfix)
+    * Fix issue with prices with more than 2 decimals and issue with NaN on prices > 999.99 - thanks @gmplab [#62](https://github.com/flaviocopes/grav-plugin-shoppingcart/pull/62)
+    * Fix [#63](https://github.com/flaviocopes/grav-plugin-shoppingcart/issues/63) Cart icon gone after clicking add to cart button
+
 # v1.2.1
 ## 25-04-2017
 
