@@ -93,7 +93,7 @@
         button.html(window.PLUGIN_SHOPPINGCART.translations.PRODUCT_ADDED_TO_CART);
 
         setTimeout(function() {
-            button.html(window.PLUGIN_SHOPPINGCART.translations.ADD_TO_CART);
+            button.html('<i class="fa fa-shopping-cart"></i> ' + window.PLUGIN_SHOPPINGCART.translations.ADD_TO_CART);
             button.attr('disabled', null);
         }, 2000);
     });
