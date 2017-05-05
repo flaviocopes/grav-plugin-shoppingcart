@@ -57,9 +57,9 @@
                                 <strong>Price</strong>:
 
                                 {% if config.plugins.shoppingcart.ui.currency_symbol_position == 'after' %}
-                                    {{ product.product.formatted_price }}{{ currency_symbol }}
+                                    {{ product.product.price }}{{ currency_symbol }}
                                 {% else %}
-                                    {{ currency_symbol }}{{ product.product.formatted_price }}
+                                    {{ currency_symbol }}{{ product.product.price }}
                                 {% endif %}
 
                                 <br>
