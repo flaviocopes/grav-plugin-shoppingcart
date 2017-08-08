@@ -1,4 +1,3 @@
-{% set shoppingcart_image = page.media.images|first %}
 {% set image_size_product = config.plugins.shoppingcart.ui.image_size_product %}
 
 {% include 'partials/shoppingcart_core_cart.html.twig' %}
@@ -6,8 +5,10 @@
 <div id="shoppingcart-detail" class="shoppingcart-product-container block-group">
     <div class="shoppingcart-info block">
         <div class="shoppingcart-thumb">
-            {% if shoppingcart_image %}
+            {% if page.media.images %}
+                {% for shoppingcart_image in page.media.images %}
                 {{ shoppingcart_image.cropResize(image_size_product, image_size_product).html(page.header.title, 'shoppingcart-thumb-image')|raw }}
+                {% endfor %}
             {% else %}
                 <br><br><br>
             {% endif %}
