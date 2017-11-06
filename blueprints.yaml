@@ -318,7 +318,7 @@ form:
                       type: text
                       help: The price of this shipping option
                       validate:
-                          type: int
+                          type: number
 
         -
           type: tab
