@@ -338,6 +338,14 @@
                         price = 0;
                     }
 
+                    var freeOver = method.free_over;
+					if (ShoppingCart.totalOrderPriceIncludingTaxes > freeOver){
+						price = 0;
+						var option = '.js__shipping__method option[value="' + shippingMethodName + '"]';
+						console.log(option);
+						jQuery(option).text(shippingMethodName + ' - FREE SHIPPING');
+					}
+                    
                     price = parseFloat(price).toFixed(2);
 
                     ShoppingCart.shippingPrice = price;
