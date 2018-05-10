@@ -319,6 +319,13 @@ form:
                       help: The price of this shipping option
                       validate:
                           type: int
+                          
+                    .free_over:
+                      label: Free Shipping Over
+                      type: text
+                      help: The price of checkout upon which shipping becomes free.
+                      validate:
+                          type: number
 
         -
           type: tab
