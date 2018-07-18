@@ -178,8 +178,6 @@ form:
                   validate:
                     type: string
 
-
-
         -
           type: tab
           title: User Interface
@@ -209,7 +207,6 @@ form:
                 0: PLUGIN_ADMIN.NO
               validate:
                 type: bool
-
 
             ui.use_own_css:
               label: Use plugin's CSS
@@ -277,7 +274,7 @@ form:
                   type: text
                   help: The tax percentage for this country
                   validate:
-                      type: int
+                      type: number
 
         -
           type: tab
@@ -318,7 +315,7 @@ form:
                       type: text
                       help: The price of this shipping option
                       validate:
-                          type: int
+                          type: number
 
         -
           type: tab
@@ -345,6 +342,9 @@ form:
                     checkbox: checkbox
                     email: email
                     toggle: toggle
+                    textarea: textarea
+                    captcha: captcha
+                    spacer: spacer
                   validate:
                     type: string
 
@@ -367,6 +367,24 @@ form:
                   label: Label
                   help:
                   type: text
+                  
+                .title:
+                  toggleable: true
+                  label: Title
+                  help: Only for spacer
+                  type: text
+                  
+                .underline:
+                  toggleable: true
+                  label: Underline
+                  help: Only for spacer
+                  default: 1
+                  type: bool
+                  options:
+                    1: PLUGIN_ADMIN.ENABLED
+                    0: PLUGIN_ADMIN.DISABLED                  
+                  validate:
+                      bool
 
                 .help:
                   toggleable: true
