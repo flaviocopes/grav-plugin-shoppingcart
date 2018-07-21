@@ -42,7 +42,7 @@ form:
               validate:
                 type: bool
 
-            load_js_globally:
+            general.load_js_globally:
               label: Load Cart JavaScript globally
               help: Enable if you want the cart to appear on pages different than the shop pages
               type: toggle
