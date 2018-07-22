@@ -235,6 +235,21 @@ form:
               default: 50
               validate:
                 type: int
+            ui.shoppingcart_product_blueprint:
+              label: Extend product blueprint
+              type: text
+              default: 'default'
+              help: Specify a base blueprint for your product items (must exist in your theme, instance)
+              validate:
+                type: string
+
+            ui.shoppingcart_products_blueprint:
+              label: Extend catalogue blueprint
+              type: text
+              default: 'default'
+              help: Specify a base blueprint for product catalogue (must exist in your theme, instance)
+              validate:
+                type: string
 
         -
           type: tab
