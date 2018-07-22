@@ -3,8 +3,10 @@ namespace Grav\Plugin;
 
 use Grav\Common\Grav;
 use Grav\Common\Data;
+use Grav\Common\Data\Blueprints;
 use Grav\Common\Filesystem\Folder;
 use Grav\Common\Page\Page;
+use Grav\Common\Page\Pages;
 use Grav\Common\Page\Types;
 use Grav\Common\Plugin;
 use Grav\Common\Twig\Twig;
@@ -622,7 +624,7 @@ class ShoppingcartPlugin extends Plugin
     public function onBlueprintCreated(Event $event)
     {
         $blueprint = $event['blueprint'];
-        $testblueprints = ['shoppingcart_product', 'shoppingcart_products', 'shoppingcart_categories'];
+        $testblueprints = ['shoppingcart_product', 'shoppingcart_products'];
         $bluetest = $this->config->get('plugins.shoppingcart.ui.' . $event['type'] . '_blueprint', 'default');
         if (!in_array($event['type'], $testblueprints)) {
             return;
