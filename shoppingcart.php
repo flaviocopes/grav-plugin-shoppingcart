@@ -43,7 +43,8 @@ class ShoppingcartPlugin extends Plugin
             'onGetPageBlueprints'     => ['onGetPageBlueprints', 0],
             'onGetPageTemplates'      => ['onGetPageTemplates', 0],
             'onShoppingCartSaveOrder' => ['onShoppingCartSaveOrder', 0],
-            'onTwigSiteVariables'     => ['onTwigSiteVariables', 0]
+            'onTwigSiteVariables'     => ['onTwigSiteVariables', 0],
+            'onBlueprintCreated'      => ['onBlueprintCreated', 500],
         ];
     }
 
@@ -612,6 +613,28 @@ class ShoppingcartPlugin extends Plugin
     {
         $this->grav['twig']->twig_paths[] = __DIR__ . '/admin/templates';
     }
-
+   /**
+     * Extend page blueprints with configuration options.
+     *
+     * @param Event $event
+     *
+     */
+    public function onBlueprintCreated(Event $event)
+    {
+        $blueprint = $event['blueprint'];
+        $testblueprints = ['shoppingcart_product', 'shoppingcart_products', 'shoppingcart_categories'];
+        $bluetest = $this->config->get('plugins.shoppingcart.ui.' . $event['type'] . '_blueprint', 'default');
+        if (!in_array($event['type'], $testblueprints)) {
+            return;
+        }
+        $available = Pages::types();
+        $blueprints = new Blueprints(Pages::getTypes());
+        if (array_key_exists($bluetest, $available)) {
+            $extents = $blueprints->get($bluetest);                    
+        } else {                    
+            $extents = $blueprints->get('default');
+        }
+        $blueprint->extend($extents);                
+    }
 
 }
