@@ -490,7 +490,8 @@ class ShoppingcartPlugin extends Plugin
         $prefix = 'order-';
         $format = 'Ymd-His-u';
         $ext = '.yaml';
-        $filename = $prefix . $this->udate($format) . $ext;
+        $udate = $this->udate($format);
+        $filename = $prefix . $udate . $ext;
         $body = Yaml::dump([
             'products'   => $order->products,
             'data'       => $order->data,
@@ -498,8 +499,8 @@ class ShoppingcartPlugin extends Plugin
             'payment'    => $order->payment,
             'token'      => $order->token,
             'paid'       => true,
-            'paid_on'    => $this->udate($format),
-            'created_on' => $this->udate($format),
+            'paid_on'    => $udate,
+            'created_on' => $udate,
             'amount'     => $order->amount,
             'taxes'      => $order->taxes,
         ]);
