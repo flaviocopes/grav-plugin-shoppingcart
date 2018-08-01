@@ -12,3 +12,7 @@ Run `cd tests/js` and then `mocha`
 
 Run `composer update` to install the testing dependencies. Then run `composer test` in the root folder
 Then, run `composer update --no-dev` to uninstall the testing dependencies.
+
+### New Master for Shoppingcart
+
+This is the new master of the plugin. The original master can be found at [Shoppingcart](https://github.com/flaviocopes/grav-plugin-shoppingcart)
