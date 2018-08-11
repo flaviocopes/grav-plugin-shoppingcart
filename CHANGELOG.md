@@ -1,3 +1,18 @@
+# v1.2.3
+## 11-08-2018
+
+1. [](#new)
+    * Add option to specify base blueprint to be extended with shoppingcart features (defaults to default)
+1. [](#improved)
+    * improve exclusion tests before merging configuration data
+    * better support for sites with multiple languages 
+    * change taxes and shipping cost from int to number to allow for decimals (see PR by ricardo118 in original repository)
+    * Update available Add-on list
+1. [](#bugfix)
+    * Assure consistent order id
+    * Avoid injection of configuration settings into header of product pages
+    * fix namespace for load_js_globally variable in plugin blueprint
+
 # v1.2.2
 ## 05-05-2017
 
