@@ -3,8 +3,10 @@ namespace Grav\Plugin;
 
 use Grav\Common\Grav;
 use Grav\Common\Data;
+use Grav\Common\Data\Blueprints;
 use Grav\Common\Filesystem\Folder;
 use Grav\Common\Page\Page;
+use Grav\Common\Page\Pages;
 use Grav\Common\Page\Types;
 use Grav\Common\Plugin;
 use Grav\Common\Twig\Twig;
@@ -43,7 +45,8 @@ class ShoppingcartPlugin extends Plugin
             'onGetPageBlueprints'     => ['onGetPageBlueprints', 0],
             'onGetPageTemplates'      => ['onGetPageTemplates', 0],
             'onShoppingCartSaveOrder' => ['onShoppingCartSaveOrder', 0],
-            'onTwigSiteVariables'     => ['onTwigSiteVariables', 0]
+            'onTwigSiteVariables'     => ['onTwigSiteVariables', 0],
+            'onBlueprintCreated'      => ['onBlueprintCreated', 500],
         ];
     }
 
@@ -61,7 +64,7 @@ class ShoppingcartPlugin extends Plugin
         /** @var Twig $twig */
         $twig = $this->grav['twig'];
 
-        $this->baseURL = $this->grav['uri']->rootUrl();
+        $this->baseURL = $this->baseIncludingLanguage();
         $this->checkout_url = $this->config->get('plugins.shoppingcart.urls.checkout_url');
         $this->save_order_url = $this->config->get('plugins.shoppingcart.urls.save_order_url');
         $this->order_url = $this->config->get('plugins.shoppingcart.urls.order_url');
@@ -117,7 +120,7 @@ class ShoppingcartPlugin extends Plugin
      */
     public function addCheckoutPage()
     {
-        $url = $this->checkout_url;
+        $url = $this->checkout_url;        
         $filename = 'shoppingcart_checkout.md';
         $this->addPage($url, $filename);
     }
@@ -185,6 +188,10 @@ class ShoppingcartPlugin extends Plugin
         if (!$page) {
             $page = new Page;
             $page->init(new \SplFileInfo(__DIR__ . "/pages/" . $filename));
+            if ($filename == "shoppingcart_checkout.md") {
+                $checkoutForm = $this->config->get('plugins.shoppingcart.checkout_form');
+                $page->header()->form = $checkoutForm;
+            }
             $page->slug(basename($url));
             $pages->addPage($page, $url);
         }
@@ -232,11 +239,22 @@ class ShoppingcartPlugin extends Plugin
         // Init the page header by merging the ShoppingCart defaults
         if ($page->header() != null) {
             $settings = (array)$this->config->get('plugins.shoppingcart');
+            
+            /*
+             * Unnecessary and problematic if we save for some reason the page object, e.g. stock handling in an add-on.
+             * Spreads sensitive data throughout the system. Sensitive ata may even show up on the front-end.
+             * 
+             * 
+            if (isset($page->header()->shoppingcart->payment) && isset($page->header()->shoppingcart->payment['methods']['private'])) {
+                unset($page->header()->shoppingcart->payment['methods']['private']);
+            }
             if (isset($page->header()->shoppingcart)) {
                 $page->header()->shoppingcart = array_merge($settings, $page->header()->shoppingcart);
             } else {
                 $page->header()->shoppingcart = $settings;
             }
+             * 
+             */
         }
 
         // Add translations needed in JavaScript code
@@ -257,7 +275,12 @@ class ShoppingcartPlugin extends Plugin
         $assets = $this->grav['assets'];
 
         $translations = 'if (!window.PLUGIN_SHOPPINGCART) { window.PLUGIN_SHOPPINGCART = {}; } ' . PHP_EOL . 'window.PLUGIN_SHOPPINGCART.translations = {};' . PHP_EOL;
-
+        
+        $defLang = $this->grav['language']->getDefault();
+        $actLang = $this->grav['language']->getActive();
+        if ($actLang != $defLang) {
+            $this->grav['language']->setActive($actLang);
+        }
         $strings = $this->shoppingcart->getTranslationStringsForFrontend();
         foreach ($strings as $string) {
             $translations .= 'PLUGIN_SHOPPINGCART.translations.' . $string . ' = "' . $this->grav['language']->translate(['PLUGIN_SHOPPINGCART.' . $string]) . '"; ' . PHP_EOL;
@@ -312,6 +335,7 @@ class ShoppingcartPlugin extends Plugin
     /**
      * @param $base
      * @param $settings
+     * @todo Should allow additional exclusions and tests that run in from add-ons
      *
      * @return string
      */
@@ -322,7 +346,8 @@ class ShoppingcartPlugin extends Plugin
         foreach ($settings as $key => $value) {
             if (!is_array($value)) {
                 //Avoid adding private settings to the frontend
-                if (!in_array($key, ['secretKey', 'username', 'password', 'signature'], true)) {
+                $testkey = strtolower($key);
+                if (!in_array($testkey, ['apikey', 'api_key', 'secretkey', 'secretkeytest', 'testsecretkey', 'username', 'password', 'signature'], true)) {
                     if (is_numeric($key)) {
                         $key = '[' . $key . ']';
                     } else {
@@ -336,7 +361,7 @@ class ShoppingcartPlugin extends Plugin
                 }
 
             } else {
-                if ($key !== 'checkout_form') {
+                if ($key !== 'checkout_form' && $key !== 'placeorder_form'  && $key !== 'mailchimp') {
                     if (is_numeric($key)) {
                         $key = '[' . $key . ']';
                     } else {
@@ -433,7 +458,6 @@ class ShoppingcartPlugin extends Plugin
     public function onShoppingCartReturnOrderPageUrlForAjax($event)
     {
         require_once __DIR__ . '/classes/order.php';
-
         $order = new Order($event['order']);
         $order_page_url = $this->baseIncludingLanguage() . $this->order_url . '/id:' . str_replace('.yaml', '', $this->order_id) . '/token:' . $order->token;
         echo $order_page_url;
@@ -466,8 +490,8 @@ class ShoppingcartPlugin extends Plugin
         $prefix = 'order-';
         $format = 'Ymd-His-u';
         $ext = '.yaml';
-        $filename = $prefix . $this->udate($format) . $ext;
-
+        $udate = $this->udate($format);
+        $filename = $prefix . $udate . $ext;
         $body = Yaml::dump([
             'products'   => $order->products,
             'data'       => $order->data,
@@ -475,8 +499,8 @@ class ShoppingcartPlugin extends Plugin
             'payment'    => $order->payment,
             'token'      => $order->token,
             'paid'       => true,
-            'paid_on'    => $this->udate($format),
-            'created_on' => $this->udate($format),
+            'paid_on'    => $udate,
+            'created_on' => $udate,
             'amount'     => $order->amount,
             'taxes'      => $order->taxes,
         ]);
@@ -592,6 +616,28 @@ class ShoppingcartPlugin extends Plugin
     {
         $this->grav['twig']->twig_paths[] = __DIR__ . '/admin/templates';
     }
-
+   /**
+     * Extend page blueprints with configuration options.
+     *
+     * @param Event $event
+     *
+     */
+    public function onBlueprintCreated(Event $event)
+    {
+        $blueprint = $event['blueprint'];
+        $testblueprints = ['shoppingcart_product', 'shoppingcart_products'];
+        $bluetest = $this->config->get('plugins.shoppingcart.ui.' . $event['type'] . '_blueprint', 'default');
+        if (!in_array($event['type'], $testblueprints)) {
+            return;
+        }
+        $available = Pages::types();
+        $blueprints = new Blueprints(Pages::getTypes());
+        if (array_key_exists($bluetest, $available)) {
+            $extents = $blueprints->get($bluetest);                    
+        } else {                    
+            $extents = $blueprints->get('default');
+        }
+        $blueprint->extend($extents);                
+    }
 
 }

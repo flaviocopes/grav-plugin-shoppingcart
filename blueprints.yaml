@@ -1,5 +1,5 @@
 name: Shopping Cart
-version: 1.2.2
+version: 1.2.3
 description: "This plugin turns your Grav site into a shopping cart"
 icon: shopping-cart
 author:
@@ -42,7 +42,7 @@ form:
               validate:
                 type: bool
 
-            load_js_globally:
+            general.load_js_globally:
               label: Load Cart JavaScript globally
               help: Enable if you want the cart to appear on pages different than the shop pages
               type: toggle
@@ -178,8 +178,6 @@ form:
                   validate:
                     type: string
 
-
-
         -
           type: tab
           title: User Interface
@@ -210,7 +208,6 @@ form:
               validate:
                 type: bool
 
-
             ui.use_own_css:
               label: Use plugin's CSS
               help: Add Shopping Cart plugin own CSS. Disable if you're adding your CSS
@@ -238,6 +235,21 @@ form:
               default: 50
               validate:
                 type: int
+            ui.shoppingcart_product_blueprint:
+              label: Extend product blueprint
+              type: text
+              default: 'default'
+              help: Specify a base blueprint for your product items (must exist in your theme, instance)
+              validate:
+                type: string
+
+            ui.shoppingcart_products_blueprint:
+              label: Extend catalogue blueprint
+              type: text
+              default: 'default'
+              help: Specify a base blueprint for product catalogue (must exist in your theme, instance)
+              validate:
+                type: string
 
         -
           type: tab
@@ -277,7 +289,7 @@ form:
                   type: text
                   help: The tax percentage for this country
                   validate:
-                      type: int
+                      type: number
 
         -
           type: tab
@@ -318,7 +330,7 @@ form:
                       type: text
                       help: The price of this shipping option
                       validate:
-                          type: int
+                          type: number
 
         -
           type: tab
@@ -345,6 +357,9 @@ form:
                     checkbox: checkbox
                     email: email
                     toggle: toggle
+                    textarea: textarea
+                    captcha: captcha
+                    spacer: spacer
                   validate:
                     type: string
 
@@ -367,6 +382,24 @@ form:
                   label: Label
                   help:
                   type: text
+                  
+                .title:
+                  toggleable: true
+                  label: Title
+                  help: Only for spacer
+                  type: text
+                  
+                .underline:
+                  toggleable: true
+                  label: Underline
+                  help: Only for spacer
+                  default: 1
+                  type: bool
+                  options:
+                    1: PLUGIN_ADMIN.ENABLED
+                    0: PLUGIN_ADMIN.DISABLED                  
+                  validate:
+                      bool
 
                 .help:
                   toggleable: true
